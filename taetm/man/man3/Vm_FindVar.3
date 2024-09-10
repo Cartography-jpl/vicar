@@ -1,0 +1,45 @@
+.TH Vm_FindVar 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_FindVar - find variable ignoring ABORT flag
+
+.SH DESCRIPTION
+.IP
+.LP
+struct VARIABLE *Vm_FindVar (vmid, name) 
+
+Function return:
+
+.nr L 0 1
+.IP o
+Pointer to a VARIABLE structure in the Vm object.
+.IP o
+NULL: the variable does not exist. 
+.LP
+
+.IP
+.LP
+Arguments: 
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid; 
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find. 
+
+.IP \n+L.
+name: input, TEXT   name[ ]; 
+
+Name of the variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+.LP
+
+.IP
+.LP
+Vm_FindVar, like Vm_Find, is used to retrieve the individual
+variables from the Vm object.  The difference between the two
+routines is that Vm_FindVar will continue even if the caller of
+Vm_New set the mode to P_ABORT. 
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

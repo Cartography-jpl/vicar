@@ -1,0 +1,75 @@
+!	edited	20-jun-83...dm
+!		26-jan-85 General V1.3 cleanup...lia
+.TITLE
+GETPAR
+.HELP
+			Function and Format
+
+	
+	Function:
+
+	    GETPAR statement is used within a procedure to initiate
+	    a user dialog and obtain parameters dynamically.
+	
+
+	Format:
+
+	    GETPAR  PARMS=(parm1, parm2, ...)  +
+		    PREFACE=("string1", "string2", ...)
+.PAGE
+			Usage Notes
+
+	o  The variables parm1, parm2, ...specified in the GETPAR
+	   statement must be parameters and/or locals. Globals are
+	   not permitted.
+
+	o  GETPAR suspends procedure execution until the dynamic
+	   tutor session is complete.	
+
+	o  If the PREFACE parameter is omitted, the user sees the
+	   standard dynamic tutor preface, i.e., "Parameters
+	   requested:" followed by the names of the variables.
+
+	o  The dynamic tutor preface would only be displayed if
+	   the mode for display is NOSCREEN.
+
+.PAGE
+			Example
+	
+
+	    PROCEDURE
+		PARM  LINES  INTEGER
+		PARM  PIXELS INTEGER
+	 	LOCAL WINDOW INTEGER  INITIAL=32
+		LOCAL SEGMENTS
+		.
+		.
+		.
+		GETPAR  PARMS=(LINES, PIXELS, WINDOW) +
+			PREFACE="The requested parameters are needed for ..."
+	   	.
+		.
+	    END-PROC
+.level1
+.variable PARMS
+Names of variables needed.
+.variable PREFACE
+Text for NOSCREEN dynamic tutor.
+.level2
+.variable PARMS
+
+
+
+	The name(s) of the local or parameter variable(s)
+	for which a dynamic value request is desired.
+
+.variable PREFACE
+
+
+
+	Text string(s) for the user to see in dynamic tutor
+	if global variable $DYNTUT is set to "NOSCREEN".
+	It overrides the standard dynamic tutor preface, i.e.,
+	"Parameters requested:" followed by the names of the
+	variables.
+.END

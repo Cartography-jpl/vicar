@@ -1,0 +1,28 @@
+process help=*
+PARM INP TYPE=(STRING,100)
+PARM OPTION KEYWORD VALID=(LABEL,HISTORY,BOTH) DEFAULT=BOTH
+END-PROC
+.title
+VICAR PROGRAM ISISLAB
+.help
+PURPOSE:
+
+ ISISLAB prints the PDS label and history objects of an ISIS cube to
+ the terminal or Vicar log file.
+
+EXECUTION:
+
+  ISISLAB input-file-name OPTION
+
+ where OPTION determines whether the LABEL object, the HISTORY object,
+ or both, are printed.
+
+Cognizant programmer: L.W.Kamp
+Original Version:  26-Feb-1992
+.LEVEL1
+.VARI INP
+input ISIS cube file
+.VARI OPTION
+select what is to be
+printed
+.end

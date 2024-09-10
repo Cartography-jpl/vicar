@@ -1,0 +1,247 @@
+!	27-mar-84  General V1.2 cleanup...peb
+!	06-jun-84  Add default subcommand...lim
+!	29-jun-84  Update parameter default to "ALL"...lia
+!	03-jul-84  Cleanup...palm
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+.HELP
+	    RESTORE restores previously saved (via the 
+	    SAVE command) variables.  The following 
+	    forms are available:
+
+	    RESTORE-VARIABLE	!restore specified variables
+				(-VARIABLE is the default subcommand) 
+	    RESTORE-ALL		!restore all variables
+	    RESTORE-GLOBAL	!restore globals
+	    RESTORE-LOCAL	!restore locals
+	    RESTORE-PARM	!restore parameters
+
+	If you are in command mode, type "HELP RESTORE-sub" for 
+	help on a particular subcommand of RESTORE.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of RESTORE.
+.PAGE
+			General Usage Notes
+
+	    o If the variable list is used the variables in the
+	      list (or in the target list if one is supplied) 
+	      must already exist and must have definitions
+	      compatible with the restored values.
+
+	    o If the default for variable list is used, the following rules
+	      apply for each variable restored:
+
+		- If the variable being restored already exists,
+		  the value of the variable is updated.  
+
+		- If the variable is a parameter and does not
+		  already exist, it is not restored.
+
+		- If the variable is not a parameter and does not 
+		  exist, the variable is created.
+.PAGE
+			General Usage Notes (continued)
+
+
+	    o All forms of RESTORE require a save-file-name (i.e.,
+	      the name of a file previously saved with the SAVE 
+	      command or the SAVE command qualifier).  If the file 
+	      type is not present in the file name, a default type 
+	      of "PAR" is used.
+
+	    o The command mode RESTORE command may be used
+	      to restore a save file created via the tutor 
+	      SAVE command or via the SAVE command qualifier.
+.PAGE
+			General Usage Notes (continued)
+
+
+	    o The values in a parameter file may be examined
+	      with the DISPLAY-PARFILE command.
+
+	    o When global variables are restored, they do not
+	      have to be currently referenced.
+.PAGE
+			General Examples
+
+
+
+	    1.  TAE>RESTORE X
+
+		Restore all variables previously SAVEd in X (with 
+		file type "PAR").
+
+	    2.  TAE>RESTORE-LOCAL X
+
+		Restore all local variables previously SAVEd in X 
+		(with file type "PAR").
+
+	    3.	TAE>RESTORE-VARIABLE  PFILE, (A,B,C), (X,Y,Z)
+
+		Restore variables named A, B, and C from the file PFILE 
+	        into the existing variables X, Y, and Z respectively.
+!
+.level1
+.subcmd VARIABLE
+Restore specified variables
+.subcmd ALL
+Restore all variables
+.subcmd GLOBAL
+Restore globals only
+.subcmd LOCAL
+Restore locals only
+.subcmd PARM
+Restore parameters only
+.variable FILE
+Name of the SAVE file
+.variable VARIABLE
+Variables in the file
+to restore
+.variable TARGET
+Variables in the current
+TAE session to restore into
+!
+.level2
+.subcmd VARIABLE
+			    RESTORE-VARIABLE
+
+			  Function and Format
+	Function:
+
+	    RESTORE-VARIABLE restores the variables specified in the 
+	    variable list.  The -VARIABLE subcommand is the default 
+	    subcommand, i.e., "RESTORE" is equivalent to "RESTORE-VARIABLE".
+
+	Format:
+
+	    RESTORE-VARIABLE  FILE = save-file-name
+	    RESTORE-VARIABLE  FILE = save-file-name,  +
+		VARIABLE = restore-variable-list, TARGET = target-variable-list
+	    RESTORE  FILE = save-file-name
+	    RESTORE  FILE = save-file-name,  +
+		VARIABLE = restore-variable-list
+.page
+			RESTORE-VARIABLE -- Usage
+
+
+	    VARIABLE and TARGET are optional, but if TARGET is 
+	    present, VARIABLE must be present.  If the default is
+	    used for VARIABLE then TARGET cannot be specified.
+	    RESTORE-VARIABLE without the VARIABLE and TARGET is 
+       	    identical to RESTORE-ALL.  If VARIABLE is present the 
+	    variable definitions in the current TAE session must 
+	    be compatible with those in the save file for those 
+	    variables being restored.
+.page
+			RESTORE-VARIABLE -- Usage (continued)
+
+
+	    If TARGET is present, each variable in the target list 
+	    must already exist in the current TAE session.  The 
+	    variables in the restore list are extracted from the 
+	    file and restored into the corresponding variables in 
+	    the target list, i.e., the first VARIABLE is assigned 
+	    to the first TARGET, the second VARIABLE is assigned 
+	    to the second TARGET, and so on.
+
+	    If TARGET is not present and VARIABLE is present, each 
+	    variable in the restore list must already exist in the 
+	    current TAE session.  
+.subcmd ALL
+			RESTORE-ALL
+
+
+	    	    Function and Format
+
+	Function:
+
+	    The -ALL subcommand is used to restore all variables 
+	    from the SAVE file into the current TAE session.
+
+	    RESTORE-ALL is equivalent to RESTORE-VARIABLE with
+	    the default for the VARIABLE parameter.
+
+	Format:
+
+	    RESTORE-ALL  FILE = save-file-name
+.subcmd GLOBAL
+			RESTORE-GLOBAL
+
+
+		      Function and Format
+
+	Function:
+
+	    The -GLOBAL subcommand is used to restore only the
+	    global variables in the SAVE file.
+
+
+	Format:
+
+	    RESTORE-GLOBAL  FILE = save-file-name
+.subcmd LOCAL
+			RESTORE-LOCAL
+
+
+		      Function and Format
+
+	Function:
+
+	    The -LOCAL subcommand is used to restore only the
+	    local variables in the SAVE file.
+
+
+	Format:
+
+	    RESTORE-LOCAL  FILE = save-file-name
+.subcmd PARM
+			RESTORE-PARM
+
+
+		      Function and Format
+
+	Function:
+
+	    The -PARM subcommand is used to restore only
+	    the parameters in the SAVE file.  Parameters
+	    that do not exist in the current context are
+	    not restored.
+
+
+	Format:
+
+	    RESTORE-PARM   FILE = save-file-name
+.variable FILE
+
+
+	    This is the name of a file previously saved via
+	    the TCL SAVE command.  If the file type is omitted,
+	    "PAR" is used.
+.variable VARIABLE
+
+
+	    This parameter is optional but must be specified if
+	    TARGET is not null.  VARIABLE is the list of variables 
+	    to extract from the save file.  
+
+	    If TARGET is null, this is also the list of current 
+	    TAE session variables to restore into.  Each variable
+	    in the list must exist in the current session.  The
+	    file and session definitions of the variable must be
+	    compatible.
+
+	    The default for VARIABLE is "ALL".
+.variable TARGET
+
+
+	    This parameter is optional but if it is specified,
+	    VARIABLE must also be specified.  The values 
+	    selected by VARIABLE are restored into the 
+	    corresponding variables in the TARGET list, i.e., 
+	    the first VARIABLE is assigned to the first TARGET, 
+	    the second VARIABLE is assigned to the second TARGET, 
+	    and so on.
+
+	    Each variable in the target list must exist in the 
+	    current session.  The file and session definitions 
+	    of each associated variable must be compatible.
+.END

@@ -1,0 +1,266 @@
+!	Set color list for the WorkBench
+!
+!	The list below is the list of color names currently delivered
+!	with the TAE Plus WorkBench. You can alter the list of
+!	of WorkBench colors by editing the list below and then
+!	running this by typing the following command at
+!	your UNIX or DCL prompt:
+!
+!		taetm wbcolors 	(DCL or UNIX)
+!	
+!	Some rules:
+!
+!	1. you are limited to 300 color names.
+!
+!	2. color names must be 24 characters or less.
+!
+!	3. the list is in TCL format; every line except the last
+!	   must be terminated by "+".
+!
+!	4. avoid color names with imbedded blanks since they have
+!	   counterpart without blanks (e.g., use "DarkOrange" instead
+!	   of "dark orange").
+!
+!	5. X11R4 contains 738 entries in rgb.txt.
+!	   Due to rule #1 above, we have omitted:
+!		- all "grey###" and "gray###" entries (202)
+!		- duplicates with embedded blanks and case differences (94)
+!		- all odd-numbered names (e.g., AntiqueWhite1 and AntiqueWhite3)
+!
+!
+!	CHANGE LOG:
+!	07-mar-90	initial based on $TWB/tools/wbfonts.pdf...kbs
+!	08-dec-90	v5.0 tree re-organization...ljn/baw
+!	18-apr-91	VMS port...ljn
+!
+procedure
+	parm resFile default=wb.res
+   	refgbl $syschar
+body
+if ($syschar(1) = "UNIX")
+  ush ar xv $TAERES/&resFile skeletons.par
+else-if ($syschar(1) = "VAX_VMS")
+  dcl write sys$output ""
+  dcl write sys$output "	Extracting PAR files."
+  dcl taeextract $taeres:wb.res check_for_par no
+  dcl write sys$output ""
+  dcl write sys$output "	Updating with new color list."
+end-if
+skeletons.par |save=skeletons.par| colors = (+
+parent+
+AliceBlue+
+AntiqueWhite+
+AntiqueWhite3+
+aquamarine+
+aquamarine3+
+azure+
+azure3+
+beige+
+bisque+
+bisque3+
+black+
+BlanchedAlmond+
+blue+
+blue3+
+BlueViolet+
+brown+
+brown3+
+burlywood+
+burlywood3+
+CadetBlue+
+CadetBlue3+
+chartreuse+
+chartreuse3+
+chocolate+
+chocolate3+
+coral+
+coral3+
+CornflowerBlue+
+cornsilk+
+cornsilk3+
+cyan+
+cyan3+
+DarkGoldenrod+
+DarkGoldenrod3+
+DarkGreen+
+DarkKhaki+
+DarkOliveGreen+
+DarkOliveGreen3+
+DarkOrange+
+DarkOrange3+
+DarkOrchid+
+DarkOrchid3+
+DarkSalmon+
+DarkSeaGreen+
+DarkSeaGreen3+
+DarkSlateBlue+
+DarkSlateGray+
+DarkSlateGray3+
+DarkTurquoise+
+DarkViolet+
+DeepPink+
+DeepPink3+
+DeepSkyBlue+
+DeepSkyBlue3+
+DimGray+
+DodgerBlue+
+DodgerBlue3+
+firebrick+
+firebrick3+
+FloralWhite+
+ForestGreen+
+gainsboro+
+GhostWhite+
+gold+
+gold3+
+goldenrod+
+goldenrod3+
+gray+
+green+
+green3+
+GreenYellow+
+honeydew+
+honeydew3+
+HotPink+
+HotPink3+
+IndianRed+
+IndianRed3+
+ivory+
+ivory3+
+khaki+
+khaki3+
+lavender+
+LavenderBlush+
+LavenderBlush3+
+LawnGreen+
+LemonChiffon+
+LemonChiffon3+
+LightBlue+
+LightBlue3+
+LightCoral+
+LightCyan+
+LightCyan3+
+LightGoldenrod+
+LightGoldenrod3+
+LightGoldenrodYellow+
+LightGray+
+LightPink+
+LightPink3+
+LightSalmon+
+LightSalmon3+
+LightSeaGreen+
+LightSkyBlue+
+LightSkyBlue3+
+LightSlateBlue+
+LightSlateGray+
+LightSteelBlue+
+LightSteelBlue3+
+LightYellow+
+LightYellow3+
+LimeGreen+
+linen+
+magenta+
+magenta3+
+maroon+
+maroon3+
+MediumAquamarine+
+MediumBlue+
+MediumOrchid+
+MediumOrchid3+
+MediumPurple+
+MediumPurple3+
+MediumSeaGreen+
+MediumSlateBlue+
+MediumSpringGreen+
+MediumTurquoise+
+MediumVioletRed+
+MidnightBlue+
+MintCream+
+MistyRose+
+MistyRose3+
+moccasin+
+NavajoWhite+
+NavajoWhite3+
+navy+
+NavyBlue+
+OldLace+
+OliveDrab+
+OliveDrab3+
+orange+
+orange3+
+OrangeRed+
+OrangeRed3+
+orchid+
+orchid3+
+PaleGoldenrod+
+PaleGreen+
+PaleGreen3+
+PaleTurquoise+
+PaleTurquoise3+
+PaleVioletRed+
+PaleVioletRed3+
+PapayaWhip+
+PeachPuff+
+PeachPuff3+
+peru+
+pink+
+pink3+
+plum+
+plum3+
+PowderBlue+
+purple+
+purple3+
+red+
+red3+
+RosyBrown+
+RosyBrown3+
+RoyalBlue+
+RoyalBlue3+
+SaddleBrown+
+salmon+
+salmon3+
+SandyBrown+
+SeaGreen+
+SeaGreen3+
+seashell+
+seashell3+
+sienna+
+sienna3+
+SkyBlue+
+SkyBlue3+
+SlateBlue+
+SlateBlue3+
+SlateGray+
+SlateGray3+
+snow+
+snow3+
+SpringGreen+
+SpringGreen3+
+SteelBlue+
+SteelBlue3+
+tan+
+tan3+
+thistle+
+thistle3+
+tomato+
+tomato3+
+turquoise+
+turquoise3+
+violet+
+VioletRed+
+VioletRed3+
+wheat+
+wheat3+
+white+
+WhiteSmoke+
+yellow+
+yellow3+
+YellowGreen)
+
+if ($syschar(1) = "UNIX")
+  ush ar r $TAERES/&resFile skeletons.par
+else-if ($syschar(1) = "VAX_VMS")
+  dcl purge/nolog skeletons.par
+  dcl taecreate $taeres:wb.res *.par yes
+end-if
+end-proc

@@ -1,0 +1,53 @@
+!	edited	23-jun-83...dm
+!		28-jan-85  General V1.3 cleanup...lia
+.TITLE
+GOTO
+.HELP
+			Function and Format
+
+	
+	Function:
+
+	    GOTO statement causes transfer of control
+	    to the command line with the specified label.
+
+
+	Format:
+
+	    GOTO  LABEL=label-of-command-line
+.PAGE
+			Usage Notes
+
+
+	 o  The command line specified by the GOTO label must
+	    be a line after the current line in the procedure
+	    (i.e. only forward "GOTO"s are permitted).
+
+	 o  A GOTO is not permitted in the interactive level.
+
+.PAGE
+			Example
+
+
+	    LOOP
+		GETFILE  FILE=FILENAME
+		IF (FILENAME = "")
+		    GOTO WRAPUP
+		END-IF
+		PROCFILE  FILE=@FILENAME
+	    END-LOOP
+		.
+		.
+		.
+	    WRAPUP> WRITE "Successful Completion"
+.LEVEL1
+.variable LABEL
+Label to branch to.
+.LEVEL2
+.variable LABEL
+
+
+	    The label to the next line for execution.  It must
+	    be contained in the same procedure and on a line
+	    after the "GOTO" line.
+.END

@@ -1,0 +1,203 @@
+!       21-MAY-83...dm
+!	26-mar-84  General V1.2 cleanup...peb
+!	29-jan-85  General V1.3 cleanup...lia
+!	20-sep-86  PR 1056:  Alphabetize commands...peb
+.TITLE
+TUTOR SUBCOMMAND MODE
+.HELP
+			General and Specific Help
+
+		This is general help information for
+		operating NOSCREEN tutor mode for subcommands.
+		You can access more specific help with the
+		following commands:
+
+		HELP sub  -- Details on "sub" subcommand
+		HELP *    -- General information on the 
+			     current proc
+
+		For more specific help, use one of the 
+		above tutor mode commands.
+.page
+			Summary of Subcommand TUTOR Commands
+
+
+		The commands available in subcommand tutor mode
+		(described in greater detail below) are:
+
+		Command		Description
+		--------------	-------------------------------------
+
+		-sub		Enter normal NOSCREEN tutor for 
+				subcommand "sub"
+		-		Enter normal NOSCREEN tutor for the 
+				default	subcommand
+		D*ISPLAY	Display all possible subcommands and a 
+				brief description of each
+		E*XIT		Exit without activating proc
+
+						(continued...)
+.page
+			Subcommand Tutor Commands (continued)
+
+
+		Command		Description
+		--------------	-------------------------------------
+
+		H*ELP		Display general subcommand tutor help
+		H*ELP sub	Display help for subcommand "sub"
+		H*ELP *		Display help for the current proc
+		?		Help on most recent message
+		L*IST		List all possible subcommands
+		S*CREEN		Enter SCREEN mode subcommand tutor
+.page
+			Entering Tutor Mode
+
+
+		Tutor mode assists you in specifying the subcommand 
+		and the parameters for a proc.	Tutor mode is entered: 
+
+		  o  When, in menu mode, a selection is made
+		     that requires execution of a proc.
+
+		  o  When, in command mode, the TUTOR 
+		     command is typed. 
+
+		  o  When a proc requests dynamic parameters.
+.page
+			Entering Tutor Mode (continued)
+
+
+		You enter tutor in NOSCREEN mode if your terminal
+		is not a supported CRT or if you have set the
+		global variable $TUTOR to "NOSCREEN".  You may
+		override $TUTOR by entering tutor with TUTOR-SCREEN
+		or TUTOR-NOSCREEN.
+
+		You can initiate tutor for a proc or command with a 
+		subcommand by appending the subcommand name to the 
+		proc or command name, following a hyphen.
+
+		If no subcommand name is specified and there is no
+		default subcommand, NOSCREEN tutor mode begins by
+		requesting "subcommands".  You select a subcommand
+		and TAE begins a normal NOSCREEN tutor session for
+		the parameter set associated with the subcommand.
+.page
+			Entering Tutor Mode (continued)
+
+
+		Similarly, if you select a proc from a menu,
+		NOSCREEN tutor mode may start by requesting
+		subcommands or go directly into requesting
+		parameters.
+.page
+			General Comments
+
+
+		Commands and subcommand names may be typed in 
+		upper case or lower case and may be abbreviated 
+		by truncating characters, e.g., "L" is
+		equivalent to "LIST". When abbreviations are
+		used, uniqueness must be maintained, e.g.,
+		"X" is an ambiguous abbreviation for a
+		subcommand named "X1" if a subcommand "X2" exists. 
+.page
+			Subcommand Names
+
+
+		When you first enter subcommand NOSCREEN tutor,
+		the names of each of the proc's subcommands are
+		listed.  TAE then prompts you with
+
+			TAE-procname-SUBCOMMAND>
+
+		where "procname" is the name of the proc for
+		which the subcommand is desired.
+.page
+			User Commands
+
+
+		The subcommand NOSCREEN tutor mode commands allow 
+		you to list subcommands, display subcommands along 
+		with brief descriptions, select the default 
+		subcommand, select a specific subcommand, request 
+		detailed information for subcommands, and request 
+		information on the proc.
+
+		The user commands are (in detail): 
+
+	        -sub
+		----
+		Select the subcommand "sub" and enter tutor
+	   	mode for its parameters.
+.page
+			User Commands (continued)
+
+
+		 -
+		---		
+		If no subcommand is given  (that means a hyphen
+	    	alone is typed), then the default subcommand
+		is used, if one exists.  The LIST command is
+		useful to learn which subcommand is the default.
+	
+		DISPLAY
+		-------
+		Similar to the LIST command, but a brief description 
+		of each subcommand is also displayed.
+
+.page
+			User Commands (continued)
+
+
+		EXIT                
+		----
+		Terminates the tutor session, returning to
+		menu mode or command mode.  The proc is not
+		executed. 
+
+		HELP                
+		----
+		Display this help information.
+
+		HELP sub
+		---------
+		Requests details on subcommand "sub".
+.page
+			User Commands (continued)
+
+
+		HELP *
+		------
+		Requests general information on the proc
+		currently being tutored on.
+
+		?
+		-
+		Displays detailed help information on the
+		most recently displayed TAE message.
+
+		LIST
+		----
+		Lists all the subcommands for the proc along with
+		an indication as to whether or not each is the
+		default.
+.page
+			User Commands (continued)
+
+
+		LIST sub
+		--------
+		Lists the subcommand.
+
+		LIST (sub1, sub2, ...)
+		------------------------
+		Lists the subcommands specified inside the
+		parentheses.
+
+		SCREEN
+		------
+		Enter the SCREEN mode of tutor.  NOSCREEN mode can be
+		reentered from SCREEN mode with the NOSCREEN command.
+.END

@@ -1,0 +1,157 @@
+      INCLUDE 'VICMAIN_FOR'
+      SUBROUTINE MAIN44
+C
+C     MODIFIED FOR VAX CONVERSION BY ALAN S MAZER, 27 SEPT 1983
+C     JHR: CONVERTED TO VICAR2   1 JULY 1985
+C     AS(CRI): MSTP S/W CONVERSION (VICAR PORTING) 1 JULY 1994
+C     ENABLED 3D IMAGE CAPABILITY (N TOOLE), 16 SEPT 2003
+C
+C     PUTS A SINE WAVE AROUND PICTURE EDGES TO STOP FFT2 LEAKAGE.
+C     KEYWORD FOR THE EDGE IS 'EDGE', DEFAULT VALUE IS 10.
+C
+      REAL*4 R1(8192),R2(8192)
+      INTEGER*4 OUNIT,STAT,SS,SL,SB,NBO,BAND,BANDOUT,LINEOUT,NBI
+      INTEGER*2 HBUF(8192)
+      CHARACTER*8 FORMAT
+      CHARACTER*3 ORGIN
+C
+      COMMON/C1/R1,R2,HBUF
+C
+C        SET DEFAULTS AND INITIALIZE
+      NPIX=10
+C
+      CALL IFMESSAGE('APODIZE version 16-SEP-03')
+      CALL XVEACTION('SA',' ')
+C          OPEN INPUT DATA SET
+      CALL XVUNIT(IUNIT,'INP',1,STAT,' ')
+      CALL XVOPEN(IUNIT,STAT,'U_FORMAT','HALF',' ')
+C
+C        GET DATA FORMAT AND CHECK
+      CALL XVGET(IUNIT,STAT,'FORMAT',FORMAT,' ')
+      IF(FORMAT.NE.'BYTE'.AND.FORMAT.NE.'HALF') THEN
+         CALL XVMESSAGE
+     &        ('APODIZE ACCEPTS BYTE OR HALFWORD DATA ONLY',' ')
+         CALL ABEND
+      END IF
+
+c     Check organization of image, prohibit BIP
+      CALL XVGET(IUNIT,STAT,'ORG',ORGIN, ' ')
+      IF (ORGIN.EQ.'BIP') CALL MABEND(
+     +  'BIP files not supported, use program TRAN to convert to BSQ')
+
+C
+C        GET SIZE INFORMATION AND CHECK
+      CALL XVSIZE(SL,SS,NLO,NSO,NLI,NSI)
+      IF(SL+NLO-1 .GT. NLI) THEN
+         CALL XVMESSAGE
+     &        ('NUMBER OF LINES REQUESTED EXCEEDS INPUT SIZE',' ')
+         CALL ABEND
+      END IF
+      IF(SS+NSO-1 .GT. NSI) THEN
+         CALL XVMESSAGE
+     &        ('NUMBER OF SAMPLES REQUESTED EXCEEDS INPUT SIZE',' ')
+         CALL ABEND
+      END IF
+      IF(NSO .GT. 8192) THEN
+         CALL XVMESSAGE
+     &         ('NUMBER OF SAMPLES EXCEEDS BUFFER SIZE OF 8192',' ')
+         CALL ABEND
+      END IF
+
+      CALL XVBANDS(SB,NBO,NBI)
+
+      IF ( SB .GT. NBI ) CALL MABEND(
+     +  'SB is greater than the total number of bands')
+                 
+      IF ( SB + NBO - 1 .GT. NBI) THEN
+         CALL XVMESSAGE('***Number of bands truncated', ' ')
+         NBO = NBI + 1 - SB     
+      ENDIF
+
+C
+C        OPEN OUTPUT DATA SET
+      CALL XVUNIT(OUNIT,'OUT',1,STAT,' ')
+      CALL XVOPEN(OUNIT,STAT,'OP','WRITE','U_FORMAT','HALF',
+     &            'U_NL',NLO,'U_NS',NSO,'U_NB',NBO,' ')
+C
+C           PROCESS PARAMETERS
+C        'EDGE'
+      CALL XVPARM('EDGE',NPIX,ICOUNT,IDEF,1)
+C      
+C        SETUP FOR MAIN PROCESSING
+      P=NPIX*2
+      RAT=3.14159/P
+      II=NPIX*2
+C
+C        PROCESS LEFT AND RIGHT BORDERS
+      BANDOUT = 0
+      DO 35 BAND = SB,NBO+SB-1
+       BANDOUT = BANDOUT + 1
+       LINEOUT = 0
+       DO 40 L=1,NLO
+        LINE=L+SL-1
+        LINEOUT = LINEOUT + 1
+        CALL XVREAD(IUNIT,HBUF,STAT,'LINE',LINE,'BAND',
+     &              BAND,'SAMP',SS,'NSAMPS',NSO,' ')
+        RR=HBUF(NPIX)
+        RL=HBUF(NSO-NPIX+1)
+        DIFF1=RL-RR
+        DIFF=ABS(DIFF1)/2.0
+        A=1.0
+        IF(DIFF.GT.1.0E-20) A=-DIFF1/ABS(DIFF1)
+        DO 50 M=1,II
+           LN=M-NPIX
+           IF(LN.LE.0) THEN
+              HBUF(NSO+LN)=DIFF*SIN(RAT*LN*A)+AMIN1(RL,RR)+DIFF+0.5
+           ELSE
+              HBUF(LN)=DIFF*SIN(RAT*LN*A)+AMIN1(RL,RR)+DIFF+0.5
+           END IF
+50      CONTINUE
+        CALL XVWRIT(OUNIT,HBUF,STAT,'NSAMPS',NSO,'LINE',LINEOUT,
+     +             'BAND',BANDOUT,' ')
+40     CONTINUE
+35    CONTINUE
+C
+C        RE-OPEN OUTPUT FOR UPDATE
+      CALL XVCLOSE(OUNIT,STAT,' ')
+      CALL XVOPEN(OUNIT,STAT,'OP','UPDATE','U_FORMAT','HALF',' ')
+C
+C        PROCESS TOP AND BOTTOM BORDERS
+      DO 5 BAND=1,NBO
+       LINE=NPIX 
+      CALL XVREAD(OUNIT,HBUF,STAT,'LINE',LINE,'BAND',BAND,
+     &            'SAMP',SS,'NSAMPS',NSO,' ')
+      DO 71 J=1,NSO
+         R1(J)=HBUF(J)
+71    CONTINUE
+      LINE=NLO-NPIX+1
+      CALL XVREAD(OUNIT,HBUF,STAT,'LINE',LINE,'BAND',BAND,
+     &            'SAMP',SS,'NSAMPS',NSO,' ')
+      DO 70 J=1,NSO
+         R2(J)=HBUF(J)
+70    CONTINUE
+      DO 10 L=1,II
+        LN=NPIX-L
+        DO 20 M=1,NSO
+           DIFF1=R2(M)-R1(M)
+           DIFF=ABS(DIFF1)/2.0
+           A=1.0
+           IF(DIFF.GT.1.0E-20) A=DIFF1/ABS(DIFF1)
+           HBUF(M)=DIFF*SIN(RAT*LN*A)+AMIN1(R2(M),R1(M))+DIFF+0.5
+20      CONTINUE
+        IF(LN.GE.0) THEN
+           LINE=NLO-LN
+        ELSE
+           LINE=IABS(LN)
+        END IF
+        CALL XVWRIT(OUNIT,HBUF,STAT,'LINE',LINE,'NSAMPS',NSO,
+     +         'BAND',BAND,' ')
+10     CONTINUE
+5     CONTINUE
+C
+C        CLOSE DATA SETS
+      CALL XVCLOSE(IUNIT,STAT,' ')
+      CALL XVCLOSE(OUNIT,STAT,' ')
+C
+      RETURN
+      END

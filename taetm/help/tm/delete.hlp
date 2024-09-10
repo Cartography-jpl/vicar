@@ -1,0 +1,164 @@
+!	13-jun-83  ...dm
+!	23-nov-83  Changed to help for DELETE...peb
+!	15-jun-84  Noted -VARIABLE subcommand as default...lia
+!	15-jun-84  Added .subcmd for -COMMAND...palm
+!	28-jan-85  General V1.3 cleanup...lia
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+.TITLE
+DELETE
+.HELP
+
+
+
+	DELETE has the following forms:
+
+		DELETE-VARIABLE	variable-name	! default for DELETE
+		DELETE-GLOBALS	proc-name
+		DELETE-LOCALS
+		DELETE-COMMAND  defined-command
+
+	If you are in command mode, type "HELP DELETE-sub" for 
+	help on a particular subcommand of DELETE.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of DELETE.
+.level1
+.subcmd VARIABLE
+Delete the named local
+or global variable
+.subcmd GLOBALS
+Delete globals defined
+via named proc
+.subcmd LOCALS
+Delete all locals
+.subcmd COMMAND
+Delete the defined command 
+named.
+.variable  PROC
+Name of the proc defining 
+the global variables.
+.variable NAME
+Name of the variable to
+delete.
+.variable COMMAND
+Name of command to delete.
+!
+.level2
+.subcmd VARIABLE
+			  DELETE-VARIABLE
+
+			Function and Format
+
+
+	Function:
+
+	    The -VARIABLE subcommand is used to delete a single
+	    global or local variable.
+
+
+	Format:
+
+	    DELETE-VARIABLE	NAME=variable-name
+	    DELETE		NAME=variable-name
+.PAGE
+			DELETE-VARIABLE (continued)
+
+
+	Example:
+
+
+	    TAE> DELETE-VARIABLE  X
+
+
+	Deletes the global or local variable X.
+.subcmd GLOBALS
+			  DELETE-GLOBALS
+
+			Function and Format
+
+
+	Function:
+
+	    The -GLOBALS subcommand is used to delete all the
+	    globals defined in a GLOBAL proc definition file.
+
+
+	Format:
+
+	    DELETE-GLOBALS	PROC=proc-name
+.PAGE
+			  DELETE-GLOBALS (continued)
+
+
+	Example:
+
+
+	    TAE>TESTGBL			!defines a set of globals via -
+	    .				! the TESTGBL proc
+	    .
+	    .
+	    .
+           TAE>DELETE-GLOBALS TESTGBL	!deletes the same globals
+.subcmd LOCALS
+			   DELETE-LOCALS
+
+	    		Function and Format
+
+
+	Function:
+
+	    The -LOCALS subcommand is used to delete all the
+	    currently defined local variables.  This subcommand
+	    has no parameters.
+
+	Example:
+
+
+	    TAE> DELETE-LOCALS		!delete all the local variables
+.subcmd COMMAND
+			   DELETE-COMMAND
+
+	    		Function and Format
+
+	Function:
+
+	    The -COMMAND subcommand is used to delete any command
+	    defined by using DEFCMD.  DELETE-COMMAND is equivalent
+	    to DELCMD.  To view the current list of defined commands, 
+	    use "DISPLAY $DEFCMDi", where i=0 thru 9.  There will
+	    only exist as many $DEFCMDs as needed to contain all
+	    currently defined commands.
+
+	Format:
+
+	    DELETE-COMMAND	COMMAND=name
+.PAGE
+			  DELETE-COMMAND (continued)
+
+
+	Example:
+
+
+	    TAE>DELETE-COMMAND COPY
+
+	      Delete the name COPY from the DEFCMD list (but
+	      do not delete the proc named "COPY").
+.variable NAME
+
+
+	    NAME specifies the name of the local or global
+	    variable to delete.
+.variable  PROC
+
+
+
+	    PROC specifies the name of a proc that defines global
+	    variables.  TAE will delete all of the globals contained 
+	    in this proc.
+.variable COMMAND
+
+
+
+	    COMMAND specifies the name of a user-defined 
+	    command to be deleted from the list of defined 
+	    commands (set via DEFCMD).
+.END

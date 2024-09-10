@@ -1,0 +1,38 @@
+.TH Vm_GetHostError 3 "21 July 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_GetHostError - get host-dependent error code
+
+.SH DESCRIPTION
+
+VOID Vm_GetHostError(vmid, vmcode)
+
+
+Function Return:
+.nr L 0 1
+
+None.
+.LP
+
+
+
+
+Arguments:
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id vmid;
+
+Id of a Vm object.
+
+.IP \n+L.
+vmcode: output CODE	*vmcode;
+
+The host-dependent error code.
+.LP
+
+Vm_GetHostError returns the host-dependent error code resulting 
+from the last Vm operation (e.g., a "file not found" error code). 
+See your system manager for interpreting these integer error codes.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

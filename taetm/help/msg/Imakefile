@@ -1,0 +1,15 @@
+/**/#
+/**/#	Makefile for TAE INX files.
+/**/#
+
+INX = \
+	$(TAEHELPINX)/taefac.inx \
+	$(TAEHELPINX)/wptfac.inx
+
+AllTarget($(INX))
+
+all::
+	@(cd $(TAEPLAT); $(RM) *.msg; $(LN) ../taefac.msg ../wptfac.msg .) 
+
+SimpleInxTarget($(TAEHELPINX),taefac)
+SimpleInxTarget($(TAEHELPINX),wptfac)

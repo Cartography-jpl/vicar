@@ -1,0 +1,131 @@
+!	19-may-83  ...dm
+!	27-mar-84  General V1.2 cleanup...peb
+!	06-jun-84  Add default subcommand...lim
+!	15-jun-84  Add -BATCH subcommand...palm
+!	26-jan-85  General V1.3 cleanup...lia
+!	07-jul-85  Conditional text:  ABORT-BATCH for VMS only...dm
+!	20-sep-86  Unix conditional: only two forms avail...peb
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+!	15-dec-86  Make lev2 help on BATCH, JOBID, QUEUE condit on VAX_VMS...peb
+.TITLE
+ABORT
+.HELP
+	    The ABORT command terminates a proc or terminates
+.if1 VAX_VMS
+	    an asynchronous or batch job.  Three forms are 
+.if1 UNIX	
+	    an asynchronous job.  Two forms are 
+    	    available:
+
+
+		ABORT-SYNC	!Abort proc execution (from interrupt mode)
+				 (default for ABORT)
+
+		ABORT-ASYNC	!Abort asynchronous job(s)
+
+.if1 VAX_VMS
+		ABORT-BATCH	!Abort batch job
+
+	If you are in command mode, type "HELP ABORT-sub" for 
+	help on a particular subcommand of ABORT.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of ABORT.
+!
+.level1
+.subcmd SYNC
+Abort an executing proc.
+.subcmd ASYNC
+Abort asynchronous job(s).
+.subcmd BATCH
+Abort a batch job.
+.variable JOB
+Job name(s) to terminate.
+.variable JOBID
+Job number.
+.variable QUEUE
+Name of batch queue.
+.level2
+.subcmd SYNC
+
+		ABORT-SYNC terminates the execution of the
+		current proc.  The command is only valid 
+		after you type CONTROL/C to acquire TAE's 
+		attention.  It is the default for the ABORT 
+		command.
+.subcmd ASYNC
+
+
+			Function and Format
+
+	Function:
+
+	    ABORT-ASYNC is used to terminate an asynchronous job.
+	    The JOB parameter is mandatory and may specify one
+	    or more jobs to be aborted.  If the special job name 
+	    "ALL" is used, then all active, asynchronous jobs 
+	    are aborted.
+
+
+	Format:
+
+	    ABORT-ASYNC  JOB = job-name-list
+.page
+
+
+			Example
+
+
+	    TAE>ABORT-ASYNC  (COPYJOB, MYJOB)
+
+
+	    Aborts the asynchronous jobs COPYJOB and MYJOB.
+.if VAX_VMS
+.subcmd BATCH
+
+			Function and Format
+
+	Function:
+
+	    ABORT-BATCH is used to terminate a batch job.
+	    It has the same effect as BATCH-DELETE.
+	    Users may only abort jobs submitted from their 
+	    account.  The special privilege, OPER, is 
+	    required to abort jobs from accounts of other 
+	    users.
+
+
+	Format:
+
+	    ABORT-BATCH   JOBID = job-number  QUEUE = queue-name
+.ifend
+.variable JOB
+
+
+		JOB specifies one or more asynchronous jobs to
+		terminate.  If JOB is set to "ALL", all active,
+		asynchronous jobs are aborted.
+!
+.if VAX_VMS
+.variable QUEUE
+
+
+
+	    The name of the queue upon which to perform the 
+	    specified function.  For example, "SYS$BATCH".
+
+	    The queue name is specified by the user when the
+	    batch job is submitted. 
+.ifend
+!
+.if VAX_VMS
+.variable JOBID
+
+
+
+	    The number assigned to a job upon submission 
+	    to a batch queue.  The number is displayed 
+	    immediately following the submission of the job.
+	    Can also use SHOW-BATCH command to get the 
+	    current status of all jobs in a batch queue.
+.ifend
+.END

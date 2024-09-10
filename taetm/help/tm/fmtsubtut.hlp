@@ -1,0 +1,147 @@
+!
+!	FOR UNIX ONLY...
+!
+!	23-jun-83	...dm
+!	29-nov-83	General V1.1 cleanup...jtm
+!	27-mar-84	General V1.2 cleanup...peb
+!	19-sep-86	PR 1056: Alphabetize commands...peb
+!	13-feb-87	Merged TAE FACELIFT with V1.4 TAE...krw
+!	08-nov-90	Remove Facelift stuff...ljn
+!
+.title
+TUTOR SUBCOMMAND MODE
+.HELP
+			General and Specific Help
+
+
+		This is general help information for
+		operating subcommand tutor mode.  You can 
+		access more specific help with the following 
+		commands:
+
+		HELP subcommand -- Detailed help on subcommand
+		HELP *          -- General information on the 
+			           current proc
+
+		For more specific help, type EXIT and use one 
+		of the above subcommand tutor mode commands.
+		To continue with general subcommand tutor 
+		information, hit RETURN. 
+.PAGE
+			Summary of Subcommand TUTOR Commands
+
+		The commands available in subcommand tutor mode
+		(described in greater detail below) are:
+
+		Command		Description
+		--------------	-------------------------------------
+
+		-sub		Enter normal tutor for subcommand sub
+		-		Enter normal tutor for the default subcommand
+		Carriage Return	Display next page of subcommands
+		E*XIT		Exit tutor mode
+		H*ELP		Display general subcommand tutor help
+		H*ELP sub	Display help for subcommand sub
+		H*ELP *		Display help for the current proc
+		?		Help on most recent message
+
+					(continued...)
+.PAGE
+			Summary of Subcommand TUTOR Commands (continued)
+
+
+		Command		Description
+		--------------	-------------------------------------
+
+		N*OSCREEN	Enter NOSCREEN subcommand tutor
+		P*AGE sub	Display the page containing the 
+				subcommand sub
+		P*AGE -sub	Same as PAGE sub
+		P*AGE n		Display page n
+.PAGE
+			Entering Subcommand Tutor
+
+
+	    You can initiate tutor for a proc or command with a 
+	    subcommand by appending the subcommand name to the 
+	    proc or command name, following a hyphen.
+
+	    If no subcommand name is specified and there is no
+	    default subcommand, Tutor mode begins with a 
+	    "subcommand" display showing a description of each
+	    of the proc's subcommands. You select a subcommand
+	    from the display and TAE begins a normal tutor session
+	    for the parameter set associated with the subcommand.
+
+	    Similarly, if you select a proc from a menu, tutor
+	    mode may be started through a subcommand screen or 
+	    may go directly into a parameter selection screen.
+.PAGE
+			User Commands
+
+
+	    The following user options are available for 
+	    tutor subcommand displays:
+
+	        -sub
+		----
+		Select the subcommand "sub" and enter tutor
+	   	mode for its parameters.
+		
+		 -
+		---		
+		If no subcommand is given, that is, if a hyphen
+	    	alone is typed, then enter tutor mode for the 
+		the parameters of the subcommand marked "**DEFAULT**".
+.PAGE	
+			User Commands (continued)
+
+
+		Carriage Return
+		---------------
+		The display moves to the next page. The first
+		page is the "next" page after the last page.
+
+		EXIT
+		----
+		TAE returns to command or menu mode.  The proc is 
+		not executed.
+
+		HELP                
+		----
+		Help information on the operation of the subcommand
+	 	screen of tutor mode is displayed.
+.PAGE
+			User Commands (continued)
+
+
+		HELP sub
+		--------
+		Detailed text describing the subcommand "sub" is
+		displayed.
+
+		HELP *
+		------
+		Text describing the current proc is displayed.
+
+		?
+		-
+		Displays detailed help information on the most 
+		recent TAE message.
+.PAGE		
+			User Commands (continued)
+
+
+		NOSCREEN
+		--------
+		NOSCREEN mode of subcommand tutor is entered.
+
+		PAGE sub or PAGE -sub
+		---------------------
+		The display page with the subcommand "sub" is
+		displayed.
+
+		PAGE n
+		------
+		Page number "n" is displayed.
+.end

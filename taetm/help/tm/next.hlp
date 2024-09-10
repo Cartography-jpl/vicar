@@ -1,0 +1,42 @@
+!	edited 	21-may-83...dm
+.TITLE
+NEXT
+.HELP
+			Function and Format
+	
+	Function:
+
+	    NEXT forces a loop to the next iteration.
+
+
+	Format:
+
+	    NEXT
+.PAGE
+			Usage Notes
+
+	o  The next command line executed after a NEXT is the
+	   first line after the LOOP or FOR command of the
+	   innermost enclosing loop.
+
+	o  NEXT is only permitted inside a loop body.
+
+	o  If the innermost loop is a FOR loop, the "iteration
+	   processing" is performed and the loop continues with
+	   the next FOR loop list item.
+.PAGE
+			Example
+
+
+	LOOP
+	    I = I + 1
+	    IF (I = 10)
+		BREAK
+	    END-IF
+	    GETIMAGE NEW = NEWIMAGE
+	    IF ($SKEY = "IMG-BADIMAGE")
+		NEXT
+	    END-IF
+	    DSPIMAGE IMG = NEWIMAGE
+	END-LOOP
+.END

@@ -1,0 +1,52 @@
+.TH Vm_ReadFromDisk 3 "30 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_ReadFromDisk - read a Vm Object from disk
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_ReadFromDisk (vmid, spec)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: file successfully read. 
+.IP o
+P_ERROR: file incorrectly structured.
+.IP o
+P_FAIL: general failure indication.
+.LP
+Note that the status codes listed above are available only if
+the object was initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object to receive data.
+
+.IP \n+L.
+spec: input, TEXT   spec[ ];
+
+Host file specification of file to be read.
+.LP
+
+.IP
+.LP
+Vm_ReadFromDisk reads a saved parameter file and stores the information
+in a Vm object.
+
+A parameter file is created by the tutor SAVE command, or a command 
+mode SAVE qualifier, or by a call 
+to Vm_WriteToDisk from an executing process.
+
+A call to Vm_ReadFromDisk will replace all previous contents of the 
+Vm object, if any.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

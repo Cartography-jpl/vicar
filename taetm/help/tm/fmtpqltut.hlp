@@ -1,0 +1,351 @@
+!	27-jan-85	New for V1.3.  Parameter qualifier space...peb
+!	29-sep-87	Added PF3 description...rww
+!
+.TITLE
+QUALIFIER TUTOR MODE INFORMATION
+.HELP
+			General and Specific Help
+
+
+		This is general help information for operating tutor 
+		mode to set and display parameter qualifiers.  You can 
+		access more specific help with the following commands:
+
+		HELP qual -- Details on "qual" qualifier
+		HELP *    -- General information on the 
+			     current proc
+		HELP -    -- Details on the current proc
+			     subcommand (if any)
+
+		For more specific help, type EXIT and use one 
+		of the above tutor mode commands.  To continue
+		with general tutor information, hit RETURN. 
+.page
+		    Summary of Qualifier Tutor Mode Commands
+
+		The commands available in tutor (described below
+		in detail) are:
+
+		Command			Description
+		-------------------	-----------------------------------
+
+		qual = value		Set current value of qualifier
+		qual = 			Set qualifier to default value
+		P*AGE qual		Display page containing qual
+		P*AGE n			Display page n
+		Carriage return		Display next page of qualifiers
+		N*OSCREEN		Enter NOSCREEN tutor mode
+
+					(continued...)
+.page
+			Summary of Tutor Mode Commands (continued)
+
+
+		Command			Description
+		-------------------	-----------------------------------
+
+		SH*OW qual(i)		Display ith value of qual
+		H*ELP			Display general qualifier tutor help
+		H*ELP qual		Display detailed help for qualifier
+		H*ELP *			Display help on current proc
+		H*ELP -			Display detailed help on current
+					proc subcommand
+		?			Display most recent message
+		A*CCEPT			Return to tutor on parameters,
+					accepting any updates made to
+					qualifier values
+.PAGE 
+			Entering Qualifier Tutor Mode
+
+
+		Qualifier tutor mode assists you in specifying
+		the parameter qualifiers for one particular
+		parameter of a proc.  Qualifier tutor mode is
+		entered when, in parameter tutor mode, the
+		QUALIFY command is entered.
+
+.PAGE 
+			Entering Tutor Mode (continued)
+
+
+		Upon entering qualifier tutor mode, you are presented 
+		with the first page of a (possibly) multi-page display 
+		showing information on each qualifier of the selected
+		parameter.  For each qualifier, the following 
+		information is displayed:
+
+		  o  The name of the qualifier
+
+		  o  a brief description of the qualifier
+
+		  o  the current value of the qualifier (if one exists)
+
+.PAGE 
+			Entering Tutor Mode (continued)
+
+
+		This formatted display is actually called the SCREEN mode
+		of tutor.  When a proc requests dynamic parameters, the
+		mode entered for tutor will be determined by the global
+		variable $TUTOR.  
+.PAGE
+			General Comments
+
+
+		Qualifier tutor mode is operated similarly to
+		parameter tutor mode.  Commands and qualifier names 
+		may be typed in upper case or lower case and may be 
+		abbreviated by truncating characters, e.g., "A" is
+		equivalent to "ACCEPT". When abbreviations are
+		used, uniqueness must be maintained, e.g.,
+		"X" is an ambiguous abbreviation for a
+		qualifier named "X1" if a qualifier "X2" exists. 
+
+.PAGE
+			Qualifier Values
+
+
+		The tutor display shows information on each
+		of the parameter's qualifiers.  The "current"
+		value of a qualifier is established in one
+		of the following ways: 
+
+      		  1.  DEFAULT:  Some qualifiers have a default
+		      value.  Initially, the default value is 
+		      shown as the current value.  If values were
+		      specified on the TUTOR command line, these
+		      become new default values.
+
+		  2.  EXPLICIT:  You can explicitly set the 
+		      current value of a qualifier using the 
+		      commands explained below. 
+.PAGE
+			Qualifier Values (continued)
+
+
+	    3.  LATCHED:  Parameter and qualifier values may be 
+		"latched" from command mode. If you activate a proc 
+		from command mode, but fail to specify all of the 
+		required parameters or parameter qualifiers correctly, 
+		TAE will issue an error message and re-prompt. If the 
+		next response is "TUTOR", then tutor mode is entered 
+		and all values which were correctly specified on the 
+		proc activation command are displayed as the current 
+		parameter and parameter qualifier values.
+		      
+	    4.  RESTORED: You can save a set of parameters and parameter 
+		qualifiers and restore them in the same or a later 
+		session, using the SAVE and RESTORE commands described 
+		below.  The SAVE and RESTORE commands are only available 
+		on parameters, not when tutoring on qualifiers.
+.PAGE
+			Special Tutor Editor Keys
+
+
+		For certain CRT terminals (e.g. VT100 and VT220),
+		there are special keys that may be used
+		on a tutor screen.  The keys are as 
+		follow:
+
+		  o  Up-Arrow, Down-Arrow:  Moves one qualifier
+		     value up or down on the screen, bringing
+		     the value to the user response line for editing.
+
+		  o  Right-Arrow, Left-Arrow:  Moves cursor
+		     right or left one character on the
+		     user response line.
+
+		  o  Delete:  Delete one character left of
+		     cursor on the user response line.
+.PAGE
+			Special Tutor Editor Keys (continued)
+
+		  o  Escape, Escape:  Clear user response
+		     line.
+
+		  o  GOLD/PF1:  Preceding any special key
+		     listed above, it will "exaggerate"
+		     the action taken.
+
+ 		  o  HELP/PF2:   This key will only work for 
+		     string qualifiers.  It displays on the 
+		     prompt line one entry from the valid list 
+		     of the current qualifier.  Repeating PF2
+		     will cause the next entry from the valid 
+		     list to be displayed. 
+.PAGE
+			Special Tutor Editor Keys (continued)
+
+ 		  o  FNDNXT/PF3:   This key will only work for 
+		     string parameters.  It displays on the 
+		     prompt line one entry from the valid list 
+		     of the current parameter.  Repeating PF3
+		     will cause the previous entry from the 
+		     valid list to be displayed. 
+
+		For more details, see the section on the Tutor Editor
+		in the User's Reference Manual.
+.PAGE
+			User Commands
+
+
+		The tutor mode commands allow the user to
+		scroll between pages of the tutor display,
+		scroll between components of a multi-valued
+		qualifier, update qualifier values, and
+		request detailed information for qualifiers.
+		The user commands are: 
+.PAGE
+			User Commands (continued)
+
+
+		qual=value           
+		----------
+		This command assigns a new value(s) to the
+		qualifier with the name "qual".  If the
+		qualifier is multi-valued, the values must
+		be entered in order, separated by commas
+		and/or spaces, e.g., "WINDOW=512,1023,512,1023".
+
+		A particular element of a multi-valued
+		qualifier may be set using "indexing", e.g.,
+		"WINDOW(3)=512".		
+.PAGE
+			User Commands (continued)
+
+
+		A qualifier value is analogous to a parameter value 
+		and is one of the following:
+
+		1.  A character string.  If spaces or
+		    special characters are in the string, the
+		    string must be quoted with the " character. 
+		    An empty string is indicated by two adjacent
+		    quotes, "". 
+
+		2.  A numeric decimal value consisting of
+		    the characters "+", "-", ".", "0-9", and "E"
+		    (the power of ten indicator).  Spaces are
+		    not permitted within a numeric value. 
+.PAGE
+			User Commands (continued)
+
+
+		3.  A file specification.
+
+		4.  A list of values of type (1), (2), or (3).
+		    Elements in the list are separated with
+		    blanks and/or commas. 
+
+		5. The null value, indicated by two consecutive
+		   dashes (--).
+
+		6. No value, indicated by a blank value field.
+.page
+			User Commands (continued)
+
+
+		qual=                
+		-----
+		The default value (if any) is assigned to
+		the qualifier.  If indexing is used, e.g.,
+		"WINDOW(4)=", then the default value of only
+		the specified index is assigned.
+
+		PAGE qual 
+		---------	
+		Causes tutor mode to display the page which
+		has the qualifier named "qual". 
+
+		PAGE n
+		------
+		Causes tutor mode to display the n-th page.
+.PAGE
+			User Commands (continued)
+
+
+		Carriage return     
+		---------------
+		Causes tutor to display the next page of
+		qualifiers.  If this command is given on the
+		last page, tutor wraps around to the first
+		page. 
+
+		NOSCREEN
+		--------
+		Enter NOSCREEN tutor mode.
+.PAGE
+			User Commands (continued)
+
+
+		SHOW qual(n)
+		-----------
+		Causes tutor to display the "n"th component
+		of the qualifier named "qual" in the value
+		window.  This command is especially useful 
+		when the qualifier has more elements than will 
+		fit on one screen.
+
+		HELP                
+		----
+		Display this help information.
+
+		HELP qual
+		---------
+		Requests detailed help on qualifier "qual".
+.PAGE
+			User Commands (continued)
+
+
+		HELP *
+		------
+		Requests general information on the proc
+		whose qualifiers are displayed on the tutor
+		screen.
+
+		HELP -
+		------
+		Requests detailed help on the proc subcommand
+		(if any) whose qualifiers are displayed on the
+		tutor screen.
+
+		?
+		-
+		Requests help on the most recent message displayed.
+.PAGE
+			User Commands (continued)
+
+
+		ACCEPT
+		------
+		Terminates the qualifier tutor session, returning
+		to parameter tutor for the same proc.  Any updates
+		already made to qualifier values are accepted.
+
+.PAGE
+			Qualifier Indexing
+
+
+		The user can set the value of a single
+		element of a multi-valued qualifier using
+		tutor indexing.  For example "WINDOW(4)=511" 
+		sets the 4th element of the WINDOW to 511. 
+		If elements lower than the specified one,
+		i.e., WINDOW(1) through WINDOW(3) have no
+		specific values, then they are automatically
+		set to zero or the empty string, depending on 
+		the qualifier type.
+
+.PAGE
+			Qualifier Indexing (continued)
+
+
+		When a multi-valued qualifier has more values 
+		than will fit on one tutor screen, only one full 
+		screen is shown.  Tutor maintains a "window" on the
+		elements of the qualifier.  Unless a particular 
+		element is referenced (either via "qual(i)=" or
+		"SHOW qual(i)"), the display window initially 
+		includes the first element. This window may be moved
+		using the SHOW command.
+.END

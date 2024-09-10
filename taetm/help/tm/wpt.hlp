@@ -1,0 +1,162 @@
+.title
+		TCL Window Programming Tools 
+.help
+The WPT commands are typically used for prototyping of 
+window applications.  Your TCL procedure that controls
+the simulated application must have an event loop.
+Hit RETURN to see the structure of a typical TCL/WPT
+procedure.
+
+.page
+A typical application looks something like:
+
+	procedure
+	    local target quals=target_data
+	    local view   quals=view_data
+	    local parm string
+	body
+	wpt-init
+	wpt-panel view target MYPANEL	! display panel, enable events
+	loop
+	    wpt-event parm	! wait for panel event
+	    goto @parm		! dispatch on event
+	    A>			! process parameter A event
+		next		! continue loop
+	    B>			! process parameter B event
+		next		! continue loop
+	end-loop
+.page
+
+For a real example, see:
+
+.if UNIX 
+	$TDEMO/moveable.pdf
+.elseif VAX_VMS
+	TAE$DEMO:moveable.pdf
+.ifend
+
+.level1
+.subcmd BEGINWAIT
+Set "wait indicator". 
+.subcmd ENDWAIT
+Remove "wait indicator". 
+.subcmd ERASE
+Erase panel(s)
+.subcmd EVENT
+Wait on next WPT event.
+.subcmd INIT
+Initialize for WPT usage.
+.subcmd MESSAGE
+Place a dialog box in a panel.
+.subcmd PANEL
+Display a panel.
+.subcmd REJECT
+Reject a parameter value.
+.subcmd REHEARSE
+Rehease DDO's.
+.subcmd PARMUPDATE
+Update a parameter value 
+or valid list according to
+information in the panel target.
+.subcmd SETPANELSTATE
+Set an existing panel's state.
+.subcmd VIEWUPDATE
+Update the view of an item on
+an existing panel.
+.VARIABLE HOST
+Name of display's host node.
+"unix" means local node.
+.VARIABLE DISPLAY
+Display number.
+.VARIABLE PROTOCOL
+DECNET or TCP.
+.var panel -panel
+Name to be assigned to the 
+panel.  If this parameter is 
+omitted, then the name is 
+determined by the _PANEL.NAME 
+qualifier of the view variable.
+.var panel -erase
+Name(s) of the panel(s) to be 
+erased.  If the name "ALL" is
+then all known panels are 
+erased.
+.var panel -beginwait
+Name(s) of the panel(s) to 
+receive the wait indicator.
+.var panel -endwait
+Name(s) of the panel(s) to
+have the wait indicator 
+removed.
+.var panel 
+Name of the panel.
+.var state -panel
+Creation state for panel.
+.var state -setpanelstate
+State to which to set panel.
+.var parm -parmupdate
+Name of a parameter to be
+updated.
+.var parm -reject
+Name of the parameter whose
+value is to be reset to
+its previous value.
+.var parm -viewupdate
+Name of the parameter whose
+view is to be changed.
+.var parm
+TCL string variable to
+receive the name of the
+parameter that generated
+the event.
+.var message
+Message to be displayed
+in the dialog box.
+.var target
+TCL variable whose 
+qualifiers define the
+parameter set to be
+displayed in the panel.
+If null string, then a
+panel without parameters is
+displayed.
+.var view -viewupdate
+TCL variable whose qualifiers
+define the view information
+for the parameter.
+.var view
+TCL variable whose 
+qualifiers define the
+view information for 
+the panel.
+.var interval
+Rehearsal interval in seconds.
+.var order
+Rehearsal order.
+.var cycles
+Rehearsal cycles.
+.level2
+.var target
+A target variable is usually defined by a TCL statement of
+the form:
+
+	LOCAL TARS QUALS=PARAMS.PDF
+
+where PARAMS.PDF is a parameter set PDF whose parameters are
+the values to be placed in the panel.  Rather than using
+PDFs, the qualifier specification may use a PAR file:
+
+	LOCAL TARS QUALS=PARAMS.PAR
+
+.var view
+A view variable is usually defined by a TCL statement of
+the form:
+
+	LOCAL VIEWS QUALS=PARAMS_VU.PDF
+
+where PARAMS_VU.PDF is a parameter set PDF whose parameters 
+describe how the target parameters are to be displayed.
+Rather than using PDFs, the qualifier specification may 
+use a PAR file:
+
+	LOCAL TARS QUALS=PARAMS.PAR

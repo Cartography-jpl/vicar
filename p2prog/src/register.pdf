@@ -1,0 +1,112 @@
+process help=*
+PARM INP     TYPE=STRING  COUNT=(2:50)
+PARM OUT     TYPE=STRING  COUNT=(0:9) DEFAULT=--
+PARM QUALITY TYPE=REAL COUNT=(0:1) VALID=(0.:1.) DEFAULT=.65
+PARM SDEV TYPE=REAL COUNT=(0:1) VALID=(0.:1000000.) DEFAULT=0.
+PARM ONELABEL   TYPE=KEYWORD COUNT=1 +
+  VALID=("NLABEL","ONELABEL") DEFAULT="NLABEL"
+PARM FILLIN   TYPE=KEYWORD COUNT=1 +
+  VALID=("NOFILLIN","FILLIN") DEFAULT="FILLIN"
+PARM AREA TYPE=INTEGER COUNT=(0,6) DEFAULT=--
+end-proc
+.title
+REGISTER
+
+.help
+PURPOSE:
+To autonomously register N images by translation only.
+Register performs a sigle correlation in the center of the image. The
+correlation is about 50 by 50 over a widow about 100 by 100. Your images
+must be pre registered to within 25 pixels.
+
+EXECUTION STATEMENT:
+register inp=(x1,x2,...xn) out=(y2,...,yn)
+where:
+x1-xn are n input images
+y2-yn are n-1 output images corresponding to x2-xn.
+
+NOTE: An ascii file will be generated called "register.table" which contains
+the line and sample shifts of all the images. The file has 2 columns:
+line_shift sample_shift.
+
+METHOD:
+Register selects a large region near the picture center and correlates a
+single tiepoint for each input image relative to the first input.
+The first image is used as the reference and is not copied to the output.
+
+  The Gruen correlation scheme used here permits distortions between 
+correlation areas of the form:
+newline=line*A+sample*B+C
+newsamp=line*D+sample*E+F
+The task of the correlator is to determine the coefficients A-F which permit 
+the best correlation value.
+
+Poor correlations cause the images to be copied.
+
+PROGRAM HISTORY
+
+Cognizant programmer: Jean Lorre
+Revisions: New
+
+.LEVEL1
+.VARI INP
+N input images.
+
+.VARI OUT
+N-1 output images.
+
+.VARI ONELABEL
+Copy first label
+to all outputs
+
+.VARI QUALITY
+Min permitted correlation
+quality. > 0 & < 1.
+
+.VARI SDEV
+Minimum permitted
+image standard deviation.
+
+.VARI FILLIN
+To fill in the zero
+border caused by
+registration.
+
+.VARI AREA
+Override of the location and search areas for correlation.
+AREA=(line,sample,nlarea,nsarea,nlw,nsw) where:
+line=line location of center of correlation area.
+sample=sample location of center of correlation area.
+nlarea=number of lines of search window.
+nsarea=number of samples of search window.
+nlw=correlation size in lines.
+nsw=correlation size in samples.
+
+.LEVEL2
+.VARI INP
+N input images.
+The first is the reference.
+
+.VARI OUT
+N-1 output images.
+The same order as the input images except input number 1 is not repeated.
+Output images are optional.
+
+.VARI ONELABEL
+Copy the first label to all outputs.
+The default is for each output image to keep it's original input label.
+
+.VARI QUALITY
+Min permitted correlation quality. > 0 & < 1.
+Images with a correlation quality below this are passed through without 
+registration.
+
+.VARI SDEV
+Minimum permitted image standard deviation.
+Images with a standard deviation below this are passed through without 
+registration.
+
+.VARI FILLIN
+To fill in the zero border caused by registration.
+NOFILLIN or FILLIN.
+.END

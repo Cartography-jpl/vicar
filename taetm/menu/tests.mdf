@@ -1,0 +1,68 @@
+.TITLE
+		SKELETON MENU OF TAE TEST PROCS
+		
+  This menu exists for documentation only.  The proper way to run
+.if1 UNIX
+  the TAE tests is to use the $TDEMO/taetest.scr script from
+.if1 VAX_VMS
+  the TAE tests is to use the TAE$DEMO:TAETEST.SCR script from
+  command mode.  Type "HELP *" for a detailed description.
+
+.HELP
+This menu contains entries which will activate different subcommands
+of the APPTEST program and TCLTEST procedure and are included for 
+demonstration purposes. APPTEST and TCLTEST are executed by the TAETEST 
+script, designed to test the functionality of TAE. 
+
+See the TAE Utilities Manual for a full description of the 
+of TAETEST.
+
+To run the TAE test case, you must be in TAE's command mode.
+Execute the following sequence:
+
+	COMMAND	
+.if UNIX
+	TAE>SETLIB $TDEMO
+	TAE>ENABLE-SCRIPT $TDEMO/taetest
+.elseif VAX_VMS
+	TAE>SETLIB TAE$DEMO
+	TAE>ENABLE-SCRIPT TAE$DEMO:TAETEST
+.ifend
+
+.if1 UNIX
+.proc $TDEMO/apptest-start
+.if1 VAX_VMS
+.proc tae$demo:apptest-start
+Initialize for several APPTEST runs.
+
+.if1 UNIX
+.proc $TDEMO/apptest-check
+.if1 VAX_VMS
+.proc tae$demo:apptest-check
+Check TAE to Application Parameter Passing.
+
+.if1 UNIX
+.proc $TDEMO/apptest-format
+.if1 VAX_VMS
+.proc tae$demo:apptest-format
+Format parameters for display.
+
+.if1 UNIX
+.proc $TDEMO/apptest-dynturn
+.if1 VAX_VMS
+.proc tae$demo:apptest-dynturn
+Test dynamic tutor.
+
+.if1 UNIX
+.proc $TDEMO/apptest-image
+.if1 VAX_VMS
+.proc tae$demo:apptest-image
+Test image file access routines.
+
+.if1 UNIX
+.proc $TDEMO/apptest-end
+.if1 VAX_VMS
+.proc tae$demo:apptest-end
+Close out a series of tests and check results.
+
+

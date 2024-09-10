@@ -1,0 +1,306 @@
+process help=*
+PARM INP     TYPE=STRING  COUNT=1:2
+PARM OUT     TYPE=STRING  COUNT=1:2
+PARM CAMERA  TYPE=INTEGER COUNT=0:1 DEFAULT=-- VALID=4:7 
+PARM DBUG    TYPE=KEYWORD COUNT=0:1 DEFAULT=-- VALID=DBUG
+PARM PRINT   TYPE=KEYWORD COUNT=0:1 DEFAULT=-- VALID=PRINT
+PARM NOIN    TYPE=KEYWORD COUNT=0:1 DEFAULT=-- VALID=NOIN
+PARM NVER    TYPE=INTEGER                DEFAULT=19
+PARM NHOR    TYPE=INTEGER                DEFAULT=19
+PARM NLW     TYPE=INTEGER                DEFAULT=5
+PARM NSW     TYPE=INTEGER                DEFAULT=5
+PARM SIGMA   TYPE=REAL                   DEFAULT=1.
+PARM FRAME   TYPE=INTEGER COUNT=0:1      DEFAULT=--
+PARM REDO    TYPE=KEYWORD COUNT=0:1      DEFAULT=-- VALID=REDO
+PARM NOMS    TYPE=KEYWORD COUNT=0:1      DEFAULT=-- VALID=NOMS
+PARM CTHRESH TYPE=REAL                   DEFAULT=.5
+PARM DNTHRESH TYPE=INTEGER               DEFAULT=10
+PARM FIT     TYPE=INTEGER VALID=1:8      DEFAULT=8
+PARM TOLER   TYPE=REAL                   DEFAULT=4.
+END-PROC
+.TITLE
+ "resloc" -- Locates Voyager image reseau marks.
+.HELP
+ PURPOSE:
+
+ "RESLOC" will locate the reseaux on pictures recorded by Voyager
+ cameras.  It will also output those locations as a solitary file.
+ of "geoma" parameters.
+
+ EXECUTION:
+
+   The following is the execution statement for "resloc":
+
+	resloc INP=(PIC,[RES]) OUT=(RES,[GEOM]) PARAMS
+
+ where PIX is an input image, RES is a reseau location file, and
+ PARAMS are other user parameters.  Items in square brackets []
+ are optional.   
+
+ Further details are given in the respective parameter sections in
+ TUTOR mode.
+.page
+ OPERATION:
+
+ If the VGR reseau location master file is included as a secondary
+ input, "RESLOC" will first check it to see if there is an entry for
+ the frame PIC.  If an entry already exists, the reseau locations
+ are retrieved from the VGR reseau location master file and output
+ to RES.  If no entry exists, or if the keyword REDO is specified,
+ then the reseau will be located on the input picture PIC, and stored
+ in the VGR reseau location master file. The location of the reseau
+ requires a set of nominal locations to be used as starting values.
+ If the VGR reseau location master file is not present, these nominals
+ are retrieved from tables built into the program. In general, it is
+ desirable to use the nominals in the VGR reseau location master file
+ because these will be more current and accurate. Optionally, the
+ reseau master file may be replaced.
+.page
+ "RESLOC" will search for each reseau mark in an NHOR by NVER area centered
+ about its nominal location. At present, marks near the boundaries of the
+ picture are not located.  Coordinates for these marks are calculated by
+ interpolating over its nearest neighbors. Each mark is found by using an
+ NLW by NSW correlation window.  As this window scans over the search area,
+ the underlying area is compared with a reseau shape function (constant for
+ all the marks) of the form:
+   	f(x,y) = 255(1 - exp(-(x**2 + y**2)/2s**2)
+ For a 9 by 9 window, the shape function is:
+	254 254 254 254 254 254 254 254 254 254
+	254 254 254 253 252 253 254 254 254 254
+	254 254 250 234 220 234 250 254 254 254
+	254 253 234 161 100 161 234 253 254 254
+	254 252 220 100   0 100 220 252 254 254
+	254 253 234 161 100 161 234 253 254 254
+	254 254 250 234 220 234 250 254 254 254
+	254 254 254 253 252 253 254 254 254 254
+	254 254 254 254 254 254 254 254 254 254
+.page
+ Let A(i,j) represent the shape function, and B(i,j) be the area of
+ the picture being compared.  Let uA, uB, tA, tB be the corresponding
+ means and standard deviations.  The correlation function is a normalized
+ variance of the form:
+     p = (SIGMA(Aij-uA)(Bij-uB))/(N*tA*tB)
+ where N = NLW*NSW and the summation is performed
+ over an NLW by NSW window.
+
+ If a correlation fails to give a valid result for some point, then
+ the reseau location is set to the nominal location, plus an offset
+ computed as an average of the offsets of a set of nearby locations.
+ In a case where a large area of the image contains invalid data, and
+ therefore no correlations can be found, reseau locations will simply be
+ set equal to the nominals, and a warning message is issued from
+ subroutine FILLOC.
+.page
+ EXAMPLES:
+	
+	resloc INP=(A,VGR:RESFIL.TST) OUT=RES
+	ressar77 INP=(A,RES) OUT=B
+ "RESLOC" is used to store the reseaux in the frame stored in data set A.
+ The resulting locations are input to "ressar77" to remove the marks.
+
+	resloc INP=(A,VGR:RESFIL.TST) OUT= (RES,GEOM)
+	geoma INP=(A,GEOM) OUT=C SIZE=(1,1,1000,1000)
+ "RESLOC" is used to generate parameters for "geoma". "geoma" is then executed
+ to geometrically correct the frame stored in data set A.  Note the
+ current object space (henceforth refered to as funny space) is 1000
+ by 1000.  Since funny space is not the officially approved object space,
+ all pictures transformed to funny space should be properly labeled as
+ such, and the result derived from such a space should be marked as being
+ of dubious value. (See Gary Yagi for questions regarding funny space.)
+.page
+ RESTRICTIONS:
+   The constants NLW, NSW, NHOR, NVER must satisfy
+   the following:
+     1. Each must be odd;
+     2. 2*NHOR*(NVER+2) + NLW*(NSW + 4) + 800*(NLW+NVER) <= 58086
+        If NLW = NSW and NHOR = NVER, then the following
+        simplified formula may be used:
+                NLW + NVER <= 42
+.page
+ TIMING:
+ The execution time of "resloc" is directly proportional to the window and
+ search dimensions NLW, NSW, NHOR, NVER.  For the default values,
+ the program takes 1 min. 20 sec. per frame on an IBM360, and 2 min. 30 sec.
+ per frame on a VAX 11/780. 
+.PAGE
+HISTORY
+
+ WRITTEN BY: 	GARY YAGI		23 JULY 1977
+
+ CONVERTED TO VAX BY:  C. C. AVIS	27 MAY 1983
+
+ REVISIONS:
+
+ 16-NOV-85 - L.W.KAMP - CONVERTED I/O TO VICAR2
+ 24-JAN-86 - L.W.KAMP - REPLACED LOCK MANAGEMENT CODE WITH VICAR2
+                         OPEN STATUS CHECK + CALL WAIT.
+ 26-FEB-86 - L.W.KAMP - MODIFIED SUBR.MAXR TO CHECK DN<DNTHRESH (NEW PARM)
+ 20-JUN-86 - L.W.KAMP - REVISED SUBR.FILLOC TO FILL IN ALL LOCATIONS
+ 27-JUN-86 - F.F.MOSS - CONVERTED PARAM I/O TO VICAR2
+ 10-JUL-95 - A.SCOP   - (CRI) Made portable for UNIX
+ 27-MAR-96 - B.A.McGuffie   - modified to accept new IBIS reseau location
+                              files
+
+COGNIZANT PROGRAMMER: L. W, Kamp
+.page
+For purposes of testing, a small sample master reseau location file
+named RESFIL.TST is in the current MIPL test directory.  Please check
+with Integration and Test to determine where this directory is located.
+This file should not be randomly modified: copy it to a scratch directory 
+before tampering with it.
+.LEVEL1
+.VARIABLE INP
+ 1 image file and either a
+ solitary nominal reseau
+ location file, or the
+ Voyager reseau location
+ master file.
+.VARIABLE OUT
+ 1 solitary reseau location
+ file and one GEOMA
+ parameter file (opt.).
+.VARIABLE CAMERA
+ integer - camera serial number
+ override
+.VARIABLE DBUG
+ Keyword - Valid value = DBUG.
+ Causes diagnostics to be
+ printed.
+.VARIABLE PRINT
+ Keyword - Valid value = PRINT
+ Generates listing of reseaus
+ and GEOMA parameters.
+.VARIABLE NOIN
+ Keyword - Valid value =NOIN
+ Suppresses the interpolation
+ routine
+.VARIABLE NVER
+ integer - height of the search
+ area
+.VARIABLE NHOR
+ integer - width of the search
+ area
+.VARIABLE NLW
+ integer - height of correlation
+ area   
+.VARIABLE NSW
+ integer - width of the
+ correlation area
+.VARIABLE SIGMA
+ real - standard deviation
+ constant for reseau shape
+ function.
+.VARIABLE FRAME
+ integer - frame number override
+.VARIABLE REDO
+ Keyword - Valid value = REDO
+ Ignore entry in the VGR reseau
+ location master file
+.VARIABLE NOMS
+ Keyword - Valid value = NOMS
+ Use nominals file instead of
+ VGR reseau location master file.
+.VARIABLE CTHRESH
+ REAL - Optional -CORRELATION THRESHOLD
+.VARI DNTHRESH
+ INTEGER - optional - DN threshold
+ in candidate reseau centers
+.VARIABLE FIT
+ INTEGER - Optional-SELECT FIT TYPE
+.VARIABLE TOLER
+ REAL - Optional - MAX LOCATION ERROR
+.LEVEL2
+.VARIABLE INP
+ One picture file generated by one of the Voyager
+ logging program.  This frame should be an
+ unprocessed  byte image (i.e. No stretching, filtering
+ or geom allowed).  Followed by either:
+   1. the Voyager reseau location master file;
+   2. a solitary reseau location file of nominal reseau locations;
+   3. neither.
+
+ "resloc" checks the file type of the second input file if it 
+ is present.  If a solitary nominal reseau location file
+ is used in "resloc" as the second input file, this code may type a message
+ 'INVALID "resloc" FILE'. This error message should be ignored.
+.VARIABLE OUT
+ A  solitary reseau file containing the coordinates (LINE,SAMPLE)
+ for each reseau mark in a format suitable for input to the programs
+ "res77" and "ressar77". (RES is of size 1616 bytes by 1 line.)
+
+ Optionally, an additional file of size 3600 bytes by 3 lines
+ containing GEOMA parameters. 
+
+ Both outputs have VICAR labels.
+.VARIABLE CAMERA
+ CAMERA specifies the camera serial number for the
+ input picture.  This parameter may be used to
+ override the camera information in the Voyager
+ label.
+.VARIABLE DBUG
+ Causes diagnostic messages to be printed.
+ (Default is no messages printed.)
+.VARIABLE PRINT
+ Causes a listing of the reseau locations and GEOMA
+ parameters (if present) to be generated.
+ (Default is that no such listing is printed.)
+.VARIABLE NOIN
+ The program will normally attempt to calculate
+ the reseau locations to sub-pixel accuracy.  This
+ keyword suppresses the interpolation routine. 
+.VARIABLE NVER
+ NVER is an integer specifying the height of the
+ search area. (must be odd) (Default =19)
+.VARIABLE NHOR
+ NHOR  is an integer specifying the width of the
+ search area. (must be odd) (Default = 19)
+.VARIABLE NLW
+ NLW is an integer specifying the height of the
+ correlation area. (must be odd) (Default = 5)
+.VARIABLE NSW
+ NSW is an integer specifying the width of the
+ correlation area. (must be odd) (Default = 5)
+.VARIABLE SIGMA
+ SIGMA is a real number specifying the standard
+ deviation constant used in the reseau shape function.
+ (Default = 1.0)
+.VARIABLE FRAME
+ FRAME  is an integer specifying the frame number for
+ the input picture.  This parameter will override
+ the frame number in the Voyager label.
+.VARIABLE REDO
+ REDO  specifies the location of the reseau is to
+ be redone, i.e., any prior entry for the frame
+ in the VGR reseau location master file will be overwritten.
+.VARIABLE NOMS
+ NOMS indicates that nominals are being used instead of the
+ VGR master reseau location file.
+.VARIABLE CTHRESH
+ A THRESHOLD ON CORRELATION VALUES.
+ Default is CTHRESH=0.5.
+.vari DNTHRESH
+ DNTHRESH is a threshold DN value that is used only in discriminating
+ between correlation peaks in a search area:  if several peaks exceed
+ CTHRESH, then the peak with DN < DNTHRESH is selected.
+
+ If none of the DN values are < DNTHRESH, or if several peaks have DN
+ values < DNTHRESH, then the highest correlation peak is used.
+ The default for DNTHRESH is 10.
+.VARIABLE FIT
+ VALID = 1:8
+ Default is FIT = 8 (unconstrained linear fit).
+ FIT specifies the type of fit to be performed.  Meanings are :
+
+         IFIT  ROTATE SCALE  OFFSET
+          1      0      0      1
+          2      0      1      0
+          3      0      1      1
+          4      1      0      0
+          5      1      0      1
+          6      1      1      0
+          7      1      1      1
+.VARIABLE TOLER
+ Default is TOLER = 4.0.
+ MAXIMUM ALLOWED ERROR IN CALCULATED LOCATION RELATIVE TO
+ THE NOMINAL LOCATION.
+.END

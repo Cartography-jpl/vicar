@@ -1,0 +1,509 @@
+procedure help=*
+
+subcmd delete
+    parm jobid integer
+    parm queue (string,31) def=sys$batch
+end-sub
+
+subcmd-default name=status
+    parm queue (string,31) def=all
+end-sub
+
+subcmd suspend
+    parm queue (string,31)
+end-sub
+
+subcmd resume
+    parm queue (string,31)
+end-sub
+
+subcmd update
+    parm jobid integer
+    parm priority integer
+    parm queue (string,31) def=sys$batch
+end-sub
+
+subcmd submit
+    parm proc (string,32)
+    parm savefile count=0:1 default=--
+    parm queue (string,31) def=sys$batch
+    parm stdout  count=0:1 default=--
+end-sub
+
+refgbl $syschar
+body
+if ($syschar(1) = "UNIX")
+  if (_subcmd = "delete")
+    ush kill &jobid
+  else-if (_subcmd = "status")
+    ush ps -x
+  else-if (_subcmd = "suspend")
+    putmsg "batch-suspend not supported under UNIX.", "TAE-NOSUPPORT"
+  else-if (_subcmd = "resume")
+    putmsg "batch-resume not supported under UNIX.", "TAE-NOSUPPORT"
+  else-if (_subcmd = "update")
+    putmsg "batch-update not supported under UNIX.", "TAE-NOSUPPORT"
+  else-if (_subcmd = "submit")
+    if ($COUNT(savefile) = 0)
+      &proc |restore=@proc, runtype=(BATCH), stdout=@stdout|
+    else
+      &proc |restore=@savefile, runtype=(BATCH), stdout=@stdout|
+    end-if
+  end-if
+else
+  if (_subcmd = "delete")
+    dcl delete/entry=&jobid &queue
+  else-if (_subcmd = "status")
+    if (queue = "all")
+      dcl  show  queue/all/batch/full
+    else
+      dcl  show  queue/full  &queue
+    end-if
+  else-if (_subcmd = "suspend")
+    dcl stop/queue/next &queue
+  else-if (_subcmd = "resume")
+    dcl start/queue &queue
+  else-if (_subcmd = "update")
+    dcl set queue/entry=&jobid/priority=&priority &queue
+  else-if (_subcmd = "submit")
+    if ($COUNT(savefile) = 0)
+      &proc |restore=@proc, runtype=(BATCH,&queue), stdout=@stdout|
+    else
+      &proc |restore=@savefile, runtype=(BATCH,&queue), stdout=@stdout|
+    end-if
+  end-if
+end-if
+end-proc
+.title
+  		        Batch Job Queue Manipulation
+
+.help
+	    You may invoke the BATCH procedure to obtain the
+	    status of, and to manipulate, batch queues, using
+	    the following subcommands.
+		
+		BATCH-DELETE
+		BATCH-STATUS		! default for BATCH
+		BATCH-SUBMIT
+.if VAX_VMS
+		BATCH-RESUME
+		BATCH-UPDATE
+		BATCH-SUSPEND
+
+	    Some of these subcommands require the OPER privilege.
+.ifend
+.PAGE
+			BATCH-DELETE
+
+
+		    Function and Format
+
+	Function:
+
+.if UNIX
+	   Delete a UNIX process.
+
+	Format:
+
+	   batch-delete  JOBID=Process-Id
+
+.elseif VAX_VMS
+	    BATCH-DELETE deletes the specified queue entry from
+	    the named queue.  It is the same as ABORT-BATCH 
+	    command.
+
+	    You must have the OPER privilege to be able to
+	    delete jobs from other accounts.
+	
+	Format:
+	    
+	    BATCH-DELETE JOBID=queue-entry  QUEUE=queue-name
+.ifend
+.PAGE
+			BATCH-STATUS
+
+
+		   Function and Format
+
+	Function:
+		
+.if UNIX
+	    Executes a UNIX 'ps -x' command to show all of your
+	    processes.   (TAE does not support a true batch
+	    capability under UNIX.)
+
+	Format:
+	    
+	    batch-status  
+
+.elseif VAX_VMS
+	    BATCH-STATUS requests the display of the status of 
+	    the batch queue.  The status display is written to
+	    the standard output device.  The default subcommand
+	    for BATCH is "STATUS".  BATCH-STATUS is the same as 
+	    SHOW-BATCH.
+
+	Format:
+	    
+	    BATCH-STATUS  QUEUE=queue-name
+	    BATCH	  
+.ifend
+.PAGE
+			BATCH-SUBMIT
+
+			
+		    Function and Format
+
+	Function:
+
+	    Aids in submitting a proc for batch execution.
+
+
+	Format:
+
+.if UNIX
+	    batch-submit  PROC=proc-name  SAVEFILE=saved-file-name 
+		   STDOUT=standard-output-file-name
+
+.elseif VAX_VMS
+	    BATCH-SUBMIT  PROC=proc-name  SAVEFILE=saved-file-name 
+		   QUEUE=queue-name  STDOUT=standard-output-file-name
+.ifend
+.PAGE
+			Usage Notes
+
+
+
+	This subcommand is useful as a menu option.  After tutoring on
+	the desired proc and performing a tutor SAVE command to save
+	the parameter values, you can tutor on BATCH-SUBMIT to actually
+	submit the proc.
+.PAGE
+			BATCH-SUSPEND
+
+
+		    Function and Format
+
+.if UNIX
+	    (Not supported under UNIX.)
+.elseif VAX_VMS
+	Function:
+
+	    BATCH-SUSPEND suspends the operation of the named
+	    queue.
+
+	    You must have the OPER privilege to be able to use
+	    the "SUSPEND" subcommand.
+
+	
+	Format:
+	    
+	    BATCH-SUSPEND  QUEUE=queue-name
+.ifend
+.PAGE
+			BATCH-RESUME
+
+
+		     Function and Format
+
+.if UNIX
+	    (Not supported under UNIX.)
+.elseif VAX_VMS
+	Function:
+
+	    BATCH-RESUME resumes the operation of the named 
+	    queue that was previously suspended by using 
+	    BATCH-SUSPEND.
+
+	    You must have the OPER privilege to be able to
+	    use the "RESUME" subcommand.
+
+	
+	Format:
+	    
+	    BATCH-RESUME  QUEUE=queue-name
+.ifend
+.PAGE
+			BATCH-UPDATE
+
+
+		     Function and Format
+
+.if UNIX
+	    (Not supported under UNIX.)
+.elseif VAX_VMS
+	Function:
+
+	    BATCH-UPDATE modifies the priority of a job
+	    in the named queue.
+
+	    You must have OPER privilege to raise the priority 
+	    of a job or to update on a job submitted from another 
+	    account.
+	
+	Format:
+	    
+	    BATCH-UPDATE  JOBID=queue-entry  PRIORITY=priority
+			  QUEUE=queue-name
+.ifend
+!
+.level1	
+.subcmd delete
+.if UNIX
+Delete a UNIX process.
+.elseif VAX_VMS
+Delete job from queue.
+.ifend
+.subcmd status
+.if UNIX
+Execute a UNIX 'ps -x' command.
+.elseif VAX_VMS
+Display queue status.
+.ifend
+.subcmd submit
+Submit a proc for batch
+execution.
+.subcmd suspend
+.if UNIX
+(This sub-command is not
+supported under UNIX.)
+.elseif VAX_VMS
+Suspend queue. Operator
+privilege required.
+.ifend
+.subcmd resume
+.if UNIX
+(This sub-command is not
+supported under UNIX.)
+.elseif VAX_VMS
+Resume queue operation.
+.ifend
+.subcmd update
+.if UNIX
+(This sub-command is not
+supported under UNIX.)
+.elseif VAX_VMS
+Update priority of existing
+job.
+.ifend
+.variable queue
+.if UNIX
+(This parm is not
+supported under UNIX.)
+.elseif VAX_VMS
+The name of batch queue.
+.ifend
+.variable jobid -update
+.if UNIX
+(This parm is not
+supported under UNIX.)
+.elseif VAX_VMS
+Job number.
+.ifend
+.variable jobid -delete
+.if UNIX
+UNIX process ID.
+.elseif VAX_VMS
+Job number.
+.ifend
+.variable priority
+.if UNIX
+(This parm is not
+supported under UNIX.)
+.elseif VAX_VMS
+Desired priority.
+.ifend
+.variable proc
+Name of the proc to submit.
+.variable savefile
+The RESTORE qualifier.
+Name of the previously SAVEd
+file to restore.  If null,
+the value of "proc" is used.
+.variable queue -submit
+.if UNIX
+(This parm is not
+supported under UNIX.)
+.elseif VAX_VMS
+The queue-name with BATCH
+in RUNTYPE qualifier.
+.ifend
+.variable stdout
+The STDOUT qualifier.
+!
+.level2
+.variable queue
+
+
+
+.if UNIX
+	    (This parm is not supported under UNIX.)
+.elseif VAX_VMS
+	    The name of the queue upon which to perform the 
+	    specified function.  For example, "SYS$BATCH".
+
+	    The queue name is specified by the user when the
+	    batch job is submitted. 
+.ifend
+!	    
+.variable queue -status
+
+
+
+.if UNIX
+	    (This parm is not supported under UNIX.)
+.elseif VAX_VMS
+	    The name of the queue upon which to perform the 
+	    specified function.  For example, "SYS$BATCH".
+
+	    The default queue name is "ALL", meaning all queues.
+.ifend
+!	    
+.variable jobid
+
+
+
+	    The job number assigned to a batch job upon 
+	    submission to a batch queue.  The number is displayed 
+	    immediately following the submission of the job
+	    via the RUNTYPE qualifier.  
+!
+.variable priority
+	
+
+
+.if UNIX
+	    (This parm is not supported under UNIX.)
+.elseif VAX_VMS
+	    An integer number between 0 and 31 specifying the 
+	    desired priority, where 0 is the lowest priority and 
+	    31 is the highest priority.
+
+	    By default, jobs are assigned the same priority as 
+	    the current process at the time of submission to the 
+	    batch queue.  The OPER privilege is required to raise 
+	    the job's priority above the base priority of your 
+  	    current process. 
+
+	    In addition, the OPER privilege is required to 
+	    modify the privilege of a job submitted outside the 
+	    context of the current process.
+.ifend
+!
+.variable proc
+
+
+
+	The name of the proc to be submitted for execution.
+!
+.variable savefile
+
+
+
+	The RESTORE qualifier.	The name of the previously SAVEd 
+	parameter file containing the parameters to use in running
+	the proc.
+
+	If SAVEFILE is null, the parameter file with the same name
+	as specified by "proc" is used.
+!
+.variable queue -submit
+
+
+
+.if UNIX
+	    (This parm is not supported under UNIX.)
+.elseif VAX_VMS
+	A second component with BATCH for the RUNTYPE qualifier.
+	This specifies the name of the queue to submit the
+	batch job to.
+
+	The default for QUEUE is the system default batch queue name.
+	For example, "SYS$BATCH".
+.ifend
+!
+.variable stdout
+
+
+
+	The STDOUT qualifier.  This specifies the name of the standard
+	output file (i.e., the batch log).
+
+	If stdout is null, the batch log is given the same name as the
+	proc name.
+!
+.subcmd status
+
+
+
+	    The STATUS subcommand requests the display of the 
+	    status of a batch queue.  It is the default subcommand
+	    for BATCH.  The default queue is "SYS$BATCH".
+!
+.subcmd delete
+
+
+
+.if UNIX
+	    This subcommand will kill a UNIX process given
+	    the Process Id from a display generated by
+	    batch-status.
+.elseif VAX_VMS
+	    The DELETE subcommand deletes the specified queue 
+	    entry from the specified job queue.  Users may delete 
+	    jobs submitted from their account without special 
+	    privilege.  However, the OPER privilege is required to 
+	    delete jobs from accounts of other users.
+.ifend
+!
+.subcmd suspend
+
+
+
+.if UNIX
+	    (This sub-command is not supported under UNIX.)
+.elseif VAX_VMS
+  	    The SUSPEND subcommand suspends operations of the 
+	    specified queue.  The currently active job, if any, 
+	    is allowed to complete, but further de-queueing is 
+	    inhibited.  Operations of the queue may be resumed using 
+	    the RESUME subcommand.  The OPER privilege is required 
+	    to suspend a queue.
+.ifend
+!
+.subcmd resume
+
+
+
+.if UNIX
+	    (This sub-command is not supported under UNIX.)
+.elseif VAX_VMS
+	    The RESUME subcommand resumes operations of the 
+	    specified queue stopped via the SUSPEND subcommand. 
+	    The OPER privilege is required.
+.ifend
+
+!
+.subcmd update
+
+
+
+.if UNIX
+	    (This sub-command is not supported under UNIX.)
+.elseif VAX_VMS
+	    The UPDATE subcommand is used to modify the priority 
+	    of a job on the specified batch queue.  The OPER 
+	    privilege is required for raising the priority of 
+	    a job or to have access to a job submitted from 
+	    another account.
+.ifend
+!
+.subcmd submit
+
+
+
+	This subcommand is useful as a menu option.  After tutoring on
+	the desired proc and performing a tutor SAVE command to save the
+	parameter values, you can tutor on BATCH-SUBMIT to actually
+	submit the proc.
+.end

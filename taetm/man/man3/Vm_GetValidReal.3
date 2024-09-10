@@ -1,0 +1,68 @@
+.TH Vm_GetValidReal 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_GetValidReal - retrieve valids of real data type
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_GetValidReal (vmid, name, count, rlow, rhigh)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: valids information successfully retrieved from variable.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BADTYPE: the variable has a type other than real.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object.  This object must have been initialized with a call to
+Vm_New; or it may be the target or view Vm object returned by Co_Find.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the real variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+
+.IP \n+L.
+count: output, FUNINT   *count;
+
+Multiplicity of the valids i.e., the number of ranges.
+
+.IP \n+L.
+rlow: output, TAEFLOAT   **rlow;
+
+An array of dynamically allocated real values (a real value vector) for the low
+values of the ranges.  The array is dynamically allocated by Vm_GetValidReal.
+
+.IP \n+L.
+rhigh: output, TAEFLOAT   **rhigh;
+
+An array of dynamically allocated real values (a real value vector) for the
+high values of the ranges.  The array is dynamically allocated by
+Vm_GetValidReal.
+.LP
+
+.IP
+.LP
+Vm_GetValidReal sets count to the number of acceptable real ranges and
+dynamically allocates arrays which hold the acceptable real valids for a TAE
+real variable.
+
+tae_free should be used to free the allocated arrays rlow and rhigh after the application is
+finished with them.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

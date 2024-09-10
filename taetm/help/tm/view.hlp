@@ -1,0 +1,67 @@
+.TITLE
+VIEW
+.HELP
+			Function and Format
+	
+
+	Function:
+
+	    VIEW declares how a parameter should be
+	    displayed in a WPT panel.
+
+.PAGE
+			Function and Format (continued)
+
+
+	Format:
+
+	    VIEW NAME = parameter name being viewed 
+		 TITLE = title string for the parameter 
+		 PRESENT = presentation type, referring to one
+		  	   of the WPT presentation PDFs
+			   (e.g., button, radio, textlist, etc.) 
+.PAGE
+			Usage Notes
+
+	o  VIEW declarations appear in PARMSETs that are to
+	   be used as WPT views.   Each VIEW statement
+	   describes how a target parameter is to be 
+	   presented on a WPT panel. 
+
+	o  VIEW is actually an alias for the PARM command where
+	   TITLE is substituted for DEFAULT and PRESENT is
+	   substituted for QUALS.   VIEW generates a parameter
+	   just like PARM does.  It is acceptable to use 
+	   PARM statements to generate view PARMSETs.  
+
+	o  VIEW is not permitted in the body of a procedure.
+
+.PAGE
+			Examples
+
+
+	   1.  VIEW X TITLE="Pitch in radians" PRESENT=TEXT 
+
+	   2.  VIEW OPTIONS TITLE="Mode Selection:" PRESENT=RADIO
+
+.level1
+.variable NAME
+Name of the parameter
+being viewed (the
+"target" parameter).
+.variable TYPE
+Parameter or variable type.
+(Must be STRING.)
+.variable COUNT
+Value vector count.
+(Must be 1.)
+.variable TITLE 
+Title to be used for
+the target parameter.
+.variable VALID
+Not used.
+.variable ACCESS
+Not used.
+.variable PRESENT 
+Presentation type (radio,
+text, textlist, etc.).

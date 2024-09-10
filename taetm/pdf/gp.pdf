@@ -1,0 +1,38 @@
+!	General purpose procedure tester
+procedure  help=*
+parm (l1,l2,l3,l4,l5,l6,l7) +
+type=(string,62) default="continue"  
+!general purpose local variables..
+local i integer initial=1
+local x real    initial=1
+local s string  initial=""
+body
+&l1
+&l2
+&l3
+&l4
+&l5
+&l6
+&l7
+end-proc
+.title
+			General-Purpose Procedure
+.help
+		This procedure is for testing procedures without 
+		having to write a PDF.  Each parameter 
+		(l1, l2, l3...) becomes a line of the procedure
+		via substitution.
+		
+		If you are doing anything non-trivial, it is
+		recommended that you use tutor to run gp.
+		With tutor's "RESTORE LAST" you can make
+		"edits" to the previous run.
+
+		Three local variables are defined in the 
+		procedure, i (integer), x (real), and s (string).
+
+.level1
+.var l1
+Line 1 of procedure body.
+.var l2
+And so on...

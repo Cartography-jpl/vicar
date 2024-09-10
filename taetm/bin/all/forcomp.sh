@@ -1,0 +1,23 @@
+   #	command procedure to compile a FORTRAN program with
+#	include files references from TAE library $TAEINC.
+#
+# Change Log:
+# 18-nov-92	PR 1718: On some platforms (i.e. Ultrix and SGI), the suffix
+#		supplied for basename is a regular expression.  Thus
+#		"basename minwptc .c" will result in "minwp".  Need to
+#		backslash the ".".  Also need to put the suffix in quotes
+#		for the SGI...cew
+# 03-jun-93	TINC changed to TAEINC, $TAE/inc to $TAE/include...kbs
+
+incsubst $1 '$TAEINC' $TAE/include tmp.f 
+				#substitute for include file names
+				#and create a temporary file
+f77 -c -g tmp.f			#compile the temporary file
+if test "$TAEPLAT" = mipsel || test "$TAEPLAT" = sgi
+then
+    mv tmp.o `basename $1 '\.f'`.o	#rename the object file
+else
+    mv tmp.o `basename $1 .f`.o		#rename the object file
+fi
+#test $? -eq 0 && echo "** compiled $1 **"	#print message
+rm tmp.f			#delete the temporary file

@@ -1,0 +1,82 @@
+# Standard setup of environment for TAE Plus users and developers.
+#
+# It is recommended that you source this file in your .cshrc file
+#
+# We no longer automatically extend your path, so you will have to add
+# the following directories to your path variable AFTER sourcing this
+# file: $TAEBIN. For example, your .login could contain the line:
+#
+# 		path = ($path $TAEBIN)
+#
+# If your TAE installation has kept the demos, and you want to be able
+# to execute demos like other commands, add this to your path variable
+# as well: $TAEDEMOBIN
+
+# A note on new logical names. All new logicals defined with this
+# release begin with $TAE. The $T prefix may not be sufficient for
+# eliminating collisions with other packages, so all $T logicals will
+# eventually be retired. We've removed as many as we could. The ones
+# that are left are for backwards compatibility only and may someday
+# disappear. Any new references you make to logicals should use the
+# $TAE name.
+
+# CHANGE LOG:
+#	03-03-92 Added $TAEXTERM lib for scroller (Color Logger)...kbs
+#	05-13-92 Added $TAEMAN and $TAECONTRIB...kbs
+#	12-oct-92 RS/6000 needs to use a special cpp and imakecpp...rt
+#	23-oct-92 if does not need the question mark...rt
+#	12-jan-93 PR1807 et al; IBM needs MALLOCTYPE detour...kbs
+#	26-mar-93 Added $TAEPERL...swd
+#	29-mar-93 Added $TAEUIL dir...kbs
+#	30-mar-93 Defined TAEPERLLIB instead of TAEPERL...swd
+#	21-apr-93 Changed TAEPERLLIB def...swd
+#	20-may-93 Moved all "src" and Classic env vars to taesetup{all,classic};
+#	          definition of $TAEINC changed to match UNIX stnd...kbs
+#	25-may-93 $TAEBIN points to $TAE/bin/$TAEPLAT; users only add $TAEBIN to 
+#	          $path; $TAE/bin/all no longer needed in path due to links...kbs  
+#	02-jun-93 Moved ULIB here from taesetupclassic.sh...kbs,palm
+#	03-jun-93 Moved TAEPDF here from taesetupclassic.sh...kbs,palm
+#	04-jun-93 Moved TAEXTAELIB from taesetupsrc.sh(TAEMake.tmpl needs)...kbs
+#	22-jun-93 Added TAECXXLIB to separate out C++ app stuff...ljn
+#	29-jun-94 PR2720: (Limited SCO env) Move essential vars to "taesetupmin"
+#	          which is called by "taesetup"...kbs,cew
+
+# First, set minimal TAE Plus environment.
+# NOTE: Next line must begin in column 1 for maintenance via taesetupGen.pl.
+source $TAE/bin/csh/taesetupmin
+
+# Then add remainder of environment (except for source code variables).
+
+# IBM specific
+if ($TAEPLAT == rs6000) then
+    setenv cppC /usr/lpp/X11/Xamples/util/cpp/cpp
+    setenv IMAKECPP /usr/lpp/X11/Xamples/util/cpp/cpp
+#   See IBM malloc man page for explanation of MALLOCTYPE.
+    setenv MALLOCTYPE 3.1
+endif
+
+# All platforms
+
+setenv TAEADALIB	$TAE/ada/lib/$TAEPLAT
+setenv TAEADA           $TAE/ada/src
+
+# These variables are strictly for use of demos.
+setenv TAEDEMO  	$TAE/demo
+setenv TAEDEMOADA	$TAEDEMO/adademos
+setenv TAEDEMOBIN	$TAEDEMO/bin/$TAEPLAT
+setenv TAEDEMORFG   	$TAEDEMO/res/rfg
+setenv TAEDEMOSRC       $TAEDEMO/src
+setenv TAEDEMOHELP	$TAEDEMO/help
+setenv TAEDEMOPS	$TAEDEMO/ps
+setenv TAEDEMORES	$TAEDEMO/res/$TAEPLAT
+
+# These variables are for accessing TAE Classic help.
+setenv TAEHELP  	$TAE/help
+setenv TAEHELPMSG  	$TAE/help/msg
+setenv TAEHELPINX  	$TAEHELPMSG/$TAEPLAT
+setenv TAEHELPTM  	$TAE/help/tm
+#
+# The following are necessary for taetm/rehearsal.
+# (These cannot be moved to taesetupclassic.sh.)
+setenv ULIB		.
+setenv TAEPDF           $TAE/pdf

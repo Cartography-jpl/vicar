@@ -1,0 +1,53 @@
+!	edited	23-jun-83...dm
+!	edited 3-jul-84	Fix 35 limitation...palm
+.TITLE
+REFGBL
+.HELP
+			Function and Format
+
+	
+	Function:
+
+	    REFGBL declares that the named global variables are
+	    used in the proc.
+
+
+	Format:
+
+	    REFGBL  NAME=(list-of-names)
+.PAGE
+			Usage Notes
+
+
+	o  REFGBL is permitted in a process, procedure, or global PDF.
+
+	o  REFGBL is required for any global references by a proc, with
+	   the exception of certain implicitly defined globals (e.g.,
+	   $SFI, $SKEY).
+
+	o  REFGBL is not required at the interactive level.
+.PAGE
+			Examples
+
+
+	1.  REFGBL NAME=SATID
+
+	2.  REFGBL window
+
+	3.  REFGBL (termid, userid, $SESSION)
+!
+.level1
+.variable NAME
+Name of the referenced
+global variable.
+!
+.level2
+.variable NAME
+
+
+
+	    "NAME" lists the names of global variables that are
+	    used in the proc.
+
+	    The maximum number of values in the list is 50.
+.END

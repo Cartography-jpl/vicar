@@ -1,0 +1,63 @@
+.TH Vm_FormatVar 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_FormatVar - format variables; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_FormatVar (vmid, line, length)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: line is obtained.
+.IP o
+FP_EOP: no more lines exist.
+.IP o
+FP_NULL: line length is not large enough to receive the next 
+variable.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object.
+
+.IP \n+L.
+line: output, TEXT   line[ ];
+
+String containing next n variables from the parameter object in
+"name=value" format.  The value of n is determined by the number of variables
+that fit within the length of the line. 
+Line must be long enough to receive the longest variable
+value (form is "name=value" including quotes)
+plus room for the continuation character. 
+
+.IP \n+L.
+length: input, COUNT   length;
+
+Length of output line in bytes.
+.LP
+
+.IP
+.LP
+Vm_FormatVar obtains parameter values and values of global and local variables
+in a displayable form, i.e., as lines of text.  
+Vm_FormatVar must be called
+multiple times to obtain the values in character form.  Each call to
+Vm_FormatVar receives one line of variable text,
+in the order the variables appear in the parameter object.
+The format for all values is "name=value" where "name" is the 
+name of the variable.
+Vm_InitFormat must be called to initialize for a sequence of Vm_FormatVar
+calls.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

@@ -1,0 +1,217 @@
+!	 15-Jul-87	Initial version ...gc
+!
+.TITLE
+SELECT MODE INFORMATION
+.HELP
+                           General and Specific Help
+
+                This is general help information for
+                operating tutor SELECT mode.  
+
+		To continue with this general SELECT 
+		information, hit RETURN.
+
+                To access other, more specific help, 
+		enter one of the following commands:
+
+                HELP parm -- Details on "parm" parameter
+                HELP *    -- General information on the
+                             current proc
+                HELP -    -- Details on the current proc
+                             subcommand (if any)
+.page
+			Purpose of Tutor SELECT mode.
+
+		Tutor SELECT mode assists the user in setting
+		a value for string type parameter.  It may be
+		used only for parameters that have a specified
+		list of valid strings.
+
+		In SELECT mode the list of valid strings is
+		displayed to the user.  One of the strings is
+		highlighted.  If the user types ACCEPT, the
+		parameter for which SELECT mode was entered will
+		be set to that highlighted value.
+
+.page
+                        Summary of Select Mode Commands and Keys
+
+		Tutor SELECT mode display is controlled by a set
+		of commands and special keys.  The following tables
+		list them, they are described in detail below.
+
+                The commands available in tutor are:
+
+                Command                 Description
+                -------------------     -----------------------------------
+
+		?			Displays help on last message.
+		HELP			Displays this help information.
+		SEARCH string		Searches for VALID containing "string".
+		ACCEPT			Return to parameter tutor mode,
+					set parameter to highlighted value.
+		EXIT			Return to parameter tutor mode,
+					do not set parameter.
+.page
+                        Summary of Select Mode Commands and Keys
+			              (continued)
+
+
+		Key			Description
+		-------------------	-----------------------------------
+
+		down-arrow		Steps highlighted item down one line.
+		up-arrow		Steps highlighted item up one line.
+
+.PAGE
+                        Entering Select Mode
+
+
+                Select mode assists you in selecting the value(s)
+                for a parameter from the set of valids for that
+                parameter. 
+
+		Select mode is entered by typing the command: 
+
+                   SELECT parameter_name
+
+		or
+
+		   SELECT
+
+.page
+                        Entering Select Mode (continued)
+
+		Select mode is used for setting a single
+		parameter or a single element of a multi-
+		element parameter.
+
+		If you use the first form of the command,
+		you may include a subscript:
+
+			SELECT parm(n)
+
+		If you use the second form of the command,
+		select mode will be in effect for the 
+		parameter element that was highlighted.
+
+.page
+                        Entering Select Mode (continued)
+
+
+                Select mode may be entered:
+
+                  o  From a tutor or a tutor/qualify screen.
+
+                  o  Only from tutor SCREEN mode.
+
+                  o  Only for parameters of type STRING.
+
+                  o  Only for parameters with a VALID list.
+
+.PAGE
+                        Entering Select Mode (continued)
+
+                Upon entering select mode, you are presented with the
+                first page of a (possibly) multi-page display of the
+                list of valid strings permitted as values for the
+                parameter that is being selected on.
+
+                The select screen also displays the name of the
+                parameter and the brief description that appeared
+                on the tutor mode screen.
+
+.PAGE
+                        General Comments
+
+
+                Commands and parameter names may be typed in
+                upper case or lower case and may be abbreviated
+                by truncating characters, e.g., "E" or "e" is
+                equivalent to "EXIT". 
+
+.PAGE
+                        User Commands and Function Keys
+
+		The SELECT mode commands allow the user to
+		move through the list of valid strings and
+		to accept a displayed value or to return to
+		tutor parameter mode without selecting a value.
+
+                The user commands and function keys are:
+.PAGE
+                        User Commands and Function Keys (continued)
+
+
+		ACCEPT
+		______
+		Terminates the tutor select session, returning to
+		tutor mode or tutor/qualify mode.  The parameter
+		element being selected on is set to the value that
+		was highlighted when the ACCEPT command was entered.
+
+		EXIT                
+		----
+		Terminates the tutor select session, returning to
+		tutor mode or tutor/qualify mode.  The highlighted
+		value is not accepted; the parameter value is not set.
+
+.page
+                        User Commands and Function Keys (continued)
+
+		HELP                
+		----
+		Display this help information.
+
+		HELP parm
+		---------
+		Requests detailed help on parameter "parm".
+.PAGE
+
+			User Commands and Function Keys (continued)
+
+		HELP *
+		------
+		Requests general information on the proc
+		whose parameters are displayed on the tutor
+		screen.
+
+		HELP -
+		------
+		Requests detailed help on the proc subcommand
+		(if any) whose parameters are displayed on the
+		tutor screen.
+
+.page
+			User Commands and Function Keys (continued)
+
+		SEARCH string
+		-------------
+		Allows the user to locate a valid string 
+		containing the specified string as a substring.
+		The search starts at the valid string after the
+		currently highlighted valid string, wraps around
+		to the top of the list and stops at the current
+		item.
+
+		?
+		-
+		Requests help on the most recent message displayed.
+.PAGE
+			User Commands and Function Keys (continued)
+
+		Up-arrow key
+		------------
+		Moves the current (highlighted) valid string up
+		one line.  If at the top of the screen,  screen
+		is scrolled down.  If at top of list, display
+		wraps around to bottom item in list.
+
+		Down-arrow key
+		--------------
+		Moves the current (highlighted) valid string down
+		one line.  If at the bottom of the screen,  screen
+		is scrolled up. If at bottom of list, display
+		wraps around to top item in list.
+
+.END

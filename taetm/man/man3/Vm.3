@@ -1,0 +1,608 @@
+'\" t
+.\" Above for table processing; must be line 1
+.\"
+.\" @(#)Vm.3	33.1 8/26/94 
+.\"
+.TH Vm_ 3 "23 Aug 1993" "TAE Plus v5.3"
+.SH NAME
+Vm_ - introduction to dynamic memory \fI Variable Manipulation\fP for TAE 
+
+
+.SH REFERENCE NOTE
+.IP
+
+.LP
+
+All Wpt, Vm, and Co functions are described in 
+the \fI TAE Plus Programmer's Manual\fP and in the language specific
+documents, \fI TAE Plus C Reference Manual\fP, \fI TAE Plus C++ Reference Manual\fP, 
+and \fI TAE Plus Ada Reference Manual\fP.
+
+.\" All man pages for Wpt, Vm, and Co functions are from the
+.\" document \fI TAE Plus C Programmer's Manual, Volume 2.\fP
+.\" Section references and the phrase "\fIthis document\fP" are references
+.\" to the stated manual.
+
+.SH INTRODUCTION
+.IP
+
+.LP
+Although most of the Vm package is useful for TAE Plus programmers
+developing graphical user interfaces, several functions are strictly
+intended for use with the Terminal Monitor (TM). This man page
+distinguishes between both groups of functions.
+Note that TAE Plus users typically run applications without a 
+Terminal Monitor; TM is usually associated with TAE Classic.
+
+The Vm utility package provides an alternative to the p_ and q_ packages 
+described in the document
+\fITAE Command Language (TCL) Runtime Services, Vol. 1: C\fP.
+It allows a TAE application
+program to manipulate TAE process variables using dynamically allocated and
+package allocated memory instead of the caller-allocated space
+(the p_ and q_ packages use caller-allocated space). The calling
+program is not required to pre-allocate storage for process
+parameter variables. The Vm package is recommended over the p_ and
+q_ packages;  Wpt applications require that the Vm package be used.
+
+The Vm package is provided for:
+.in +3
+
+\(bu accessing and changing target values
+and view attributes of TAE Plus items;
+
+\(bu receiving initial process inputs, i.e., 
+those values set by the end-user while in command mode 
+or tutor mode (TAE Classic);
+
+\(bu initiating a dynamic tutor session and supplying 
+default values (TAE Classic);
+
+\(bu receiving variables upon the completion of a dynamic
+tutor session (TAE Classic);
+
+\(bu accessing variables in a disk file;
+
+\(bu setting the values of process output variables (TAE Classic);
+
+\(bu writing variable values to disk; and
+
+\(bu copying a VARIABLE structure and its components.
+.in -3
+
+To see the list of available Vm functions, type:
+.nf
+
+        man -k Vm_
+.fi
+
+The detailed calling sequences of the package are described
+on the relevant man pages.
+
+
+.SH TAE PLUS and the Vm PACKAGE
+.IP
+
+.LP
+TAE Plus graphical user interface applications generally use the Vm package to:
+
+.in +3
+\(bu find a TAE Variable in a Vm Object using Vm_Find;
+
+\(bu extract the value of a variable using the StringParm, 
+IntParm, RealParm, SVAL, IVAL, or RVAL macros;
+
+\(bu set the value of a variable using Vm_SetString, Vm_SetIntg, or 
+Vm_SetReal.  A call to one of these functions is sometimes followed by
+1) a call to Wpt_ViewUpdate if the view is being updated, 2) a call to
+Wpt_ParmUpdate if the target is being updated, or 3) a call to
+Wpt_NewPanel if the item's value is being set before the panel is displayed.
+
+\(bu set the constraints (valid choices) of a variable using Vm_SetValidString, Vm_SetValidIntg, or Vm_SetValidReal (sometimes followed 
+by a call to Wpt_ParmUpdate or Wpt_NewPanel).
+.in -3
+
+The table below lists those Vm functions that can be used in either a TAE Plus
+or TAE Classic application. (A separate man page exists for each function.)
+
+.TS
+center expand;
+C I s
+C C  w(4.5i)
+L L  w(4.5i).
+For TAE Plus or TAE Classic
+.sp
+Function	Description
+.sp
+Vm_Copy	copy a Vm Object
+.sp
+Vm_Find	find variable
+.sp
+Vm_FindVar	find variable ignoring ABORT flag
+.sp
+Vm_ForEach	T{
+execute callback function for each TAE Variable in a Vm Object
+T}
+.sp
+Vm_Free	deallocate a Vm Object
+.sp
+Vm_GetAttribute	get variable attributes
+.sp
+Vm_GetHostError	T{
+get host-dependent error code;
+usually for TAE Classic
+T}
+.sp
+Vm_GetValidIntg	retrieve valids of integer data type
+.sp
+Vm_GetValidReal	retrieve valids of real data type
+.sp
+Vm_GetValidString	retrieve valids of string data type
+.sp
+Vm_New	allocate a new Vm Object
+.sp
+Vm_ReadFromDisk	T{
+read a Vm Object from;
+usually for TAE Classic
+T}
+.sp
+Vm_SetIntg	set values for an integer variable
+.sp
+Vm_SetMax	set maximum vector count of a variable
+.sp
+Vm_SetMin	set minimum vector count of a variable
+.sp
+Vm_SetReal	set values for a real variable
+.sp
+Vm_SetString	set values for a string or keyword variable
+.sp
+Vm_SetStringLength	set maximum length of a string or keyword variable
+.sp
+Vm_SetValidIntg	set integer valids
+.sp
+Vm_SetValidReal	set real valids
+.sp
+Vm_SetValidString	set string valids
+.sp
+Vm_WriteToDisk	T{
+write the Vm Object to a disk file;
+usually for TAE Classic
+T}
+.TE
+
+.SH OBJECT-ORIENTED STYLE
+.IP
+
+.LP
+
+The Vm package--as well as the Co and Wpt packages--is
+coded in an "object-oriented" style.  An object is typically a
+complex data structure that is to be operated upon by the caller;
+each package generally provides operations for one type of data structure,
+hiding the details of the data structure's implementation from the caller.
+
+The Vm package operates on "Vm Objects", that is, sets of "TAE Variables".  
+Each Vm Object is a set of TAE Variables. A TAE Plus item
+is represented by a pair of TAE Variables, one for the target values and
+the other for the view attributes.
+
+A TAE Classic user of the Vm package might want to read
+variables from the Terminal Monitor (also called TM or \fitaetm\fP),
+then get the value of a specific
+variable.  A typical sequence is listed below:
+
+.in +3
+\(bu A new object is allocated (e.g, via Vm_New), and an "Id" is
+returned.  The "Id" (also called a "vmid") becomes the reference for future
+operations on the object.
+
+\(bu Operations are performed on the object (e.g., Vm_ReadFromTM
+populates a "Vm" object with TAE Variables; Vm_Find locates a
+specific TAE Variable in the Vm Object).
+
+\(bu The object is freed (e.g., Vm_Free).
+.in -3
+
+.SH TERMINAL MONITOR (TAE Classic)
+.IP
+
+.LP
+
+The Vm package is designed to manipulate TAE Variables.
+Because TAE Variables may be read from disk as well as from the
+Terminal Monitor (TM), not all the routines in the Vm package require a
+Terminal Monitor.  (A TAE Plus user generally runs applications
+without the Terminal Monitor.)
+
+\fIThe following routines require a Terminal Monitor.\fP
+
+.\" Historical Note:
+.\" We added FormatVar, InitFormat, and SetParmPage to this list...kbs
+
+.TS
+center expand;
+C I S
+C C w(4.5i)
+L L w(4.5i).
+Terminal Monitor Specific
+.sp
+Function	Description
+.sp
+Vm_Call	installation-dependent initialization
+.sp
+Vm_DynTutor	initiate dynamic tutor
+.sp
+Vm_FormatVar	format variables
+.sp
+Vm_InitFormat	initialize for formatting variables
+.sp
+Vm_OpenStdout	open the current standard output device
+.sp
+Vm_ReadFromTM	receive variables from TM
+.sp
+Vm_SetNextMenu	set the next menu to be executed
+.sp
+Vm_SetParmPage	set the page indicator of a variable
+.sp
+Vm_SetTCLVar	set TCL variables
+.TE
+
+.SH VARIABLE MANIPULATION ALGORITHMS
+.IP
+
+.LP
+
+An application program generally manipulates values of 
+TAE Variables as follows:
+
+.in +3
+\(bu Create a Vm Object
+
+\(bu Obtain the current variable values.
+
+\(bu If desired, change the variable values or the list of
+acceptable values (\fIvalids\fP or \fIconstraints\fP).
+.in -3
+
+The variables are:
+
+.in +5
+\(sq Used as new values for an interaction item; or
+
+\(sq Returned to TM as process outputs; or
+
+\(sq Written to disk; or
+
+\(sq Used as new values in a dynamic tutor session.
+.in -5
+
+.SH OBTAINING VALUES
+.IP
+
+.LP
+
+An application program obtains values of 
+TAE Variables as described below.
+
+
+.nr L 0 1
+
+.IP \n+L.
+The program declares the Vm Object id as an "Id".
+This is sometimes called a "vmid". In TAE Plus
+generated code, this is typically in a declaration such as:
+
+.nf
+          Id panelnameTarget, panelnameView, panelnameId;
+
+where the three ids refer to the panel's target Vm Object,
+the panel's view Vm Object, and the panel's Id, respectively.
+.fi
+
+.IP \n+L.
+The program reads a TAE Plus resource file into memory using
+Co_ReadFile.   The resource file is a collection of Vm Objects.
+
+.IP \n+L.
+Vm_Find or Vm_FindVar is called to retrieve Vm Objects 
+from the collection.
+
+.IP \n+L.
+The values of variables are extracted using standard macros
+available in the symtab.inc include file:
+.nf
+
+        IVAL( *v, i) is the i-th value in the
+        integer VARIABLE accessed through v.
+
+        RVAL( *v, i) is the i-th value in the
+        real VARIABLE accessed through v.
+
+        SVAL( *v, i) is the i-th string in the
+        string VARIABLE accessed through v.
+.fi
+.LP
+
+The example on this man page shows the use of these macros.
+See also the \fIStringParm\fP man page.
+
+A useful set of additional macros is defined in generated C code:
+
+.nf
+
+#define StringParm(vmId, name) (SVAL( *Vm_Find(VmId,name),0))
+#define IntParm(vmId, name)    (IVAL( *Vm_Find(VmId,name),0))
+#define RealParm(vmId, name)   (RVAL( *Vm_Find(VmId,name),0))
+
+.fi
+
+.ig xx
+XX 
+XX .SH CHANGING or ADDING VALUES
+XX .IP
+XX 
+XX .LP
+XX 
+XX A programmer may update the value of a variable contained in a Vm
+XX object.
+XX This is done as follows:
+XX 
+XX .in +3
+XX \(bu The program declares the Vm Object Id as above.
+XX 
+XX \(bu The set of variables is read into memory:
+XX 
+XX \(bu Vm_SetIntg, Vm_SetReal and Vm_SetString functions are
+XX called to change the values of variables of type TAEINT (integer),
+XX TAEFLOAT (real), and TEXT * (string) in the Vm Object.
+XX .in -3
+XX 
+XX \fINew variables may also be added with these functions. \fP
+XX 
+XX 
+XX .SH CHANGING or ADDING VALIDS (CONSTRAINTS)
+XX .IP
+XX 
+XX .LP
+XX 
+XX A programmer may change the valids of a variable contained in a Vm
+XX object.
+XX This is done as follows:
+XX 
+XX .in +3
+XX \(bu The object id is declared as an "Id".
+XX 
+XX \(bu Vm_New is called to allocate a Vm Object and obtain the object id.
+XX 
+XX \(bu The set of variables is read into memory:
+XX 
+XX .in +5
+XX Vm_ReadFromTM is called to receive a set of variables
+XX from the Terminal Monitor or
+XX 
+XX Vm_ReadFromDisk is called to read the set of variables
+XX from disk.
+XX 
+XX The set of variables read from TM may be either the initial
+XX set of process variables or the result of a dynamic tutor session.
+XX The set of variables is represented by the object id.
+XX .in -5
+XX 
+XX \(bu Vm_SetValidIntg, Vm_SetValidReal and Vm_SetValidString
+XX functions are called to
+XX change the valids of variables (of type INTEGER, REAL,
+XX and STRING) in the Vm Object.
+XX .in -3
+XX 
+XX \fINew valids may also be added to variables with these functions.\fP
+XX .fi
+.xx
+
+.SH "DYNAMIC CONSTRUCTION of TAE VARIABLES (TAE Classic)"
+.IP
+
+.LP
+
+An application program may need to construct new TAE parameters from
+scratch, either for a dynamic tutor session or for output to disk.
+This is done as follows:
+
+.in +3
+\(bu The object id is declared as an "Id".
+
+\(bu Vm_New is called to allocate an object and obtain the object id.
+
+\(bu Vm_SetIntg, Vm_SetReal and Vm_SetString functions are called
+to change the values of variables of type TAEINT (integer),
+TAEFLOAT (real), and TEXT * (string) in the Vm Object.
+
+\(bu Vm_SetValidIntg, Vm_SetValidReal and Vm_SetValidString functions are
+called to change the valids of variables of type TAEINT (integer),
+TAEFLOAT (real), and TEXT * (string) in the Vm Object.
+.in -3
+
+After construction, the set of variables
+may be written to disk (Vm_WriteToDisk) or
+used to initiate a dynamic tutor session (Vm_DynTutor) or to send
+outputs (i.e., TCL variables) to TM (Vm_SetTCLVar).
+
+.SH OUTPUT to DISK (TAE Classic)
+.IP
+
+.LP
+
+TAE Variables in a Vm Object may also be written to disk
+(Vm_WriteToDisk, used to write a Vm object to disk) 
+and/or used to initiate a dynamic tutor session
+(Vm_DynTutor, which is TM-specific).
+
+.SH OUTPUT to TM (TAE Classic)
+.IP
+
+.LP
+
+\fINote: This section is TM-specific.\fP
+
+The values for outputs may be set using
+Vm_SetIntg, Vm_SetReal and Vm_SetString into a Vm
+object allocated by Vm_New.
+
+The set of variables in a Vm Object is sent to TM
+using Vm_SetTCLVar; Vm_SetTCLVar may be called at any time
+during process execution.  (The variables that are updated in this
+way must be TAE globals referred to in the proc's PDF through
+the REFGBL statement, or parameters declared as type "name" in the
+PDF.  Parameters of type name are passed by reference, that is,
+when the proc is invoked; parameters of type name have a value
+that refers to a variable in the Terminal Monitor's context.)
+
+.SH "DYNAMIC TUTOR SESSIONS (TAE Classic)"
+.IP
+
+.LP
+\fINote: This section is TM-specific.\fP
+
+During execution, an application process may request additional parameters
+from the user.  When the parameters are requested, TM places the user in
+dynamic tutor.
+
+
+An application process initiates and receives the results of a dynamic
+tutor session as follows:
+
+
+\(bu Vm_New is called to create a new object.
+Variables may be read or set from scratch into
+process storage as described above.  The values of the variables
+in the Vm Object become initial tutor values for the dynamic
+tutor session.
+
+\(bu Vm_DynTutor is called to pass the data to TM and to
+initiate the dynamic tutor session.
+
+\(bu Vm_ReadFromTM is called to receive the data containing the
+user-supplied parameters.  Vm_ReadFromTM does not return
+until the dynamic tutor session is complete.
+
+\(bu Vm_Find function or Vm_FindVar function is called to
+obtain a pointer to the structure of a variable
+(of type INTEGER, REAL, and STRING.)
+
+
+.SH CODE EXAMPLE
+.IP
+
+.LP
+Many of the examples in the $TAEDEMOSRC directory use Vm functions 
+typical to TAE Plus graphical user interface applications.
+For example, the file pan_pcontrol.c in the directory $TAEDEMOSRC/presdemo
+uses Vm functions to access and change view
+attributes of a item.
+
+A basic example showing the Terminal Monitor use of the Vm package is shown
+below. Another example is available in template.c 
+in the $TAEDEMO/classic directory.
+
+.nf
+
+/*------------------------------------------------------*/
+/*  TAE Classic program to show use of dynamic memory   */
+/*  parameter blocks using Vm functions.                */
+/*  This program creates a parameter block, then        */
+/*  receives variable values from TM and prints out the */
+/*  the values received.                                */
+/*------------------------------------------------------*/
+#include        <stdio.h>
+#include        "taeconf.inp"
+#include        "parblk.inc"
+#include        "terminc.inc"
+
+FUNCTION main( )
+{
+    Id          vmid, Vm_New();
+    CODE        Vm_ReadFromTM();
+    FILE        *fp, Vm_OpenStdout();
+    struct      VARIABLE        *vx, *vi, *vs, *Vm_Find();
+    COUNT       i;
+/*------------------------------------------------------*/
+/*  Create a new parameter object and use it to get     */
+/*  parameter values from TM.                           */
+/*  Also open standard output.                          */
+
+    vmid = Vm_New ( P_ABORT );
+    Vm_ReadFromTM ( vmid );
+    fp = Vm_OpenStdout ( vmid );
+
+/*  Get pointers to the parameter variable structures.  */
+
+    vx = Vm_Find ( vmid, "X" );
+    vi = Vm_Find ( vmid, "I" );
+    vs = Vm_Find ( vmid, "S" );
+
+/*  Print out parameter values.                         */
+
+    for (i=0; i < (*vx).v_count; i++)
+        fprintf ( fp, "X(%d) = %f\\n", i+1, RVAL( *vx, i ) );
+    for (i=0; i < (*vi).v_count; i++)
+        fprintf ( fp, "I(%d) = %d\\n", i+1, IVAL( *vi, i ) );
+    for (i=0; i < (*vs).v_count; i++)
+        fprintf ( fp, "S(%d) = %s\\n", i+1, SVAL( *vs, i ) );
+
+/*  Terminate the program.                              */
+
+
+    Vm_Free( vmid );
+
+    z_exit( 1, "Normal termination." );
+}
+
+.fi
+
+
+.SH MAN PAGE HINTS
+.IP
+
+.LP
+
+For a one-line description of \fI all Vm functions\fP, type:
+
+.nf
+        man -k Vm_
+.fi
+
+This is also useful if you can't remember the exact name of a function.
+You can also type a partial function name, such as:
+
+.nf
+        man -k Vm_set
+.fi
+
+to see all the Vm_Set* function summaries.
+
+To obtain a one-line description of a specific function
+(for example, Vm_SetString), type:
+
+.nf
+        whatis Vm_SetString
+.fi
+
+To print typeset quality versions of any of these
+man pages (for example, Vm_SetString), type:
+
+.nf
+        man -t Vm_SetString 
+.fi
+
+If this fails (or if you don't care about the typesetting quality), try:
+
+.nf
+        man Vm_SetString | lpr
+.fi
+
+.SH SEE ALSO
+.IP
+.LP
+Co, Wpt, StringParm
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

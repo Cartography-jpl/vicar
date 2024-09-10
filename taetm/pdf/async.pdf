@@ -1,0 +1,138 @@
+procedure help=*
+
+subcmd submit
+    parm proc (string,32)
+    parm savefile count=0:1 default=--
+    parm jobname type=(string,32) count=0:1 default=--
+    parm stdout  count=0:1 default=--
+end-sub
+
+body
+if (_subcmd = "submit")
+    if ($COUNT(jobname) = 0)
+	if ($COUNT(savefile) = 0)
+	    &proc |restore=@proc, runtype=ASYNC, stdout=@stdout|
+	else
+	    &proc |restore=@savefile, runtype=ASYNC, stdout=@stdout|
+	end-if
+    else
+	if ($COUNT(savefile) = 0)
+	    &proc |restore=@proc, runtype=(ASYNC,&jobname), stdout=@stdout|
+	else
+	    &proc |restore=@savefile, runtype=(ASYNC,&jobname), stdout=@stdout|
+	end-if
+    end-if
+end-if
+end-proc
+.title
+  		   Asynchronous Job Initiation
+
+.help
+	    You may invoke the ASYNC procedure to submit a
+	    proc for asynchronous execution with the following
+	    subcommand.
+
+		ASYNC-SUBMIT
+
+.PAGE
+
+
+
+	    For asynchronous job status and execution control
+	    see the following commands:
+
+		SHOW-ASYNC	! displays status of jobs
+		ABORT-ASYNC	! aborts job
+		WAIT-ASYNC	! waits on job completion
+		SHOW-WAITING	! display jobs waiting for dynamic parameters
+		REMOVE		! deletes job if complete
+		REPLY		! initiates dynamic parameter dialog for job
+
+.PAGE
+			ASYNC-SUBMIT
+
+			
+		    Function and Format
+
+
+	Function:
+
+	    Aids in submitting a proc for asynchronous execution.
+
+
+
+	Format:
+
+	    ASYNC-SUBMIT  PROC=proc-name  SAVEFILE=saved-file-name +
+		   JOBNAME=job-name STDOUT=standard-output-file-name
+.PAGE
+			Usage Notes
+
+
+
+	This subcommand is useful as a menu option.  After tutoring on
+	the desired proc and performing a tutor SAVE command to save
+	the parameter values, you can tutor on ASYNC-SUBMIT to actually
+	submit the proc.
+!
+.level1	
+.subcmd submit
+Submit a proc for asynchronous
+execution.
+.variable proc
+Name of the proc to submit.
+.variable savefile
+The RESTORE qualifier.
+Name of the previously SAVEd
+file to restore.  If null,
+the value of "proc" is used.
+.variable jobname -submit
+The job-name with ASYNC
+in RUNTYPE qualifier.
+.variable stdout
+The STDOUT qualifier.
+!
+.level2
+.subcmd SUBMIT
+
+
+
+	This subcommand is useful as a menu option.  After tutoring on
+	the desired proc and performing a tutor SAVE command to save the
+	parameter values, you can tutor on ASYNC-SUBMIT to actually
+	submit the proc.
+!
+.variable proc
+
+
+	The name of the proc to be submitted for execution.
+!
+.variable savefile
+
+
+	The RESTORE qualifier.	The name of the previously SAVEd 
+	parameter file containing the parameters to use in running
+	the proc.
+
+	If SAVEFILE is null, the parameter file with the same name
+	as specified by "proc" is used.
+!
+.variable jobname
+
+
+	An optional second component with ASYNC for the RUNTYPE
+	qualifier.  This specifies the name to be assigned to 
+	the asynchronous job.
+
+	If jobname is null, TAE will assign a unique name based
+	on the proc name.
+!
+.variable stdout
+
+
+	The STDOUT qualifier.  This specifies the name of the standard
+	output file (i.e., the job log).
+
+	If stdout is null, the job log is given the same name as the
+	proc name.
+.END

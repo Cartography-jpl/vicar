@@ -1,0 +1,265 @@
+PROCESS HELP=*
+PARM INP     TYPE=STRING  COUNT=1
+PARM OUT     TYPE=STRING  COUNT=(0:1)			DEFAULT=--
+PARM LIMIT   TYPE=REAL    COUNT=(0:2)			DEFAULT=--
+PARM EXTEXPO TYPE=INTEGER COUNT=(0:1) VALID=(2:30)	DEFAULT=--
+PARM REJECT  TYPE=INTEGER COUNT=(0:1) VALID=(0:3)	DEFAULT=3
+PARM PLOT    TYPE=STRING  COUNT=(0:1) 			DEFAULT=--
+PARM TABLE   TYPE=STRING  COUNT=(0:1) 			DEFAULT=--
+PARM DBUG    TYPE=KEYWORD COUNT=(0:1) VALID=DBUG	DEFAULT=--
+PARM NODISP  TYPE=KEYWORD COUNT=(0:1) VALID=NODISP   DEFAULT=--
+END-PROC
+.TITLE
+VICAR2 Program CCDNOISE
+.HELP
+PURPOSE:
+
+CCDNOISE determines the system gain constant (in electrons per DN) and
+read-noise floor (DN) for a CCD camera system.  The program is one of
+a series of programs designed to support radiometric calibration of flight
+imaging systems.
+
+.PAGE
+Vicar Plotting
+
+The Vicar Plotting system can produce plots on a display device if required.
+The plotting system always generates a postscript file suitable for plotting on 
+either a hard copy device or a display device. The postscript file can be 
+defaulted to a system derived name or can be explicitly named by the user.  
+
+The user can run plotting programs either interactively or in batch.  Whether 
+or not plots are required, a plotting device (node) must be specified. This may
+or may not be the plotting device the user requires.  To override the system 
+defaulted device, the user must select a display device.  This is implemented 
+from an Alpha using the following following:
+           set display/create/trans=tcpip/node=poconos.  
+This allocates a UNIX workstation named "poconos". If the user is on an Alpha
+and wishes to plot to a UNIX workstation, the user first type: 
+           xhost coda2 
+where coda2 is the name of the Alpha from which plots will be sent.  
+.PAGE
+To plot on a UNIX workstation, the user needs to type on the UNIX workstation
+           setenv DISPLAY poconos:0.0
+which allocates the UNIX workstation named "poconos".      
+Note: poconos and coda2 are examples of nodes.  The user may send and direct 
+plots from and to any node he chooses.  
+
+Interactively, either on the command line or in a pdf, the user may decide 
+decide whether or not to plot the graphics.   If the user requires only a hard
+copy, he must add 'nodisp to the program command line.   This will inhibit the 
+plotting of the graphics on a display device.  
+
+In batch, the user may not request plots on a display device.  Only postscript
+files will be produced.  In order to generate postscript files in batch mode , 
+the user MUST allocate a display device from WITHIN the batch script.  If the 
+user fails to do this, no postscript files will be produced.    
+
+.PAGE
+EXECUTION:
+
+	      CCDNOISE INP=LTF OUT=MARK PARMS
+
+The input is a Light Transfer File (LTF) containing statistical data for
+specified areas in the image for each exposure of a light transfer
+sequence.  The LTF must have been previously initialized via LTGEN and
+loaded with data via MOMGEN.
+
+The output is an optional MARK-format tiepoint data set containing the
+centers of all rejected areas (see VICAR program MARK).
+
+.PAGE 
+OPERATION:
+
+CCDNOISE performs the following steps:
+
+  1) Read data from the Light Transfer File.
+  2) Compute system gain constant and read noise for each area.
+  3) Compute mean value for system gain constant and read noise
+     and flag all areas deviating by more than 2 sigma from the mean.
+  4) Re-compute the mean value for system gain constant and read
+     noise, ignoring all flagged values as specified by the REJECT
+     parameter.
+
+The mean signal for a frame is computed by subtracting the dark current
+from the frame and computing the mean of the result.  If extended
+exposure mode frames are present in the light transfer sequence (possible
+for Galileo data), then the extended exposure dark current is subtracted 
+from these frames.
+
+If extended exposure mode frames exist, the EXTEXPO parameter must normally
+be specified to indicate the exposure level at which the extended exposures
+begin.
+
+   Example:  EXTEXPO=7 specifies that the 7th exposure level (above the
+	     dark current) begins the extended exposures.
+
+However, light-transfer sequences consisting entirely of extend-exposure
+frames should be input as if they were normal exposures, i.e. the extended-
+exposure dark-current should be inserted in place of the normal dark-current
+and the EXTEXPO parameter should not be used.
+
+CCDNOISE prints out the following:
+
+  1) System gain constant and read noise for each area specified.
+  2) Summary of all areas flagged for bad system gain or read noise.
+  3) If DBUG is specified, a summary of the mean signal and noise (DN)
+     at each exposure for each area specified.
+
+If an output file is specified, then the centers of all flagged values
+as specified by the REJECT parameter are stored in a MARK-format data
+set.
+
+If a PLOT file is specified, a signal vs. noise plot is generated for
+each of the five reticles of the frame.  The reticles are (1) the upper-
+left corner, (2) upper-right corner, (3) lower-left corner, (4) lower-right
+corner, and (5) center of the frame.  These reticles divide the frame into
+five regions.  Signal and noise data for the reticles are computed by 
+averaging the good areas, where each area is assigned to the region of
+the nearest reticle.  The plot file should be printed using the NOFEED
+option (see example below).
+
+A table of the values used to create each plot is also printed out.  This
+table includes the ratio of measured vs. computed noise at each exposure.
+The noise (DN) is computed as follows:
+
+	NOISE = SQRT(S/K + RDN**2)
+
+where S = signal (DN)
+      K = system gain constant (electrons per DN)
+      RDN = read noise (DN)
+
+This ratio provides a useful criteria for evaluating the quality of the
+input data (ratio should be near 1 for all exposures). 
+
+If a TABLE file is provided, the above plots will be output as columnar
+data in a tab-delimitted ASCII file.  The columns are:
+
+  exposure time in msec
+  signal reticle 1, 
+  noise ret. 1, 
+  computed noise ret. 1,
+  ....,  
+  signal ret. 5, 
+  noise ret. 5,
+  computed noise ret. 5
+
+The rows are for each exposure level.
+
+.PAGE
+EXAMPLE:
+
+   CCDNOISE LTF MRK PLOT=NOISE.DAT TABLE=TAB.DAT
+   MARK (PIC,MRK) OUT			!Scribe boxes around bad centers
+   JDISP OUT				!Display the bad areas
+   DCL PRINT/NOFEED NOISE.DAT		!Print the noise plot
+
+.PAGE
+ORIGINAL PROGRAMMER: Gary Yagi, circa 1982
+COGNIZANT PROGRAMMER: Gary Yagi, April 88
+REVISION HISTORY:
+ 22 Apr 97...T.Huang........Ported from VAX to Unix.
+ 14 Nov 94...C.C.Avis.......Added decent test file
+  6 Jun 94...C.C.Avis.......Added tabular output
+ 20 Apr 88...G.M.Yagi.......Fix bug in EXTEXPO, LABPROC.
+  3 Mar 88...G.M.Yagi.......Change PDF to treat all EXTEXPO call.
+ 01 Nov 87...G.M.Yagi.......Convert to new CPLT plotting routines.
+ 10 Dec 86...G.M.Yagi.......Changed plot to signal vs noise.
+ 20 JUL 86...G.M.YAGI.......Code and documentation clean-up.
+ 26 JAN 85...M.E.MORRILL....VERSION 2*A RELEASED.
+ 22 JAN 85...M.E.MORRILL....ADDED PLOT OUTPUT FOR RATIO SHOT/THEORY. 
+ 15 JAN 85...M.E.MORRILL....ADDED SECOND PASS TO REJECT BAD AREAS
+  5 OCT 84...M.E.MORRILL....VICAR*2 CONVERSION.
+        82...G.M.YAGI.......INITIAL RELEASE.
+
+.LEVEL1
+.VARIABLE INP
+ STRING COUNT=1
+ The Light Transfer File.
+.VARIABLE OUT
+ STRING--OPTIONAL
+ Mark-format file
+ containing centers
+ of rejected areas.
+.VARIABLE PLOT
+ STRING--OPTIONAL
+ Output plot file.
+.VARIABLE TABLE
+ STRING--OPTIONAL
+ Output table file.
+.VARIABLE DBUG
+ KEYWORD--OPTIONAL.
+ Diagnostic printout.
+.VARIABLE REJECT
+ INTEGER--OPTIONAL
+ REJECT=0 No area rejection
+       =1 Reject bad system gain
+       =2 Reject bad noise floor
+       =3 Reject either
+.VARIABLE LIMIT
+ REAL COUNT=0:2--OPTIONAL
+ LIMIT=(loexp,hiexp)
+ Only exposures between
+ these values are used.
+.VARIABLE EXTEXPO
+ INTEGER--OPTIONAL--For Galileo only
+ Specifies exposure level
+ at which extended exposure
+ mode frames begins.
+.VARIABLE NODISP
+ If present, no display
+ is shown
+.LEVEL2
+.VARIABLE INP
+ STRING COUNT=1
+ The Light Transfer File created by LTGEN and MOMGEN containing
+ area statistics for calculating the system gain constant K and
+ the noise floor.
+.VARIABLE OUT
+ STRING--OPTIONAL
+ Mark-format data set with (line,sample) centers of rejected areas
+ (see REJECT parameter).
+.VARIABLE PLOT
+ STRING--OPTIONAL
+ Output signal vs. noise plot file
+ Print with PRINT/NOFEED option.
+ E.g.   DCL PRINT/NOFEED CCDNOISE.PLT
+.VARIABLE TABLE
+ STRING--OPTIONAL
+ Output tab-delimitted ASCII table file containing, for each exposure
+ level:
+  exposure time in msec
+  signal at reticle 1, 
+  noise at reticle 1, 
+  computed at noise reticle 1,
+  ....,  
+  signal at reticle 5, 
+  noise at reticle 5,
+  computed at noise reticle 5
+
+ Reticle 1 is Upper left corner, 2 is upper right, 3 is lower left,
+ 4 is lower right, and 5 is the center of the image.
+.VARIABLE LIMIT
+ REAL COUNT=0:2--OPTIONAL
+ LIMIT=(loexp,hiexp)
+ Only data in the Light Transfer File with exposures (in msec) between 
+ these values are used for the calculations.
+.VARIABLE EXTEXPO
+ INTEGER--OPTIONAL--For Galileo only
+ Specifies exposure level number (1 thru number of inputs) at which 
+ extended exposure mode frames begins.
+.VARIABLE REJECT
+ INTEGER--OPTIONAL
+ Reject areas with values differing from mean by more than 2-sigma.
+ REJECT=0 No area rejection
+       =1 Reject areas with bad system gain
+       =2 Reject areas with bad noise floor
+       =3 Reject areas with either term bad
+.VARIABLE DBUG
+ KEYWORD--OPTIONAL.
+ Specifies diagnostic printout.
+.VARIABLE NODISP
+ Keyword--Optional
+ If present, no display is shown in interactive mode and output plot files
+ are automatically saved.  When not present, plot is displayed and files are
+ save is an option.
+.END

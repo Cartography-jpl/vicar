@@ -1,0 +1,340 @@
+.TH s_equal 3 "16 Nov Oct 1992" "TAE Plus v5.3"
+.SH NAME
+s_equal, f_force_lower_, t_pinit, tae_alloc, tae_free - miscellaneous low-level TAE Plus functions
+
+.SH INTRODUCTION
+.IP
+
+.LP
+.\" CAUTION: DO NOT USE FUNCTIONS WITHIN THE ".ig UNSUPPORTED" MARKERS.
+.\"          THE FULL LIST OF SUPPORTED FUNCTIONS IS IN THE ".SH NAME" SECTION.
+.ig UNSUPPORTED
+The functions presented on these pages provide low-level, 
+portable string, file, and miscellaneous functionality.
+.UNSUPPORTED
+
+The functions presented on these pages provide low-level, 
+string comparison, filename case sensitivity control, terminal initialization,
+and memory allocation and de-allocation.
+
+All C and C++ TAE Plus applications have access to these 
+functions since generated code
+produces the include statement for file "wptinc.inp" 
+which declares each of these functions. 
+
+The specific synposes below use the ANSI C form of function prototype
+wherein the form:
+.in +5
+
+int s_equal (char *string1, char *string2)
+
+.in -5
+equates to the declaration:
+.in +5
+
+int s_equal (char *string1, char *string2)
+.br
+void *string1, *string2;
+.in -5
+
+.SH ADA PROGRAMMER NOTE
+.IP
+
+.LP
+.ig UNSUPPORTED
+Due to major differences between Ada and C in string handling,
+.UNSUPPORTED
+Due to major differences between Ada and C memory management,
+Ada program access is presently limited to the following 
+functions (which are called in generated Ada code):
+
+.in +15
+f_force_lower
+.br
+s_equal
+.br
+t_pinit
+.br
+.in -15
+
+.SH COMMON SYNOPSIS
+.IP
+
+.LP
+#include "wptinc.inp"
+
+.SH DESCRIPTIONS and SPECIFIC SYNOPSES
+.\" Trick to force a blank line after a heading
+.IP
+
+.LP
+.\" END Trick to force a blank line after a heading
+
+.ig UNSUPPORTED
+\fBbytmov -\fP
+.in +5
+
+void bytmov (void *source, void *dest, int numBytes)
+
+Move numBytes bytes from source to dest.
+.in -5
+
+\fBf_exists -\fP
+.in +5
+
+BOOL f_exists (TEXT *filespec, TEXT *library, TEXT *filename, 
+TEXT *filetype)
+
+Determine whether or not the given file filespec exists; 
+returns TRUE if file exists, FALSE otherwise. 
+[Note: This function attempts to open the file to determine whether 
+it exists, so it will fail if the file exists but the caller 
+does not have READ permission.]
+.in -5
+
+.UNSUPPORTED
+
+\fBf_force_lower -\fP
+.in +5
+
+BOOL f_force_lower (BOOL caseInsensitiveFilenames)
+
+Declare whether filenames should or should not be case sensitive; 
+passing FALSE indicates that filespecs should not be converted to 
+lowercase before opening the file; 
+passing TRUE implies case insensitive filenames; 
+returns previous value of the case sensitivity flag.
+.in -5
+
+.ig UNSUPPORTED
+\fBf_libr -\fP
+.in +5
+
+CODE f_libr (TEXT *filespec, TEXT *library)
+
+Extract library component (i.e., directory name) from complete 
+file specification; second argument is output.
+.in -5
+
+\fBf_name -\fP
+.in +5
+
+CODE f_name (TEXT *filespec, TEXT *name)
+
+Extract base filename component from complete file specification; 
+second argument is output.
+.in -5
+
+\fBf_type -\fP
+.in +5
+
+CODE f_type (TEXT *filespec, TEXT *type)
+
+Extract file type from host complete file specification; 
+second argument is output.
+.in -5
+
+\fBs_append -\fP
+.in +5
+
+int s_append (char * source, char * dest)
+
+Append the string source to the string dest; 
+returns length of string (excluding EOS).
+.in -5
+
+\fBs_bcopy -\fP
+.in +5
+
+COUNT s_bcopy (TEXT *source, TEXT *dest, int length)
+
+Bounded string copy; copy string source to string dest, 
+but copy at most length characters; 
+returns length of output string (excluding EOS).
+.in -5
+
+\fBs_blank -\fP
+.in +5
+
+void s_blank (TEXT *string, int length)
+
+Produce a string containing length blank spaces.
+.in -5
+
+\fBs_copy -\fP
+.in +5
+
+int s_copy (char * source, char * dest)
+
+Copy string source to string dest; returns length of string (excluding EOS).
+.in -5
+.UNSUPPORTED
+
+\fBs_equal -\fP
+.in +5
+
+int s_equal (char *string1, char *string2)
+
+Case insensitive comparison of two strings for 
+equality (not lexicographically); 
+returns TRUE if strings are equal, returns FALSE otherwise.
+.in -5
+
+.ig UNSUPPORTED
+\fBs_free -\fP
+.in +5
+
+void s_free (TEXT *string)
+
+De-allocate string which was previously allocated by s_save.
+.in -5
+
+\fBs_i2s -\fP
+.in +5
+
+int s_i2s (TAEINT intg, TEXT *string)
+
+Convert integer to string (e.g., the number -15 becomes 
+the string "-15"); always returns SUCCESS.
+.in -5
+
+\fBs_index -\fP
+.in +5
+
+int s_index (TEXT *source, FUNINT ch)
+
+Find the zero-relative index of the character ch in the string source; 
+returns the index if ch is found, or negative value otherwise.
+.in -5
+
+\fBs_length -\fP
+.in +5
+
+int s_length (char *string)
+
+Return the length of the given string (excluding EOS).
+.in -5
+
+\fBs_lseq -\fP
+.in +5
+
+int s_lseq (TEXT *lsubstring, TEXT *fullstring)
+
+Determine whether lsubstring is a left substring of the string fullstring; 
+returns TRUE if it is a left substring, FALSE otherwise.
+.in -5
+
+\fBs_r2s -\fP
+.in +5
+
+int s_r2s (TAEFLOAT real, TEXT *string)
+
+Convert floating point number to string (e.g., the number 1.25 
+becomes the string "1.25"); always returns SUCCESS.
+.in -5
+
+\fBs_s2i -\fP
+.in +5
+
+int s_s2i (TEXT *string, TAEINT *intg)
+
+Convert string to integer; returns FAIL if given string 
+did not contain an integer, SUCCESS otherwise.
+.in -5
+
+\fBs_s2r -\fP
+.in +5
+
+int s_s2r (TEXT *string, TAEFLOAT *real)
+
+Convert string to floating point number; returns FAIL if given 
+string did not contain a real number, SUCCESS otherwise.
+.in -5
+
+\fBs_save -\fP
+.in +5
+
+TEXT * s_save (TEXT *string)
+
+Save a string in dynamic memory; returns NULL if insufficient 
+memory, or address of string otherwise.
+
+.in -5
+
+\fBs_shift -\fP
+.in +5
+
+void s_shift (TEXT *inOutString, FUNINT nshift)
+
+Shift string nshift characters to the left; 
+inOutString becomes shorter by nshift characters 
+(leftmost nshift characters are discarded); 
+returns length of modified string (excluding EOS). 
+[Note: nshift > 0, nshift >= s_length(inOutString)]
+.in -5
+
+\fBs_strip -\fP
+.in +5
+
+void s_strip (TEXT *inOutString)
+
+Strip trailing spaces from string inOutString; returns length 
+of modified string (excluding EOS).
+.in -5
+
+\fBs_substring -\fP
+.in +5
+
+TEXT * s_substring (TEXT *pattern, TEXT *fullstring)
+
+Find the substring pattern in the longer string fullstring; 
+return the address of the substring if found, NULL otherwise.
+.in -5
+.UNSUPPORTED
+
+\fBt_pinit -\fP
+.in +5
+
+void t_pinit (int *lines, int *columns, int *type)
+
+Initialize terminal (e.g., xterm used to invoke TAE Plus 
+application) without clearing the screen.
+.in -5
+
+\fBtae_alloc -\fP
+.in +5
+
+char * tae_alloc (int numElements, int elementSize)
+
+Dynamically allocate numElements objects, each of size elementSize; 
+returns pointer to allocated memory; free after use by calling tae_free.
+.sp
+Use this function as you would use \fIcalloc\fP.
+.sp
+\fINote: Always cast the value returned by tae_alloc
+to the appropriate data type.\fP
+.in -5
+
+\fBtae_free -\fP
+.in +5
+
+void tae_free (void *)
+
+De-allocate memory previously allocated by tae_alloc.
+.sp
+Use this function as you would use \fIfree\fP.
+.in -5
+
+
+.SH CODE EXAMPLE
+.IP
+
+.LP
+The functions s_equal, f_force_lower, and t_pinit are used in the various
+source files in the $TAEDEMOSRC/presdemo directory.
+.sp
+The functions tae_alloc and tae_free are used in an example on the
+TAE_selection_list man page.
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

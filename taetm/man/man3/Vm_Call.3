@@ -1,0 +1,36 @@
+.TH Vm_Call 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_Call - installation-dependent initialization; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+VOID Vm_Call (vmid)
+
+Function return:
+
+.nr L 0 1
+.IP o
+None.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+type: input, Id vmid;
+
+Id for the initial Vm object from the Terminal Monitor.
+.LP
+
+
+Vm_Call is for installation-provided application initialization. 
+Vm_Call is called automatically by Vm_OpenStdout.  The Vm_Call 
+provided with the TAE delivery performs no functions.  See your 
+system manager for information on a substantive Vm_Call.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

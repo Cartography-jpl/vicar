@@ -1,0 +1,33 @@
+!	edited 19-may-83...dm
+.TITLE
+BREAK
+.HELP
+			Function and Format
+	
+	Function:
+
+	    BREAK causes an immediate loop exit.
+
+
+	Format:
+
+	    BREAK
+.PAGE
+			Usage Notes
+
+
+	o  The next command executed after BREAK is the command
+	   following the next END-LOOP or END-FOR.
+.PAGE
+			Example
+
+
+	    LET I = 1
+	    LOOP				!DO UNTIL I = 11
+	        COPY INFILE&I OUTFILE&I
+	        LET I = I+1
+	        IF (I = 11)
+		    BREAK
+		END-IF
+	    END-LOOP
+.END

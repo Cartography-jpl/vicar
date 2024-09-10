@@ -1,0 +1,57 @@
+.TH Vm_SetNextMenu 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetNextMenu - set the next menu to be executed; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetNextMenu (vmid, name)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: successfully set the next menu to be executed.
+.IP o
+FAIL: failed to set the next menu to be executed; MDF does not exist 
+or the specified Vm object does not contain the global _$MENUS.
+.IP o
+P_BADNAME:  name is null string.
+.IP o
+M_NESTERR: Maximum menu tree nesting has been exceeded.
+.LP
+
+P_ error code values are defined in include file "pgminc.inc";
+M_ error code values are defined in include file "menuinc.inc". 
+
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the next menu to be executed.
+.LP
+
+.IP
+.LP
+Vm_SetNextMenu sets the next MDF to be executed by the Terminal Monitor
+by adding the
+specified MDF onto the current menu stack specified by _$MENUS.  
+Note that the PDF for the current proc
+must have a global reference (refgbl) to the global _$MENUS.  Note 
+also, that Vm_SetNextMenu calls Vm_SetTCLVar, so that _$MENUS is 
+updated immediately in the user's session context.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

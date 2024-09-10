@@ -1,0 +1,100 @@
+process help=*
+PARM USERID  TYPE=STRING COUNT=(0:1) DEFAULT="u2141ozs"
+PARM PASSWORD  TYPE=STRING COUNT=(0:1) DEFAULT="none"
+PARM NAME  TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM LOCATION TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM RADIUS TYPE=STRING COUNT=(0:1) DEFAULT="0 15"
+end-proc
+
+.title
+SIMBAD
+
+.help
+PURPOSE:
+To return information from the SIMBAD astronomical data base in 
+Strasbourg France.
+
+EXECUTION STATEMENT:
+simbad password="   " name="   "
+simbad name="   "
+
+GETTING INTO SIMBAD:
+The Simbad data base wants a password. You can access SIMBAD two ways:
+
+1. Give the password:
+simbad password="   " name="   "
+
+2. Let kerberos get it for you by running the following unix code before
+getting into vicar:
+selcat o
+kinit (which will ask you for your kerberos password).
+vicar
+simbad name="   "
+
+PROGRAM USAGE:
+You can run SIMBAD two ways:
+
+1. Specifying an object NAME, see NAME keyword,
+Example:  simbad name="ngc 1097"
+
+2. Specifying a coordinate in RA & Dec with LOCATION and a RADIUS. See keywords.
+Example:  simbad location="20 10 -23 11" radius="0 30"
+
+.page
+PROGRAM HISTORY
+
+Cognizant programmer: Jean Lorre
+Revisions: 9-1-97
+
+.page
+.LEVEL1
+
+.VARI USERID
+Simbad userid
+
+.VARI PASSWORD
+Simbad password
+
+.VARI NAME
+Object name
+
+.VARI LOCATION
+Object RA & Dec
+
+.VARI RADIUS
+Radius about Location
+to find objects within.
+default: radius="0 15"
+
+.LEVEL2
+
+.VARI USERID
+Simbad userid. 
+This defaults to a valid userid unless you have your own.
+
+.VARI PASSWORD
+Simbad password.
+See the METHOD section to permit kerberos to get it for you.
+
+.VARI NAME
+Object name.
+In this mode RADIUS is ignored and information on the object name is
+returned. Example: name="ngc 1097"
+
+.VARI LOCATION
+Object location in RA & Dec (b 2000 coordinates).
+In this mode information is returned on all objects within RADIUS of this
+location. This is a string. You list RA first and then Dec. The sign on
+Dec tells Simbad that it's Declination information.
+Example: location="10 5 22 +45 10 11"
+
+If you prefix the location with g= you get galactic coordinates.
+If you prefix the location with e= you get ecliptical coordinates.
+
+.VARI RADIUS
+Search radius about LOCATION.
+This is a string.
+Example: radius="0 11"  ( 11 minutes of arc radius )
+default: radius="0 15"
+
+.END

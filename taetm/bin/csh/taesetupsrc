@@ -1,0 +1,45 @@
+# NON-Standard setup of environment for TAE Plus developers.
+#
+# These variables are only needed by Century Computing, Inc.
+# AND TAE Plus programmers who MODIFY THE SOURCE TREE
+# (e.g., to add a presentation type, add project specific hooks, etc.).
+#
+# If this describes your needs, it is recommended that you source 
+# this file in your .cshrc file
+#
+
+# CHANGE LOG:
+# 25-may-93 Created based on src vars from v5.2 taesetup; note that $TAESRC
+#           is now the top of the TAE src; there is no longer a $TAESRCTAE;
+#           $TAEIV without version number...kbs
+# 26-may-93 Added TAEXTAELIB, TAEXTAE...kbs
+# 04-jun-93 Added TAEXTAEINC, changed TAETOOLS to reflect new location,
+#           moved TAEPDF and TAEXTAELIB to taesetup...kbs
+# 22-jun-93 Added TAECXX, and TAECXXINC to separate out C++ app stuff...ljn
+# 26-jul-93 Deleted TAEID...kbs
+
+setenv TAESRC		$TAE/src
+setenv TAECG		$TAESRC/cg
+setenv TAECXXINC	$TAE/cxx/include
+setenv TAECXX		$TAESRC/lib/cxx
+setenv TAEDDO		$TAESRC/lib/ddo
+
+# InterViews source tree (without version number)
+setenv TAEIV            $TAE/IV
+
+setenv TAEX		$TAE/Xtae
+setenv TAEXTAEINC	$TAEX/include/Xtae
+setenv TAEXTAE		$TAESRC/lib/Xtae
+
+setenv TAETAELIB	$TAESRC/lib/tae
+setenv TAETM   		$TAESRC/tm
+setenv TAETOP   	$TAESRC
+setenv TAEWB   		$TAESRC/wb
+setenv TAEWPT		$TAESRC/lib/wpt
+setenv TAEXTERM		$TAESRC/lib/xterm
+setenv TAEXM		$TAESRC/lib/Xm
+setenv TAETOOLS         $TAESRC/tools
+
+setenv TAECONTRIB       $TAE/contrib
+setenv TAEENV           $TAE/env
+setenv TAERFG           $TAE/res/rfg

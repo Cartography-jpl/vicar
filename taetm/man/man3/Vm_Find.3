@@ -1,0 +1,49 @@
+.TH Vm_Find 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_Find - find variable
+
+.SH DESCRIPTION
+.IP
+.LP
+struct VARIABLE *Vm_Find (vmid, name)
+
+Function return:
+
+.nr L 0 1
+.IP o
+Pointer to a VARIABLE structure in the Vm object.
+.IP o
+NULL: the variable does not exist (available only if the object was
+initialized in "continue" mode with a call to Vm_New).
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the variable.  The name may be qualified to any number of levels,
+e.g., "myButton.fg", "myMenubar.edit.copy.font", etc.
+.LP
+
+Vm_Find is used to retrieve the individual variables from the Vm
+object.
+
+If the variable is not found and the Vm object was
+created by Vm_New with mode P_ABORT, the process will be aborted.  
+NULL can only be returned in the case where mode is P_CONT.
+
+Variable values are extracted from a VARIABLE using the standard TAE 
+macros, IVAL, RVAL, and SVAL defined in the include file symtab.inc.
+See the StringParm manpage for examples using these macros.
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

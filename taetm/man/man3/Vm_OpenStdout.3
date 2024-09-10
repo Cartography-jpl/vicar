@@ -1,0 +1,54 @@
+.TH Vm_OpenStdout 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_OpenStdout - open the current standard output device; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+FILE *Vm_OpenStdout (vmid)
+
+Function return:
+
+.nr L 0 1
+.IP \n+L.
+Pointer to the current standard output device.
+.LP
+
+.IP
+.LP
+Argument:
+
+.nr L 0 1
+.IP \n+L.
+vmid input, Id vmid;
+
+Id of a Vm object which contains the initial set of 
+parameters passed from TM.
+.LP
+
+.IP
+.LP
+Vm_OpenStdout, which opens the "standard output device"
+specified in the Vm object, should be called at the start of an
+application program.    The Vm object id must be obtained by
+calling Vm_New and the context of the object must be obtained by
+calling Vm_ReadFromTM.  If the standard output is the terminal,
+Vm_OpenStdout calls t_init (terminal initialization). 
+
+The standard output device is the device used for application 
+logging and messages; generally it is the terminal and can be 
+reassigned to a file upon program startup.  (See the Application 
+Programmer's Manual for more information.)
+Program output should be performed by using the FILE pointer
+to the stdout file returned by Vm_OpenStdout function 
+(e.g., fprintf (stdout,...)).
+
+Vm_OpenStdout also calls Vm_Call, which is used for general 
+installation-dependent initialization.
+
+NOTE:  FILE is defined in the UNIX and VMS standard include 
+file stdio.h.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

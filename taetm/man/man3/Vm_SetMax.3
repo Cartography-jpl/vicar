@@ -1,0 +1,59 @@
+.TH Vm_SetMax 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetMax - set maximum vector count of a variable
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetMax (vmid, name, max)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: variable's maximum count successfully updated.
+.IP o
+P_BADCOUNT: maximum count < 0, or > MAXVAL.
+.IP o
+P_BADNAME: the variable does not exist.
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+Otherwise, this object must have been initialized with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+
+.IP \n+L.
+max: input, FUNINT   max;
+
+An integer value for the maximum vector count of the variable.
+.LP
+
+.IP
+.LP
+Vm_SetMax sets the maximum vector count of the variable.
+
+A call to Vm_SetMax replaces the previous maximum vector count for
+the variable.  
+
+NOTE: If the new maximum is less than the current count, 
+then the current count is set to the new maximum count.
+If the minimum count is greater than the new maximum count,
+the minimum count is set to the new maximum count.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

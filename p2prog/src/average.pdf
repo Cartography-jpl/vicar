@@ -1,0 +1,72 @@
+process help=*
+PARM INP TYPE=STRING COUNT=2:48
+PARM OUT TYPE=STRING
+PARM SIZE TYPE=INTEGER COUNT=4 DEFAULT=(1,1,0,0)
+PARM SL TYPE=INTEGER DEFAULT=1
+PARM SS TYPE=INTEGER DEFAULT=1
+PARM NL TYPE=INTEGER DEFAULT=0
+PARM NS TYPE=INTEGER DEFAULT=0
+!# parm inp(3-48) hints=default
+END-PROC
+.TITLE
+AVERAGE
+.HELP
+PURPOSE:
+AVERAGE takes up to 48 input images and averages them together to make an
+output image
+
+EXECUTION:
+
+Example
+
+AVERAGE INP=(A,B,C) OUT=D  will average images A, B, and C to form D.
+
+If the size parameter is used (SIZE=(SL,SS,NL,NS)), only the defined area in
+each input image will be used to create the new file.  
+
+PROGRAM LIMITATIONS
+
+     1. The input and output images must be byte data.
+     2. Maximum number of samples is 20000 per line.  The sum of the number
+        of samples per line for the input images must not exceed 120000.
+
+
+WRITTEN BY:                  Steve Pohorsky                5 Oct 1984
+COGNIZANT PROGRAMMER:        Steve Pohorsky
+REVISION:  1                                                5 Oct 1984
+
+.LEVEL1
+.VARIABLE INP
+STRING - Input image files
+.VARIABLE OUT
+STRING - Output image file
+.VARIABLE SIZE
+INTEGER - Region of input files
+to be concatenated
+.VARIABLE SL
+INTEGER - Starting line
+.VARIABLE SS
+INTEGER - Starting sample
+.VARIABLE NS
+INTEGER - Number of lines
+.VARIABLE NL
+INTEGER - Number of samples
+.LEVEL2
+.VARIABLE INP
+INP specifies the input data sets.  Up to 48 are allowed.
+.VARIABLE SIZE
+The SIZE parameter may be used when only a sub-region of each image is to
+be concatenated; it has the format SIZE=(SL,SS,NL,NS), where the parameters
+are starting line, starting sample, number of lines, and number of samples,
+respectively.  SIZE=(1,1,10,10), for example, will cause AVERAGE to only look
+at the first ten samples of each of the first ten lines in each image, when
+performing the concatenation. 
+.VARIABLE SL
+INTEGER - Starting line (see SIZE)
+.VARIABLE SS
+INTEGER - Starting sample (see SIZE)
+.VARIABLE NS
+INTEGER - Number of lines (see SIZE)
+.VARIABLE NL
+INTEGER - Number of samples (see SIZE)
+.END

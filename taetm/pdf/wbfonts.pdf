@@ -1,0 +1,327 @@
+!	Set font list for the WorkBench
+!
+!	The list below is the list of font names currently delivered
+!	with the TAE Plus WorkBench. You can alter the list of
+!	of WorkBench fonts by editing the list below and then
+!	running this by typing the following command at
+!	your UNIX or DCL prompt:
+!
+!		taetm wbfonts 	(DCL or UNIX)
+!	
+!	Some rules:
+!
+!	1. you are limited to 300 font names.
+!
+!	2. font names must be 24 characters or less.
+!
+!	3. the list is in TCL format; every line except the last
+!	   must be terminated by "+".
+!
+!	NON-DEC sites:
+!	To use the font file name as the font name, you must place
+!	a fonts.alias file in each font directory with the line:
+!
+!		FILE_NAMES_ALIASES
+!
+!	Enter the TAE Plus command `fontalias' as super-user to do so.
+!
+!	DEC sites:
+!	The font names below are MIT X11R4 style font aliases and as such
+!	are different from DEC's. On Ultrix and VMS platforms, the
+!	names below are translated into font names these servers understand.
+!
+!	DEC sites may use DEC-sytle font names as they edit the
+!	list below, but they should be aware that applications created
+!	using the WorkBench may not run properly on non-DEC platforms.
+!
+!
+!	CHANGE LOG:
+!	15-dec-88	add new parm...palm
+!	08-dec-90	v5.0 tree re-organization...ljn/baw
+!	18-apr-91	VMS port...ljn
+!
+procedure
+	refgbl $syschar
+	parm resFile default=wb.res
+body
+if ($syschar(1) = "UNIX")
+  ush ar xv $TAERES/&resFile skeletons.par
+else-if ($syschar(1) = "VAX_VMS")
+  dcl write sys$output ""
+  dcl write sys$output "	Extracting PAR files."
+  dcl taeextract $taeres:wb.res check_for_par no
+  dcl write sys$output ""
+  dcl write sys$output "	Updating with new font list."
+end-if
+skeletons.par |save=skeletons.par| fonts = (+
+parent+
+fixed+
+variable+
+5x8+
+6x10+
+6x12+
+6x13+
+6x13B+
+6x9+
+7x13+
+7x13B+
+7x14+
+7x14rk+
+8x13+
+8x13B+
+8x16+
+8x16rk+
+9x15+
+9x15B+
+10x20+
+12x24+
+12x24rk+
+charB08+
+charB10+
+charB12+
+charB14+
+charB18+
+charB24+
+charBI08+
+charBI10+
+charBI12+
+charBI14+
+charBI18+
+charBI24+
+charI08+
+charI10+
+charI12+
+charI14+
+charI18+
+charI24+
+charR08+
+charR10+
+charR12+
+charR14+
+charR18+
+charR24+
+clB6x10+
+clB6x12+
+clB8x10+
+clB8x12+
+clB8x13+
+clB8x14+
+clB8x16+
+clB8x8+
+clB9x15+
+clI6x12+
+clI8x8+
+clR4x6+
+clR5x10+
+clR5x6+
+clR5x8+
+clR6x10+
+clR6x12+
+clR6x13+
+clR6x6+
+clR6x8+
+clR7x10+
+clR7x12+
+clR7x14+
+clR7x8+
+clR8x10+
+clR8x12+
+clR8x13+
+clR8x14+
+clR8x16+
+clR8x8+
+clR9x15+
+courB08+
+courB10+
+courB12+
+courB14+
+courB18+
+courB24+
+courBO08+
+courBO10+
+courBO12+
+courBO14+
+courBO18+
+courBO24+
+courO08+
+courO10+
+courO12+
+courO14+
+courO18+
+courO24+
+courR08+
+courR10+
+courR12+
+courR14+
+courR18+
+courR24+
+cursor+
+deccurs+
+decsess+
+helvB08+
+helvB10+
+helvB12+
+helvB14+
+helvB18+
+helvB24+
+helvBO08+
+helvBO10+
+helvBO12+
+helvBO14+
+helvBO18+
+helvBO24+
+helvO08+
+helvO10+
+helvO12+
+helvO14+
+helvO18+
+helvO24+
+helvR08+
+helvR10+
+helvR12+
+helvR14+
+helvR18+
+helvR24+
+k14+
+lubB08+
+lubB10+
+lubB12+
+lubB14+
+lubB18+
+lubB19+
+lubB24+
+lubBI08+
+lubBI10+
+lubBI12+
+lubBI14+
+lubBI18+
+lubBI19+
+lubBI24+
+lubI08+
+lubI10+
+lubI12+
+lubI14+
+lubI18+
+lubI19+
+lubI24+
+luBIS08+
+luBIS10+
+luBIS12+
+luBIS14+
+luBIS18+
+luBIS19+
+luBIS24+
+lubR08+
+lubR10+
+lubR12+
+lubR14+
+lubR18+
+lubR19+
+lubR24+
+luBS08+
+luBS10+
+luBS12+
+luBS14+
+luBS18+
+luBS19+
+luBS24+
+luIS08+
+luIS10+
+luIS12+
+luIS14+
+luIS18+
+luIS19+
+luIS24+
+luRS08+
+luRS10+
+luRS12+
+luRS14+
+luRS18+
+luRS19+
+luRS24+
+lutBS08+
+lutBS10+
+lutBS12+
+lutBS14+
+lutBS18+
+lutBS19+
+lutBS24+
+lutRS08+
+lutRS10+
+lutRS12+
+lutRS14+
+lutRS18+
+lutRS19+
+lutRS24+
+ncenB08+
+ncenB10+
+ncenB12+
+ncenB14+
+ncenB18+
+ncenB24+
+ncenBI08+
+ncenBI10+
+ncenBI12+
+ncenBI14+
+ncenBI18+
+ncenBI24+
+ncenI08+
+ncenI10+
+ncenI12+
+ncenI14+
+ncenI18+
+ncenI24+
+ncenR08+
+ncenR10+
+ncenR12+
+ncenR14+
+ncenR18+
+ncenR24+
+nil2+
+olcursor+
+olgl10+
+olgl12+
+olgl14+
+olgl19+
+symb08+
+symb10+
+symb12+
+symb14+
+symb18+
+symb24+
+tech14+
+techB14+
+term14+
+termB14+
+timB08+
+timB10+
+timB12+
+timB14+
+timB18+
+timB24+
+timBI08+
+timBI10+
+timBI12+
+timBI14+
+timBI18+
+timBI24+
+timI08+
+timI10+
+timI12+
+timI14+
+timI18+
+timI24+
+timR08+
+timR10+
+timR12+
+timR14+
+timR18+
+timR24)
+
+if ($syschar(1) = "UNIX")
+  ush ar r $TAERES/&resFile skeletons.par
+else-if ($syschar(1) = "VAX_VMS")
+  dcl purge/nolog skeletons.par
+  dcl taecreate $taeres:wb.res *.par yes
+end-if
+end-proc

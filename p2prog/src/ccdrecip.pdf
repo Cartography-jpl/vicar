@@ -1,0 +1,394 @@
+PROCESS HELP=*
+PARM INP        TYPE=STRING     COUNT=1
+PARM OUT        TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+PARM PLOT       TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+PARM SIGTOL     TYPE=INTEGER    COUNT=(0:1)     DEFAULT=2       VALID=(1,2)
+PARM REJECT     TYPE=INTEGER    COUNT=(0:1)     DEFAULT=1
+PARM UNITS      TYPE=KEYWORD    COUNT=(0:1)     DEFAULT=RADIANCE +
+                                            VALID=(RADIANCE,LUMINANC)
+PARM LIGHT      TYPE=REAL       COUNT=(0:30)    DEFAULT=--
+PARM LTFILE     TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+PARM DIRECTIO   TYPE=KEYWORD    COUNT=(0:1) VALID=(LINE,SAMP) DEFAULT=LINE
+PARM ARRAYSIZ   TYPE=INTEGER    COUNT=(0:1)     DEFAULT=1024
+PARM AREATBL    TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+PARM OFFTBL     TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+PARM AVOFFTBL   TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+PARM CORRTBL    TYPE=STRING     COUNT=(0,2)     DEFAULT=--
+PARM OFFSETS    TYPE=STRING     COUNT=(0:1)     DEFAULT=--
+END-PROC
+.TITLE
+VICAR Application Program CCDRECIP
+.HELP
+PURPOSE:
+
+CCDRECIP determines the shutter offset (in msec) and sensitivity
+(in DN per foot-lambert-milliseconds (UNITS = LUMINANC) or
+in DN per picoamp-milliseconds (UNITS = RADIANCE)) for a
+camera system.  The program is one of a series of programs originally
+developed to support radiometric calibration of the Galileo SSI camera system.
+(UNITS should be LUMINANC for Galileo and RADIANCE for Cassini).
+
+Reference:
+    D-4264  MIPL Software Structural Design for the Instrument
+            Calibration of GLL SSI Science Processing.
+    D-tbd   Software Design Document for Instrument Calibration -
+            Cassini ISS
+
+.PAGE
+Vicar Plotting
+
+The Vicar Plotting system can produce plots on a display device if required.
+The plotting system always generates a postscript file suitable for plotting on 
+either a hard copy device or a display device. The postscript file can be 
+defaulted to a system derived name or can be explicitly named by the user.  
+
+The user can run plotting programs either interactively or in batch.  Whether 
+or not plots are required, a plotting device (node) must be specified. This may
+or may not be the plotting device the user requires.  To override the system 
+defaulted device, the user must select a display device.  This is implemented 
+from an Alpha using the following following:
+           set display/create/trans=tcpip/node=poconos.  
+This allocates a UNIX workstation named "poconos". If the user is on an Alpha
+and wishes to plot to a UNIX workstation, the user first type: 
+           xhost coda2 
+where coda2 is the name of the Alpha from which plots will be sent.  
+.PAGE
+To plot on a UNIX workstation, the user needs to type on the UNIX workstation
+           setenv DISPLAY poconos:0.0
+which allocates the UNIX workstation named "poconos".      
+Note: poconos and coda2 are examples of nodes.  The user may send and direct 
+plots from and to any node he chooses.  
+
+Interactively, either on the command line or in a pdf, the user may decide 
+decide whether or not to plot the graphics.   If the user requires only a hard
+copy, he must add 'nodisp to the program command line.   This will inhibit the 
+plotting of the graphics on a display device.  
+
+In batch, the user may not request plots on a display device.  Only postscript
+files will be produced.  In order to generate postscript files in batch mode , 
+the user MUST allocate a display device from WITHIN the batch script.  If the 
+user fails to do this, no postscript files will be produced.    
+
+.PAGE
+EXECUTION:
+                CCDRECIP INP=RCP.DAT OUT=MARK.DAT PARAMS
+
+The input is a Reciprocity File (RCP) containing statistical data for
+specified areas in the image for each exposure of a reciprocity sequence.
+The RCP must have been previously initialized via LTGEN and loaded with
+data via MOMGEN.
+
+The output is an optional MARK-format tiepoint data set containing the
+centers of all areas rejected for producing values for SENSITIVITY or
+SHUTTER OFFSET or either which differ by more than 2 sigma from the mean
+values for all the areas.
+
+.PAGE
+MATHEMATICAL BACKGROUND:
+
+The output camera signal is proportional to exposure as follows:
+
+      DN-DC = A*L*(T-To)
+where
+      DN-DC is the output signal minus the dark current,
+      A is the camera sensitivity (DN/foot-lambert-milliseconds (LUMINANC)) or
+                                   DN/picoamp-milliseconds (RADIANCE))
+      L is the light cannon setting (foot-lamberts (LUMINANC)) or
+        is the spectral radiance of the source (picoamp (RADIANCE)),
+      T is the commanded exposure time (milliseconds), and
+      To is the shutter-offset (milliseconds).
+
+CCDRECIP solves for the sensitivity A and shutter-offset To, given data
+points DN acquired by varying the light cannon setting (or spectral radiance of
+the source) and exposure time:
+         i
+                DN - DC = A*L *(T -To)
+                  i          i   i
+
+.PAGE
+OPERATION:
+
+CCDRECIP performs the following steps:
+
+  1) Read data from the Reciprocity File.
+  2) Compute the sensitivity and shutter offset for each area.
+  3) Compute mean values for sensitivity and shutter-offset (by averaging
+     the values extracted from each area) and flag all areas deviating
+     by more than 1 or 2 sigma from the mean.
+  4) Re-compute the mean value for sensitivity and shutter-offset,
+     ignoring all flagged values as specified by the REJECT parameter.
+
+If the REJECT parameter is specified (default=2), areas may be rejected
+because of a bad value for sensitivity (REJECT=1), shutter-offset (REJECT=2),
+or either (REJECT=3).  If REJECT=0, no area rejection is performed.
+
+CCDRECIP prints out the following:
+
+  1) Sensitivity and shutter-offset for each area.
+  2) Summary of all areas with bad values for sensitivity or shutter-offset.
+  3) Mean sensitivity as a function of exposure time.
+  4) Global value for sensitivity and shutter-offset, obtained by combining
+     data from all good areas.
+  5) Shutter-offset as a function of image line or sample number.
+
+Note that the sensitivity and offset are listed as AO and TOS in the printout.
+
+If the PLOT keyword is specified, CCDRECIP produces the following plots:
+
+  1) (DN-DC)/L vs SHUTTER TIME
+  2) (DN-DC)/(L*T) vs SHUTTER TIME
+  3) (DN-DC)/[L*(T-To)] vs SHUTTER TIME
+  4) To vs image line or sample number.  The raw points are plotted with
+     "+" and the average shutter offset at a given line or sample number
+     is plotted as a solid line.
+
+The resulting plot file should be printed out using the NOFEED qualifier
+(see example below).
+
+Four types of tabular output data are also available.  The AREATBL
+parameter produces a tab-delimitted ASCII text file containing:
+if UNITS = LUMINANC, MEAN_DN(D), LUM(L), EXP(T), L*T, ACTUAL(T-To), D/L,
+D/L*T, and D/L*(T-To), and if UNITS = RADIANCE, MEAN_DN(D), RAD(L), EXP(T),
+L*T, ACTUAL(T-To), D/L, D/L*T, and D/L*(T-To), for each exposure level.
+
+The OFFTBL parameter produces a tab-delimitted ASCII text file containing:
+LINE or SAMPLE and calculated SHUTTER_OFFSET for all good areas.
+
+The AVOFFTBL parameter produces a tab-delimitted ASCII text file containing:
+LINE or SAMPLE and mean SHUTTER_OFFSET for each row or column of grid areas.
+
+The CORRTBL parameters produces two files tabulating the correction
+achieved as a result of using the derived shutter-offset.  The first
+of the two files holds the uncorrected sensitivity values averaged over
+each column or row (see DIRECTIO parameter) of grid points.  The second
+file holds the corrected values.  If DIRECTIO is LINE, then the values
+of the grid rows are averaged.  If SAMP, then the values of the grid
+columns are averaged.
+
+If an output file is specified, the centers of all flagged areas (as
+specified by the REJECT parameter) are stored in a MARK-format tiepoint
+data set.  These areas can be subsequently displayed (see example below)
+to indicate the spatial distribution of regions which give rise to bad
+sensitivity or shutter-offset constants.
+
+If an output shutter-offset file is specified via the OFFSET parameter,
+then a file containing shutter offsets for each image line or sample is
+generated.  These offsets are calculated by using the average shutter-offsets
+as found above and then performing a piece-wise linear interpolation for the
+lines or samples that fall between data points.  A linear extrapolation is
+done at each end using the first and last two points.  These shutter-offsets
+can later be used as inputs to GALGEN, see GALGEN's TUTOR and HELP files.
+
+Instead of entering the light values of the exposure levels as a
+multivalued parameter, they can be contained in an ASCII file.  This file
+merely contains one light value per record (see procedure MOMGEN2 for
+the format details).  The file is specified to CCDRECIP using the LTFILE
+parameter.
+
+NOTE:  The first value in the LIGHT parameter set or the LTFILE
+       file should be 0.0 to correspond with EXPO=0.0 for the dark
+       current frames.
+
+The parameter DIRECTIO is used to tell CCDRECIP to derive a Line- or a
+Sample-dependent shutter-offset.
+
+Because CCDRECIP is dealing with the Light Transfer File and not the raw
+images, it doesn't know how big they are.  Therefore, the user must tell
+CCDRECIP how many elements the shutter-offset should contain.  This is
+done with the ARRAYSIZ parameter.
+
+NOTE:  CCDRECIP CANNOT be used with reciprocity sequences that contain
+       extended dark current or extended exposure frames.
+
+.PAGE
+EXAMPLE:
+
+    PLOTTING DEVICE=PRINT               !Specify plotting device
+    CCDRECIP RCP.DAT MRK.DAT PLOT=RCP.PLT OFFSETS=OFFSETS.DAT
+    MARK (PIC,MRK.DAT) OUT              !Scribe boxes around bad centers
+    JDISP OUT                           !Display bad centers
+    DCL PRINT/NOFEED RCP.PLT
+
+.PAGE
+ORIGINAL PROGRAMMER: Mike Morrill, Oct 84
+COGNIZANT PROGRAMMER: Gary Yagi
+REVISION HISTORY:
+
+ 27 Apr 99  gmy  Declared P as integer to avoid compiler error on SGI
+ 25 Mar 97...T.Huang........Ported from VAX to UNIX to support both
+                            Cassini and Galileo data.
+  1 Jan 97...c.c.avis.......allow rectangular grids
+ 16 Jul 96...c.c.avis.......added correction tables by row or column
+ 29 APR 96...c.c.avis.......changed decimal places in output table
+ 24 APR 96...c.c.avis.......change f12.5 to g20.12 in reading LTFILE
+ 22 AUG 95...c.c.avis.......Added tests involving noise
+ 02 JAN 95...J.R.YOSHIMIZU..Changed LUMINANC to LIGHT and LUMFILE to LTFILE.
+                            Added UNITS
+ 21 DEC 94...C.C.Avis.......Clarified Help on Reject parameter.
+ 20 JUN 94...C.C.Avis.......Fixed xladd to SO file not mark file (bug),
+                            added table outputs, added use of LUMFILE,
+                            added sample-dependent shutter-offset
+ 26 APR 88...G.M.Yagi.......Added more documentation to help file.
+ 04 Nov 87...G.M.Yagi.......Shutter offset file changed to Image format.
+ 01 Nov 87...G.M.Yagi.......Convert to new CPLT plotting routines.
+ 14 JAN 87...G.M.Yagi.......Fix so plot is optional.
+  1 AUG 86...G.M.Yagi.......Code and documentation clean-up.
+ 29 OCT 85...R.A.MORTENSEN..Added output of all 800 shutter offsets.
+ 26 FEB 85...M.E.MORRILL....ADD PLOT OF GLOBAL SHUTTER OFFSET.
+ 15 FEB 85...M.E.MORRILL....ADD SIGMA TOLERANCE PARAMETER.
+ 26 JAN 85...M.E.MORRILL....VERSION 1*A RELEASED FOR USE.
+ 14 JAN 85...M.E.MORRILL....ENLARGED BUFFERS FOR 400 AREAS.
+  7 JAN 85...M.E.MORRILL....MARK OUTPUT FOR REJECTED AREAS.
+ 21 DEC 84...M.E.MORRILL....PLOTING PACKAGES ADDED.
+ 13 DEC 84...M.E.MORRILL....USES GOOD AREAS TO TABULATE RESULTS.
+  2 NOV 84...M.E.MORRILL....TRACKS REJECTED AREAS WITH
+                              3 CLASSES: AO,TOS, BOTH.
+  8 OCT 84...M.E.MORRILL....INITIAL RELEASE.
+
+.LEVEL1
+.VARIABLE INP
+The Reciprocity File
+created by LTGEN/MOMGEN
+.VARIABLE OUT
+A MARK-format file
+contining centers of
+rejected areas.
+.VARIABLE PLOT
+Output plot file
+.VARIABLE SIGTOL
+Specifies 1 or 2 Sigma
+rejection from mean values.
+.VARIABLE REJECT
+Specifies whether to
+reject areas based on
+bad sensitivity,
+bad shutter-offset, or
+either, or no rejection.
+.VARIABLE UNITS
+Specifies whether the
+illumination values are
+RADIANCE or LUMINANC
+.VARIABLE LIGHT
+Illumination values in
+Relative Foot-Lamberts
+or picoamp)
+First value=0.0 for DC.
+.VARIABLE LTFILE
+Name of file containing
+list of illumination
+values in Relative
+Foot-Lamberts or picoamp).
+.VARIABLE DIRECTIO
+Direction of shutter
+movement.
+.VARIABLE ARRAYSIZ
+Number of pixels in
+the direction of
+shutter movement.
+.VARIABLE AREATBL
+File to receive table
+of stats for each
+area.
+.VARIABLE OFFTBL
+File to receive table
+of pixel number vs.
+calculated offset.
+.VARIABLE AVOFFTBL
+File to receive table
+of pixel number vs.
+calculated offset
+averaged by row or
+column.
+.VARIABLE CORRTBL
+Files to receive the
+uncorrected and corrected
+sensitivity values by
+grid row or column.
+.VARIABLE OFFSETS
+Specifies the name
+of an output file to
+receive the shutter
+offsets for each image
+line or sample.
+.LEVEL2
+.VARIABLE INP
+The Reciprocity File created by LTGEN and MOMGEN
+containing area statistics for calculating the sensitivity
+and shutter-offset.
+.VARIABLE OUT
+A MARK formatted data set containing rejected area locations.
+.VARIABLE SIGTOL
+Specifies the number of standard deviations from the mean which
+signifies a bad area.  See REJECT parameter.
+.VARIABLE REJECT
+REJECT=0  No area rejection performed
+      =1  Reject areas with bad sensitivity
+      =2  Reject areas with bad shutter-offset
+      =3  Reject areas with either bad sensitivity or offset
+Areas with values differing from the mean by more than SIGTOL sigma are
+rejected.
+.VARIABLE UNITS
+Specifies whether the illumination values are in LUMINANC (Relative-Foot-
+Lamberts ) or RADIANCE (picoamp).
+(UNITS should be LUMINANC for Galileo and RADIANCE for Cassini).
+.VARIABLE LIGHT
+The illumination (in Relative Foot Lamberts or picoamp)
+for each exposure level of the reciprocity sequence.  The first entry should
+be 0.0, corresponding to EXPO=0.0 in the reciprocity file for the Dark Current
+frames.
+.VARIABLE LTFILE
+Name of file containing list of illumination values in Relative Foot-Lamberts
+or picoamp).  This is an ASCII text file containing one
+record for each exposure level from dark-current (record 1) to the highest
+exposure level (the last record).  Each record contains one floating point
+value denoting the illumination value for that exposure level.
+
+.VARIABLE DIRECTIO
+Specifies whether to derive a line-dependent or a sample-dependent shutter-
+offset.  This corresponds to the direction of shutter movement (LINE or
+SAMP).
+
+.VARIABLE ARRAYSIZ
+Specifies how many elements to calculate for the output shutter-offset file.
+This correspondes to the number of image pixels in the direction of shutter
+movement (i.e., the number of image lines or the number of image samples).
+
+.VARIABLE PLOT
+Specifies the name of a file to contain the plot data when the plotting
+device is specified as the printer (i.e., PLOTTING 'PRINTRONX) or other
+devices besides the display monitor.  For the printer, the file must be
+printed using the /NOFEED qualifier.
+
+.VARIABLE AREATBL
+The AREATBL parameter produces a tab-delimitted ASCII text file containing:
+MEAN_DN(D), LUM(L), EXP(T), L*T, (T-To), D/L, D/L*T, and D/L*(T-To)
+for each exposure level.
+
+.VARIABLE OFFTBL
+The OFFTBL parameter produces a tab-delimitted ASCII text file containing:
+For line-dependent shutter-offsets: Line number and calculated SHUTTER_OFFSET
+for all good areas.
+For sample-dependent shutter-offsets: Sample number and calculated SHUTTER_
+OFFSET for all good areas.
+
+.VARIABLE AVOFFTBL
+The AVOFFTBL parameter produces a tab-delimitted ASCII text file containing:
+For line-dependent shutter-offsets: Line number and mean SHUTTER_OFFSET for
+each row of grid areas.
+For sample-dependent shutter-offsets: Sample number and mean SHUTTER_OFFSET for
+ each column of grid areas.
+
+.VARIABLE CORRTBL
+STRING - COUNT= 0:2 OPTIONAL
+Specifies the two files two contain the uncorrected and the corrected
+sensitivity values averaged by grid column or row.  The DIRECTIO parameter
+specifies whether averaging is done by row or column.  If DIRECTIO is LINE,
+then the values of the grid rows are averaged.  If SAMP, then the values
+of the grid columns are averaged.
+
+.VARIABLE OFFSETS
+Specifies the name of an output file that will receive the shutter-offsets for
+each image line or sample from 1 to ARRAYSIZ.  The file is in standard VICAR
+image format and is used as an input to programs CCDSLOPE, GALGEN, and GALSOS.
+.END
+

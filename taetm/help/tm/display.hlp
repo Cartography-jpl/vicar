@@ -1,0 +1,228 @@
+! TLM CHECKOUT FILE_TIME=14-JUN-1984 14:02 DUA0:[TAEV1.HELP]DISPLAY.HLP;230
+!	13-jun-83  ...dm
+!	27-mar-84  General V1.2 cleanup...peb
+!	06-jun-84  Add default subcommand...lim
+!	29-jun-84  Update with parameter default to "ALL"...lia
+!	03-jul-84  Cleanups...palm
+!	27-jan-85  Qualifier -> command qualifier...jtm
+!	28-jan-85  General V1.3 cleanup...lia
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+.TITLE
+DISPLAY
+.HELP
+
+	DISPLAY displays the value of the specified variable or
+	of a class of variables.  The following forms are available:
+
+	    DISPLAY-VARIABLE	!displays specified variable(s)
+				(-VARIABLE is the default subcommand)
+	    DISPLAY-ALL		!displays all variables
+	    DISPLAY-GLOBALS	!displays all global variables
+	    DISPLAY-LOCALS	!displays all local variables
+	    DISPLAY-PARMS	!displays all parameter variables
+	    DISPLAY-PARFILE	!displays all variables in a parameter file
+
+	If you are in command mode, type "HELP DISPLAY-sub" for 
+	help on a particular subcommand of DISPLAY.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of DISPLAY.
+.PAGE
+
+			General Usage Notes
+
+
+	    o The output of DISPLAY goes to the "standard output",
+	      i.e., the terminal if the command was entered
+	      interactively.
+
+	    o If the variable being displayed has the null value,
+	      the value is displayed as "--".
+.level1
+.subcmd VARIABLE
+Display specified variable(s)
+.subcmd ALL
+Display all variables
+.subcmd GLOBALS
+Display all referenced
+globals
+.subcmd LOCALS
+Display all locals
+.subcmd PARMS
+Display all parameters
+.subcmd PARFILE
+Display variables from a
+parameter file
+.variable FILE
+Name of the parameter file
+.variable VARIABLE
+Names of variables to display
+.variable CLASS
+Class of variables to display
+!
+.level2
+.subcmd VARIABLE
+			    DISPLAY-VARIABLE
+
+
+			  Function and Format
+
+
+	Function:
+
+	    DISPLAY-VARIABLE with no parameters is equivalent 
+	    to DISPLAY-ALL and displays the values of all variables 
+	    of all classes.  DISPLAY-VARIABLE with a parameter 
+	    produces a formatted display of the specified variable(s).
+
+	    The -VARIABLE subcommand is the default subcommand for
+	    DISPLAY, i.e., "DISPLAY" is equivalent to "DISPLAY-VARIABLE".
+.PAGE
+			    DISPLAY-VARIABLE
+
+
+		     Function and Format (continued)
+
+	Format:
+
+	    DISPLAY-VARIABLE
+	    DISPLAY-VARIABLE VARIABLE=variable-name
+	    DISPLAY-VARIABLE (v1, v2, ...vn)
+	    DISPLAY
+	    DISPLAY VARIABLE=variable-name
+	    DISPLAY (v1, v2, ...vn)
+
+
+	    Subscripted variables may not appear in the variable
+	    list.  If more than one variable is specified, the
+	    names must be enclosed within parentheses.
+.PAGE
+			    DISPLAY-VARIABLE
+
+	
+				Examples
+	
+
+
+	1.  TAE>DISPLAY-VARIABLE parm1
+
+	2.  TAE>DISPLAY parm1
+	
+	3.  TAE>DISPLAY ($SWITCH, $ECHO, parm1)
+.subcmd ALL
+			DISPLAY-ALL
+
+		    Function and Format
+
+
+	Function:
+
+	    The -ALL subcommand is used to display the values
+	    of all variables defined in the current proc.
+
+	    DISPLAY-ALL is equivalent to DISPLAY-VARIABLE with 
+	    the default parameter.
+
+	Format:
+
+	    DISPLAY-ALL
+.subcmd GLOBALS
+			DISPLAY-GLOBALS
+
+		      Function and Format
+
+
+	Function:
+
+	    The -GLOBALS subcommand is used to display the
+	    values of all currently referenced global variables.
+
+	    Note that all globals are implicitly referenced on
+	    the primary level.
+
+	Format:
+
+	    DISPLAY-GLOBALS
+.subcmd LOCALS
+			DISPLAY-LOCALS
+
+
+		     Function and Format
+
+
+	Function:
+
+	    The -LOCALS subcommand is used to display the values
+	    of all local variables.
+
+
+	Format:
+
+	    DISPLAY-LOCALS
+.subcmd PARMS
+			DISPLAY-PARMS
+
+
+		      Function and Format
+
+
+	Function:
+
+	    The -PARMS subcommand is used to display the values
+	    of all parameters.
+
+
+	Format:
+
+	    DISPLAY-PARMS
+.subcmd PARFILE
+			DISPLAY-PARFILE
+
+		      Function and Format
+
+	Function:
+
+	    The -PARFILE subcommand is used to display variables from 
+	    a parameter file.  Parameter files are created by the SAVE 
+	    command, the SAVE command qualifier, and the tutor SAVE command.
+
+	    The variable list is the names of the variables to be 
+	    displayed.  If VARIABLE is omitted, it defaults to "ALL",
+	    hence all variables in the file are displayed.  Parameter 
+	    qualifiers are not displayed.
+
+.page
+	Format:
+
+	    DISPLAY-PARFILE  FILE = file-name
+	    DISPLAY-PARFILE  FILE = file-name  VARIABLE = variable-list
+
+
+	Example:
+
+
+	    TAE>DISPLAY-PARFILE  MYPARMS  (X,Y,Z)
+
+
+	    Displays the variables X, Y, and Z from the parameter
+	    file MYPARMS.
+.variable FILE
+
+
+	    FILE is the name of the parameter file to be displayed.
+	    If no file type is present, a default type of "PAR"
+	    is used.
+
+	    Parameter files are created by the SAVE command, the 
+	    SAVE command qualifier, and the tutor SAVE command.
+.variable VARIABLE
+
+
+	    VARIABLE lists the names of the variables whose 
+	    values are to be formatted and displayed by TAE.  
+	    If VARIABLE is omitted, it defaults to "ALL",
+	    hence all variables are displayed.
+
+	    Subscripted variables may not appear in the variable
+	    list.  If more than one variable is specified, the
+	    names must be enclosed within parentheses.
+.END

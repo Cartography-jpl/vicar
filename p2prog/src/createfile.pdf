@@ -1,0 +1,49 @@
+PROCEDURE help=*
+  PARM INPUT    TYPE=STRING
+BODY
+refgbl  $syschar
+write "CREATEFILE version 1-3-97"
+!
+!  IF  VMS 
+if ($syschar(1) = "VAX_VMS")
+  DCL open/write FILENAMES &INPUT
+  DCL close FILENAMES
+!
+!      UNIX: COPY the old empty file.
+else
+  USH cp /dev/null  &INPUT
+
+end-if  
+
+!# annot function="VICAR Utilities"
+!# annot keywords=("empty file")
+
+END-PROC
+.TITLE
+TAE proc to create an empty file
+.help
+PURPOSE:
+
+CREATEFILE creates an empty file with the specified name.
+
+EXECUTION:
+ This utility can be called from a VICAR procedure using the syntax:
+
+ createfile filename 
+
+ where filename is the name to be given to the empty file created.
+ 
+REVISION HISTORY:
+   06-1-89  HBM   Initial release.
+   01-2-97  SP    Made a UNIX version and a TCL procedure to call either the
+                  DCL version or the UNIX version.
+.level1
+.vari input
+Name to be given to the 
+file created
+.level2
+.vari input
+INPUT may be specified with or without a directory and may use the ~username 
+notation. If specified without a directory (pathname), the current working 
+directory is used.  
+.END

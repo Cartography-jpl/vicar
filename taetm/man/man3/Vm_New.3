@@ -1,0 +1,46 @@
+.TH Vm_New 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_New - allocate a new Vm object
+
+.SH DESCRIPTION
+.IP
+.LP
+Id Vm_New (mode)
+
+Function Return:
+
+.nr L 0 1
+.IP o
+Id of newly created object.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+mode: input, FUNINT   mode;
+
+.nr L 0 1
+.IP o
+P_ABORT: indicates that the Vm_ package is to abort the process 
+(with an appropriate error message) when errors are detected during 
+processing by subsequent calls to Vm_ functions.
+.IP o
+P_CONT: requests that the package report errors to the calling 
+program via the function return.
+.LP
+
+.IP
+.LP
+Vm_New is called to allocate and initialize a Vm
+object in preparation for other 
+Vm_ calls.  The Vm object is initially empty.
+
+Vm_New must be called prior to using other
+functions in the Vm_ package.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

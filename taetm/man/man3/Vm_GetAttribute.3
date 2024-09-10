@@ -1,0 +1,70 @@
+.TH Vm_GetAttribute 3 "5 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_GetAttribute - get variable attributes
+
+.SH DESCRIPTION
+
+CODE Vm_GetAttribute (vmid, name, type, n, dflt, access)
+
+
+Function Return:
+
+.nr L 0 1
+.IP o
+SUCCESS.
+.IP o
+P_BADNAME if the variable could not be found.
+.LP
+
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+
+.IP \n+L.
+name: input TEXT name[];
+
+Name of the variable for which the attributes are to be extracted.
+
+.IP \n+L.
+type: output CODE *type;
+
+The type of the variable.  Values are V_INTEGER (integer), 
+V_REAL (real), V_STRING (string), and V_NAME (name).  (V_xx's 
+are defined in symtab.inc.)
+
+.IP \n+L.
+n: output COUNT *n;
+
+Current number of values for the variable.
+
+.IP \n+L.
+dflt: output BOOL *dflt;
+
+TRUE if current value of the variable is the default value.
+
+.IP \n+L.
+access: output CODE *access;
+
+If the variable is a file, this is the access mode.  Values are 
+V_IN (input file), V_OUT (output file), V_INOUT (input and output),
+or P_NONE (no access mode).
+.LP
+
+.SH CODE EXAMPLE
+.IP
+
+.LP
+.\" indirect access to Vm_GetAttribute/Wpt_CloseItems/SVAL example.
+.so man5/wptcloseitems.5
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

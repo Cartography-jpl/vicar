@@ -1,0 +1,63 @@
+.TH Vm_GetValidString 3 "20 Sep 1993" "TAE Plus v5.3"
+.SH NAME
+Vm_GetValidString - retrieve valids of string data type
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_GetValidString (vmid, name, count, vector)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: valids information successfully retrieved from variable.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BADTYPE: the variable has a type other than string.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid input, Id   vmid;
+
+Id of a Vm object.  This object must have been initialized with a call to
+Vm_New; or it may be the target or view Vm object returned by Co_Find.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the string variable.  The name may be qualified to any number
+of levels, for example, "x.q".
+
+.IP \n+L.
+count: output, FUNINT   *count;
+
+Multiplicity of the valids, i.e., the number of string pointers in
+the vector argument.
+
+.IP \n+L.
+vector: input, TEXT   ***vector;
+
+An array of pointers to strings (a string value vector) for the variable.
+.LP
+
+.IP
+.LP
+Vm_GetValidString sets count to the number of acceptable strings and sets
+vector to point to the list of acceptable string valids for a TAE string
+variable.
+
+Unlike Vm_GetValidIntg and Vm_GetValidReal, this function does NOT return a
+dynamically allocated vector of the constraints.  However, it does return an
+array of pointers which should ONLY be used to copy from or look at the
+string valids.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

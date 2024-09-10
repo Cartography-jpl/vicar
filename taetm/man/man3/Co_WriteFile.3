@@ -1,0 +1,46 @@
+.TH Co_WriteFile 3 "20 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_WriteFile - write Vm objects to a file
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Co_WriteFile (aCollection, fileSpec)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: the file was successfully written.
+.IP o
+FAIL: the file could not be written.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id;
+
+Id of the collection to be written to disk.
+The collection must have been created via Co_New and
+must hold Vm objects.
+
+.IP \n+L.
+fileSpec: input, TEXT fileSpec[ ];
+
+File specification of a resource file.  The default
+file extension is ".res".
+.LP
+
+.IP
+.LP
+Co_WriteFile creates a TAE Plus resource file, where each member of
+the resource file is a Vm object, a member of aCollection.  Only
+collections holding Vm objects may be used with Co_WriteFile.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

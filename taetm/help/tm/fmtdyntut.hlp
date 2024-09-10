@@ -1,0 +1,410 @@
+!       21-may-83	...dm
+!	29-nov-83	General V1.1 cleanup...jtm
+!	30-NOV-83	Change NULL string to empty string...jtm
+!	26-mar-84	General V1.2 cleanup...peb
+!	25-jan-85	General V1.3 cleanup...lia
+!	19-sep-86	PR 1056: Add SET, HOLD; alphabetize cmds...peb
+!	19-sep-86	If DISABLE-INTERRUPT, no interrupt mode...nhe
+!	29-sep-87	Added PF3 description...rww
+!
+.TITLE
+TUTOR MODE INFORMATION
+.HELP
+			General and Specific Help
+
+
+		This is general help information for operating 
+		dynamic tutor mode.  You can access more
+		specific help with the following commands:
+
+		HELP parm -- Details on "parm" parameter  
+		HELP *    -- General information on the 
+			     current proc
+		HELP -	  -- Details on the current proc
+			     subcommand (if any)
+
+		For more specific help, type EXIT and use one 
+		of the above tutor mode commands.  To continue
+		with general tutor information, hit RETURN. 
+.page
+			Summary of Dynamic Tutor Commands
+
+		The commands available in Dynamic Tutor (described 
+		below in detail) are:
+
+		Command			Description
+		-------------------	-----------------------------------
+
+		parm = value		Set current value of parm
+		parm = 			Set parm to default value
+		Carriage return		Display next page of parameters
+		E*XIT			Exit tutor, aborting the proc
+		HE*LP			Display general TUTOR help
+		HE*LP parm		Display detailed help for parm
+		HE*LP *			Display help on current proc
+		HE*LP -			Display detailed help on current
+					proc subcommand
+
+					(continued...)
+.page
+			Summary of Dynamic Tutor Commands (continued)
+
+		Command			Description
+		-------------------	-----------------------------------
+
+		?			Display most recent message
+		HO*LD			Keep asynchronous job in wait state
+		N*OSCREEN		Enter NOSCREEN dynamic tutor
+		P*AGE parm		Display page containing parm
+		P*AGE n			Display page n
+		Q*UALIF parm		Request tutor on qualifiers for parm
+		RE*STORE filename	Restore parameter values from a file
+		RE*STORE LAST		Restore values from last activation
+		R*UN			Activate proc
+		SA*VE filename		Save current parameter values in a 
+					file
+		SE*T parm list		Set parameter values using TCL syntax
+		SH*OW parm(i)		Display ith value of parm
+.PAGE 
+			General Comments
+
+
+		You are in dynamic tutor because, a) an executing proc
+		is requesting additional parameter input, or, b) an
+		asynchronous job is requesting dynamic parameters and
+		you have issued the REPLY command.
+
+		The SCREEN mode of dynamic tutor is used because the
+		global variable $DYNTUT is set to "SCREEN".
+		You can enter the NOSCREEN mode by typing NOSCREEN.
+.PAGE
+			General Comments (continued)
+
+
+	  	All standard tutor mode commands are available in
+		dynamic tutor.  The EXIT and RUN commands have a 
+		slightly different meaning: EXIT terminates the 
+		execution of the proc or job, and returns to the 
+		active menu or to command mode as appropriate.  RUN 
+		continues execution of the proc or job with the newly 
+		specified values.
+
+		There is one special command available in dynamic tutor 
+		mode for asynchronous jobs only.  The command is HOLD;
+		it exit tutor mode, leaving the job waiting for parameters.
+		The command REPLY should be used when you wish to resume 
+		with this job.
+.PAGE 
+			General Comments (continued)
+
+
+		The SCREEN mode of dynamic tutor begins by presenting 
+		you with the first page of a (possibly) multi-page 
+		display showing information on each parameter requested
+		for a value entry.  For each parameter, the following 
+		information is displayed:
+
+		  o  The name of the parameter
+
+		  o  a brief description of the parameter
+
+		  o  note on qualifiers defined for the parameter
+		     (if they exist)
+
+		  o  the current value of the parameter (if one exists)
+.PAGE 
+			General Comments (continued)
+
+
+		Commands and parameter names may be typed in upper case 
+		or lower case and may be abbreviated by truncating 
+		characters, e.g., "RU" is equivalent to "RUN". When 
+		abbreviations are used, uniqueness must be maintained, 
+		e.g., "X" is an ambiguous abbreviation for a parameter 
+		named "X1" if a parameter "X2" exists. 
+
+		An exception to the uniqueness rule is "R", which is 
+		always interpreted as "RUN".
+
+     		A proc activated with the RUN command may be
+		aborted by hitting CONTROL/C and responding
+		with "ABORT" to the TAE-INTERRUPT> prompt. 		
+		(If interrupt mode is disabled, CONTROL/C will
+		immediately abort the proc.)
+.PAGE
+			Special Tutor Editor Keys
+
+		For certain CRT terminals (e.g. VT100 and VT220),
+		there are special keys that may be used
+		on a tutor screen.  The keys are as 
+		follow:
+
+		  o  Up-Arrow, Down-Arrow:  Moves one qualifier
+		     value up or down on the screen, bringing
+		     the value to the user response line for editing.
+
+		  o  Right-Arrow, Left-Arrow:  Moves cursor
+		     right or left one character on the
+		     user response line.
+
+		  o  Delete:  Delete one character left of
+		     cursor on the user response line.
+.PAGE
+			Special Tutor Editor Keys (continued)
+
+		  o  Escape, Escape:  Clear user response
+		     line.
+
+		  o  GOLD/PF1:  Preceding any special key
+		     listed above, it will "exaggerate"
+		     the action taken.
+
+ 		  o  HELP/PF2:   This key will only work for 
+		     string parameters.  It displays on the 
+		     prompt line one entry from the valid list 
+		     of the current parameter.  Repeating PF2
+		     will cause the next entry from the valid 
+		     list to be displayed. 
+.PAGE
+			Special Tutor Editor Keys (continued)
+
+ 		  o  FNDNXT/PF3:   This key will only work for 
+		     string parameters.  It displays on the 
+		     prompt line one entry from the valid list 
+		     of the current parameter.  Repeating PF3
+		     will cause the previous entry from the 
+		     valid list to be displayed. 
+
+		For more details, see the section on the Tutor Editor
+		in the User's Reference Manual.
+.PAGE
+			User Commands
+
+
+		The dynamic tutor mode commands allow the user 
+		to scroll between pages of the tutor display,
+		scroll between components of a multi-valued
+		parameter, update parameter values, request
+		to tutor on parameter qualifiers, request
+		detailed information for parameters, hold 
+		asynchronous jobs, save the parameter values 
+		on disk, restore parameter values from disk,
+		and resume execution of the proc.  
+
+		The user commands are: 
+.PAGE
+			User Commands (continued)
+
+
+		parm=value           
+		----------
+		This command assigns a new value(s) to the
+		parameter with the name "parm".  If the
+		parameter is multi-valued, the values must
+		be entered in order, separated by commas
+		and/or spaces, e.g., "WINDOW=512,1023,512,1023".
+
+		A particular element of a multi-valued
+		parameter may be set using "indexing", e.g.,
+		"WINDOW(3)=512".		
+.PAGE
+			User Commands (continued)
+
+
+		A parameter value is one of the following:
+
+		1.  A character string.  If spaces or
+		    special characters are in the string, the
+		    string must be quoted with the " character. 
+		    An empty string is indicated by two adjacent
+		    quotes, "". 
+
+		2.  A numeric decimal value consisting of
+		    the characters "+", "-", ".", "0-9", and "E"
+		    (the power of ten indicator).  Spaces are
+		    not permitted within a numeric value. 
+.PAGE
+			User Commands (continued)
+
+
+		3.  A file specification.
+
+		4.  A list of values of type (1), (2), or (3).
+		    Elements in the list are separated with
+		    blanks and/or commas. 
+
+		5. The null value, indicated by two consecutive
+		   dashes (--).
+
+		6. No value, indicated by a blank value field.
+.page
+			User Commands (continued)
+
+
+		parm=                
+		-----
+		The default value (if any) is assigned to
+		the parameter.  If indexing is used, e.g.,
+		"WINDOW(4)=", then the default value of only
+		the specified index is assigned.
+
+		Carriage return     
+		---------------
+		Causes tutor to display the next page of
+		parameters.  If this command is given on the
+		last page, tutor wraps around to the first
+		page. 
+.PAGE
+			User Commands (continued)
+
+
+		EXIT                
+		----
+		Terminates the tutor session, returning to
+		menu mode or command mode.  The proc or job
+		execution is terminated.
+
+		HELP                
+		----
+		Display this help information.
+
+		HELP parm
+		---------
+		Requests detailed help on parameter "parm".
+.PAGE
+			User Commands (continued)
+
+
+		HELP *
+		------
+		Requests general information on the proc
+		whose parameters are displayed on the tutor
+		screen.
+
+		HELP -
+		------
+		Requests detailed help on the proc subcommand
+		(if any) whose parameters are displayed on the
+		tutor screen.
+
+		?
+		-
+		Requests help on the most recent message displayed.
+.PAGE
+			User Commands (continued)
+
+
+		HOLD
+		----
+		Leave the current proc's async job on the waiting
+		list and terminates the dynamic tutor mode; for 
+		synchronous jobs, HOLD is equivalent to EXIT.
+
+		NOSCREEN
+		--------
+		Enter NOSCREEN mode of dynamic tutor.
+
+		PAGE parm 
+		---------	
+		Causes tutor mode to display the page which
+		has the parameter named "parm". 
+.PAGE
+			User Commands (continued)
+
+
+		PAGE n
+		------
+		Causes tutor mode to display the n-th page.
+
+		QUALIF parm
+		-----------
+		Causes dynamic tutor mode to go into dynamic
+		tutor qualifier mode for the parameter named
+		"parm".
+.PAGE
+			User Commands (continued)
+
+
+		RESTORE filename    
+		----------------
+		Restores all parameter values from the SAVEd
+		disk file.  If "filename" is omitted,
+		"proc" is assumed. 
+
+		RESTORE LAST        
+		------------
+		Restores all parameters to the values from
+		the most recent tutor RUN command.  (Every
+		tutor RUN command does an implicit "SAVE
+		LAST".) 
+
+.PAGE
+			User Commands (continued)
+
+
+		RUN                 
+		---
+		Causes the proc to resume execution with
+		the newly specified values.  
+
+		SAVE filename       
+		-------------
+		Saves the current parameter values on disk. 
+		If "filename" is omitted, "proc" is
+		assumed. 
+
+.PAGE
+			User Commands (continued)
+
+
+		SET
+		---
+		Accepts parameter specifications in TCL
+		proc invocation syntax.  With SET, several
+		parameters may be given values with one
+		tutor mode command.  The positional and/or
+		explicit form of parameter specification
+		may be used.
+
+		If an error is found in the SET command 
+		line, parameter values up to the point
+		of the error are accepted by tutor.
+
+.PAGE
+			User Commands (continued)
+
+
+		SHOW parm(n)
+		-----------
+		Causes tutor to display the "n"th component
+		of the parameter named "parm" in the value
+		window.  This command is especially useful 
+		when the parameter has more elements than will 
+		fit on one screen.
+.PAGE
+			Parameter Indexing
+
+
+		The user can set the value of a single
+		element of a multi-valued parameter using
+		tutor indexing.  For example "WINDOW(4)=511" 
+		sets the 4th element of the WINDOW to 511. 
+		If elements lower than the specified one,
+		i.e., WINDOW(1) through WINDOW(3) have no
+		specific values, then they are automatically
+		set to zero or the empty string, depending on 
+		the parameter type.
+
+.PAGE
+			Parameter Indexing (continued)
+
+
+		When a multi-valued parameter has more values 
+		than will fit on one tutor screen, only one full 
+		screen is shown.  Tutor maintains a "window" on the
+		elements of the parameter.  Unless a particular 
+		element is referenced (either via "parm(i)=" or
+		"SHOW parm(i)", the display window initially 
+		includes the first element. This window may be
+		moved using the SHOW command.
+.END

@@ -1,0 +1,123 @@
+#vicar.am
+#
+# 8-11-2013 - Ray Bambery - added comments to facilitate git Cookbook
+#
+if BUILD_VICAR
+vicar_DATA = vicar/vicset1.csh 
+vicar_DATA+= vicar/vicset2.csh 
+EXTRA_DIST+= $(vicar_DATA)
+taepdf_PROGRAMS = 
+taepdf_DATA =
+include vicar/am/p2prog.am
+include vicar/am/taetm.am
+
+# Not sure if this is actually used for anything, but for now we'll continue
+# to install this
+# VRDI stands for virtual raster display interface. In the VMS days
+# display monitors were not part of the terminal. Each 24-bit display device
+# had unique characteristics - vrdi created a common configuration for all
+# such devices - vrdi remains to accommodate the font descriptors for 
+# vicar/vdev programs.  All of the j*.pdf files were the commands for vrdi
+# They are not currently used in the cartlab's afids environment
+#
+include vicar/am/vrdi.am
+vicarlib_DATA = @srcvicarlib@/request.pdf
+vicarlib_DATA+= @srcvicarlib@/showdisp.pdf
+vicarlib_DATA+= @srcvicarlib@/syntax.pdf
+vicarlib_DATA+= @srcvicarlib@/v2version.pdf
+vicarlib_DATA+= @srcvicarlib@/vic2fac.inx
+vicarlib_DATA+= @srcvicarlib@/vic2fac.msg
+vicarlib_DATA+= @srcvicarlib@/vicar.pdf
+vicarlib_DATA+= @srcvicarlib@/vrdifac.inx
+vicarlib_DATA+= @srcvicarlib@/vrdifac.msg
+vidslib_DATA = @srcvidslib@/chkvids1.cpd
+vidslib_DATA+= @srcvidslib@/chkvids1.pdf
+vidslib_DATA+= @srcvidslib@/chkvids2.cpd
+vidslib_DATA+= @srcvidslib@/chkvids2.pdf
+vidslib_DATA+= @srcvidslib@/chkvids3.cpd
+vidslib_DATA+= @srcvidslib@/chkvids3.pdf
+vidslib_DATA+= @srcvidslib@/jblink.cpd
+vidslib_DATA+= @srcvidslib@/jblink.pdf
+vidslib_DATA+= @srcvidslib@/jbw.cpd
+vidslib_DATA+= @srcvidslib@/jbw.pdf
+vidslib_DATA+= @srcvidslib@/jcolor.cpd
+vidslib_DATA+= @srcvidslib@/jcolor.pdf
+vidslib_DATA+= @srcvidslib@/jcursor.cpd
+vidslib_DATA+= @srcvidslib@/jcursor.pdf
+vidslib_DATA+= @srcvidslib@/jdef.cpd
+vidslib_DATA+= @srcvidslib@/jdef.pdf
+vidslib_DATA+= @srcvidslib@/jdisp.cpd
+vidslib_DATA+= @srcvidslib@/jdisp.pdf
+vidslib_DATA+= @srcvidslib@/jdraw.cpd
+vidslib_DATA+= @srcvidslib@/jdraw.pdf
+vidslib_DATA+= @srcvidslib@/jdrop.cpd
+vidslib_DATA+= @srcvidslib@/jdrop.pdf
+vidslib_DATA+= @srcvidslib@/jdtf.cpd
+vidslib_DATA+= @srcvidslib@/jdtf.pdf
+vidslib_DATA+= @srcvidslib@/jerase.cpd
+vidslib_DATA+= @srcvidslib@/jerase.pdf
+vidslib_DATA+= @srcvidslib@/jget.cpd
+vidslib_DATA+= @srcvidslib@/jget.pdf
+vidslib_DATA+= @srcvidslib@/jgrab.cpd
+vidslib_DATA+= @srcvidslib@/jgrab.pdf
+vidslib_DATA+= @srcvidslib@/jgraphics.cpd
+vidslib_DATA+= @srcvidslib@/jgraphics.pdf
+vidslib_DATA+= @srcvidslib@/jgrdisp.cpd
+vidslib_DATA+= @srcvidslib@/jgrdisp.pdf
+vidslib_DATA+= @srcvidslib@/jhist.cpd
+vidslib_DATA+= @srcvidslib@/jhist.pdf
+vidslib_DATA+= @srcvidslib@/jlist.cpd
+vidslib_DATA+= @srcvidslib@/jlist.pdf
+vidslib_DATA+= @srcvidslib@/jload.cpd
+vidslib_DATA+= @srcvidslib@/jload.pdf
+vidslib_DATA+= @srcvidslib@/jmovie.cpd
+vidslib_DATA+= @srcvidslib@/jmovie.pdf
+vidslib_DATA+= @srcvidslib@/joff.cpd
+vidslib_DATA+= @srcvidslib@/joff.pdf
+vidslib_DATA+= @srcvidslib@/jon.cpd
+vidslib_DATA+= @srcvidslib@/jon.pdf
+vidslib_DATA+= @srcvidslib@/jpan.cpd
+vidslib_DATA+= @srcvidslib@/jpan.pdf
+vidslib_DATA+= @srcvidslib@/jphoto.cpd
+vidslib_DATA+= @srcvidslib@/jphoto.pdf
+vidslib_DATA+= @srcvidslib@/jprofile.cpd
+vidslib_DATA+= @srcvidslib@/jprofile.pdf
+vidslib_DATA+= @srcvidslib@/jpscopy.cpd
+vidslib_DATA+= @srcvidslib@/jpscopy.pdf
+vidslib_DATA+= @srcvidslib@/jpsedit.cpd
+vidslib_DATA+= @srcvidslib@/jpsedit.pdf
+vidslib_DATA+= @srcvidslib@/jpseudo.cpd
+vidslib_DATA+= @srcvidslib@/jpseudo.pdf
+vidslib_DATA+= @srcvidslib@/jsave.cpd
+vidslib_DATA+= @srcvidslib@/jsave.pdf
+vidslib_DATA+= @srcvidslib@/jset.cpd
+vidslib_DATA+= @srcvidslib@/jset.pdf
+vidslib_DATA+= @srcvidslib@/jshow.cpd
+vidslib_DATA+= @srcvidslib@/jshow.pdf
+vidslib_DATA+= @srcvidslib@/jstats.cpd
+vidslib_DATA+= @srcvidslib@/jstats.pdf
+vidslib_DATA+= @srcvidslib@/jstop.cpd
+vidslib_DATA+= @srcvidslib@/jstop.pdf
+vidslib_DATA+= @srcvidslib@/jstretch.cpd
+vidslib_DATA+= @srcvidslib@/jstretch.pdf
+vidslib_DATA+= @srcvidslib@/jtext.cpd
+vidslib_DATA+= @srcvidslib@/jtext.pdf
+vidslib_DATA+= @srcvidslib@/jwedge.cpd
+vidslib_DATA+= @srcvidslib@/jwedge.pdf
+vidslib_DATA+= @srcvidslib@/jzoom.cpd
+vidslib_DATA+= @srcvidslib@/jzoom.pdf
+vidslib_DATA+= @srcvidslib@/planenames.cpd
+vidslib_DATA+= @srcvidslib@/planenames.pdf
+vidslib_DATA+= @srcvidslib@/vids.cpd
+vidslib_DATA+= @srcvidslib@/vids.pdf
+vidslib_DATA+= @srcvidslib@/vidsglob.cpd
+vidslib_DATA+= @srcvidslib@/vidsglob.pdf
+vidslib_DATA+= @srcvidslib@/vidslogon.cpd
+vidslib_DATA+= @srcvidslib@/vidslogon.pdf
+vidslib_DATA+= @srcvidslib@/vidsprog.cpd
+vidslib_DATA+= @srcvidslib@/vidsprog.pdf
+vidslib_DATA+= @srcvidslib@/vidsversion.cpd
+vidslib_DATA+= @srcvidslib@/vidsversion.pdf
+EXTRA_DIST+= $(vicarlib_DATA)
+EXTRA_DIST+= $(vidslib_DATA)
+endif

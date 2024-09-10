@@ -1,0 +1,66 @@
+!	28-mar-84	Created for V1.2...peb
+!	26-jan-85	General V1.3 cleanup...lia
+.TITLE
+REPLY
+.HELP
+			Function and Format
+	
+	Function:
+
+	    REPLY allows the user to supply values to an asynchronous
+	    job that is waiting for dynamic parameters.
+
+
+	Format:
+
+	    REPLY  JOB = job-name
+
+	    The JOB parameter is valid only in the command mode.  JOB
+	    is the name of an asynchronous job that is waiting for
+	    dynamic parameter response.  If JOB is omitted, TAE selects
+	    one of the waiting jobs.
+.PAGE
+			Usage Notes
+
+
+	    The SHOW-ASYNC command is useful to display jobs that are
+	    waiting for dynamic parameters.
+
+	    REPLY places you in dynamic tutor mode for the parameter
+	    set requested by an asynchronous job.  If you issue the
+	    EXIT command from dynamic tutor, the asynchronous job
+	    is terminated.
+
+	    If you wish to exit out of dynamic tutor without
+	    terminating the job, use the HOLD command.
+
+	    If you have initiated a job with the command qualifier
+	    ASYNCEND set to NOTIFY, the job will request a reply
+	    upon termination;  the "reply" will be a job termination
+	    message.
+.page
+			Usage Notes (continued)
+
+
+	    If you are expecting a dynamic parameter requests from
+	    a series of jobs, it is often useful to SHOW-ASYNC
+	    to see which jobs are currently waiting, then REPLY
+	    with a specified job name to make a selection. If
+	    you select a job you do not now want to reply to,
+	    type HOLD.
+.level1
+.variable JOB
+Job to supply parameters to.
+.level2
+.variable JOB
+
+
+
+	    JOB is only defined for the REPLY command when used in
+	    the command mode.  JOB is the name of an asynchronous job
+	    that is waiting for dynamic parameter response.  If JOB
+	    is omitted, TAE selects one of the waiting jobs.
+
+	    The SHOW-ASYNC command is useful to see which jobs are
+	    waiting for dynamic response.
+.END

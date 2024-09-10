@@ -1,0 +1,55 @@
+!	edited	20-may-83...dm
+.TITLE
+FOR/END-FOR
+.HELP
+		Function and Format
+
+
+	Function:
+
+	    FOR is used in procedures to introduce a loop
+	    with a variable assignment.
+	
+
+	Format:
+
+	    FOR variable-name = for-list
+		Loop body
+	    END-FOR
+
+.PAGE
+		    Usage Notes
+
+
+	o  The "for-list" is a list of numeric or string
+	   variables or constants, separated by commas
+	   or blanks.  The "loop-body" is executed once
+	   for each item in the list, with the named variable
+	   assigned to the value of each item in turn (as if
+	   a LET were executed).
+
+	o  An END-FOR is required to mark the end of the loop body.
+
+	o  The rules for the variable assignment follow the
+	   general rules for variable assignments.
+
+	o  All elements of the FOR list must have the same type.
+.PAGE
+			Examples
+
+
+	1.  FOR X = 1, 2, 3   !Copy 3 files, from INFILEn to OUTFILEn
+		LET FNAME = "INFILE"//"&X"
+		LET TNAME = "OUTFILE"//"&X"
+		COPY  @FNAME  @TNAME
+	    END-FOR
+
+
+	2.  FOR WINDOW = (1,10,1,10), (10,10,10,10)
+		DISPIMAG RECTANGLE = @WINDOW
+	    END-FOR
+
+	    In this example, DISPIMAG is executed twice.  The first
+	    execution is with RECTANGLE=(1,10,1,10), the second
+	    execution is with RECTANGLE=(10,10,10,10).
+.END

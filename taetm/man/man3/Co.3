@@ -1,0 +1,214 @@
+.\"
+.\" @(#)Co.3	33.1 8/26/94 
+.\"
+.TH Co 3 "23 Aug 1993" "TAE Plus v5.3"
+.SH NAME
+Co_ - introduction to the \fI Collection Package\fP for TAE
+
+.SH REFERENCE NOTE
+.IP
+
+.LP
+Wpt, Vm, and Co functions are described in
+the \fI TAE Plus Programmer's Manual\fP and in the language-specific
+documents, \fI TAE Plus C Reference Manual\fP, \fI TAE Plus C++ Reference
+Manual\fP, and \fI TAE Plus Ada Reference Manual\fP.
+
+
+.SH INTRODUCTION
+.IP
+
+.LP
+
+The Collection (Co) package provides the capability to manage groups 
+of objects known as \fIcollections\fP. (Although the package is somewhat generic, 
+in generated TAE Plus applications the collection 
+consists of Vm objects.) It allows an application program to 
+create a collection, add a new member, delete a member, find a member, 
+save a collection to a file, or retrieve a collection from a file. 
+The function Co_ForEach provides the capability to perform 
+an operation on each member of a collection. 
+(This package, like the Vm package, is coded in an object-oriented style; 
+see the Vm intro man page for a discussion of the style and of object ids.) 
+Collections may be heterogeneous; that is, they may contain different object 
+types. The intent is to manage collections of any object type; however, 
+the functions Co_WriteFile and Co_ReadFile are restricted to collections 
+that hold \fIVm objects\fP.
+
+Note that collections do not maintain copies of the objects,
+but rather the IDs of the objects. Consequently, an object
+may, simultaneously, be a member of several collections. The
+Collection (Co) Package is, in general, easier to use than coding the
+logic to explicitly link objects together in a list. 
+
+To see the functions supported, type:
+
+.nf
+
+	man -k Co_
+.fi
+
+
+.SH USING the Co PACKAGE with TAE Plus
+.IP
+
+.LP
+
+.\" A Wpt panel and its interaction items are 
+.\" defined via two Vm objects: a "target" Vm object and a "view" Vm object.
+
+A Wpt panel is defined via two Vm objects: a \fItarget\fP Vm object 
+and a \fIview \fP
+Vm object. Each Vm object consists of a set of \fITAE Variables\fP. 
+A TAE Variable is a data structure (declared as \`struct VARIABLE\') 
+which describes an item. Just as a panel consists of two Vm objects, 
+an item consists of two TAE variables, one describing the 
+item's target and the other describing its view.
+
+Through the TAE Plus WorkBench, an application's user interface
+is defined.  The panel definitions, which may consist of several
+Wpt panels, are stored by the WorkBench in a resource file.  
+A resource file contains target and view files (one pair for each panel)
+that describe the panels for an application.
+On UNIX systems, a resource file is a standard archive of target and
+view files.  On VMS systems, a resource
+file is a concatenation of target and view files.
+
+Using the Wpt package, an application program may display and
+control the user interface (the panels and items) defined from
+the WorkBench.  The Wpt package uses Vm objects (where one Vm 
+object contains the data from a file); thus the Vm 
+objects must be extracted from the resource file.
+
+The Collection (Co) Package provides the capability to 
+extract, insert and manipulate these Vm objects.  The typical sequence 
+for extracting and using the data in a resource file is as follows:
+
+.IP
+o The application reads its resource file using the Co_ReadFile 
+function.  Co_ReadFile provides the application with a 
+collection of memory-resident Vm objects.
+
+o In preparation for creating a panel, the application locates the 
+associated target and view Vm objects via the 
+Co_Find function.
+
+o The application creates the new panel via Wpt_NewPanel, passing 
+the two Vm objects (located via Co_Find) that define the panel.
+.LP
+
+.SH EXAMPLE
+.IP
+
+.LP
+
+The following example shows how Vm objects corresponding to target and
+view files are extracted from a resource file and used by Wpt.  
+In this example, the resource file "twopanels.res" contains four Vm Objects
+named "panelA_t", "panelA_v", "panelB_t", and "panelB_v".  
+For an explanation of the Wpt_NewPanel call, see Wpt_NewPanel(3).
+
+.nf
+  
+/* group of Vm objects contained in resource file */
+Id vmCollection ; 
+
+/* panel A's target vmid, view vmid, and panelId, respectively */
+static Id panelATarget, panelAView, panelAId; 
+
+/* similarly for panel B */
+static Id panelBTarget, panelBView, panelBId; 
+
+/* tables to map items to their event handlers (defined elsewhere) */
+struct DISPATCH panelADispatch[ ], panelBDispatch[ ];
+	...
+
+FUNCTION VOID initializePanels ()
+    {
+    Id  Co_Find ();
+    Id  Co_New ();
+
+    /* Allocate a collection. */
+    vmCollection = Co_New (P_ABORT);
+
+    /* Read the resource file into the new collection. */
+    Co_ReadFile (vmCollection, "twopanels.res", P_ABORT);
+
+    /* Locate the view Vm object describing panel A in the collection, 
+     * returning its "vmid" (type Id) for later use with Vm functions.
+     */
+    panelAView = Co_Find (vmCollection, "panelA_v");
+
+    /* Locate the target Vm object describing panel A in the collection, 
+     * returning its "vmid" (type Id).
+     */
+    panelATarget = Co_Find (vmCollection, "panelA_t");
+    
+    /* Create and display panel A, given its view and target;
+     * return the "panelId" (type Id) which identifies panel A
+     * to use with other Wpt functions.
+    panelAId = Wpt_NewPanel (theDisplay, panelATarget, 
+            panelAView, NULL, panelADispatch, WPT_PREFERRED);
+
+    /* Locate view and target Vm objects which describe panel B. */
+    panelBView = Co_Find (vmCollection, "panelB_v");
+    panelBTarget = Co_Find (vmCollection, "panelB_t");
+    
+    /* Create and display panel B. */
+    panelBId = Wpt_NewPanel (theDisplay, panelBTarget, 
+            panelBView, NULL, panelBDispatch, WPT_PREFERRED);
+    }
+.fi
+
+The example first defines an empty collection called vmCollection 
+to store the Vm objects.  Co_ReadFile is then called to read the 
+Vm objects and place them into vmCollection.  Finally, Co_Find is 
+called prior to the Wpt_NewPanel calls to locate the required Vm 
+objects.
+
+
+.SH MAN PAGE HINTS
+.IP
+
+.LP
+
+For a one-line description of \fI all Co functions\fP, type:
+
+.nf
+
+	man -k Co_
+
+.fi 
+
+This is also useful if you can't remember the exact name of a function.  
+
+To obtain a one-line description of a specific function 
+(for example, Co_ReadFile), type:
+
+.nf
+	whatis Co_ReadFile  
+.fi 
+
+To print typeset quality versions of any of these 
+man pages (for example, Co_ReadFile), type:
+
+.nf
+	man -t Co_ReadFile 
+.fi 
+
+If you don't care about the typesetting quality, try:
+
+.nf
+	man Co_ReadFile | lpr
+.fi 
+
+.KS
+.SH SEE ALSO
+.IP
+
+.LP
+Wpt(3), Vm(3)
+.KE
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

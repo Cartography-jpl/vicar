@@ -1,0 +1,45 @@
+.TH Vm_SetTCLVar 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetTCLVar - set TCL variables; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetTCLVar (vmid)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: object successfully sent.
+.IP o
+A host-dependent error code if the object could not be sent
+for a host-dependent reason.
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Argument:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object.  Variables whose values are specified
+in the object must be defined in the PDF for the executing process. 
+.LP
+
+.IP
+.LP
+Vm_SetTCLVar sends the object containing the values of TAE name
+parameters and global variables to the Terminal Monitor.  
+The Vm object must be constructed before calling Vm_SetTCLVar;
+Vm_New, Vm_ReadFromTM,
+Vm_ReadFromDisk, Vm_SetIntg, Vm_SetReal, Vm_SetString are 
+functions that may be used 
+to construct a Vm object.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

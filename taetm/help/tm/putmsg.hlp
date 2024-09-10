@@ -1,0 +1,128 @@
+!	23-jun-83  ...dm
+!	26-jan-85  General V1.3 cleanup...lia
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+.TITLE
+PUTMSG
+.HELP
+
+
+
+	PUTMSG writes a message out to the standard output device
+	and the session log.  The following forms are available:
+
+
+	    PUTMSG-NOTRACE	! default for PUTMSG
+	    PUTMSG-TRACE
+
+
+	If you are in command mode, type "HELP PUTMSG-sub" for 
+	help on a particular subcommand of PUTMSG.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of PUTMSG.
+.PAGE
+			Usage Notes
+
+	  
+	o  The message is tagged with the message key for output.
+
+	o  Substitution of a variable is allowed within the message.
+
+	o  The following additional functions are performed by PUTMSG.
+
+	   - If the standard output device is different from the
+	     terminal, the message is also written to the terminal.
+
+	   - The TAE global "$SKEY" is set to the message key.
+
+.PAGE
+			Usage Notes (continued)
+
+
+	o  The message key specified in the PUTMSG command may
+	   be used to request detailed explanation of the 
+	   message. (See HELP-MESSAGE command.)
+	 
+			Example
+   
+
+	    PUTMSG  "File &FILE not found.", "GP-NOFILE"
+!
+.level1
+.subcmd NOTRACE
+No trace with message.
+.subcmd TRACE
+Trace info with message.
+.variable MESSAGE
+Message text.
+.variable KEY
+Message key.
+!
+.level2
+.subcmd NOTRACE
+			  PUTMSG-NOTRACE
+
+			Function and Format
+
+	
+	Function:
+
+	    PUTMSG-NOTRACE writes a message to the standard
+	    output device, and to the session log file.
+	    The trace information will only appear in the
+	    session log file.
+
+
+	Format:
+
+	    PUTMSG-NOTRACE  MESSAGE=message-string  KEY=message-key
+.subcmd TRACE
+			    PUTMSG-TRACE
+
+			Function and Format
+
+	
+	Function:
+
+	    PUTMSG-TRACE writes a message with trace 
+	    information to the standard output device, 
+	    and to the session log file.
+
+
+	Format:
+
+	    PUTMSG-TRACE  MESSAGE=message-string  KEY=message-key
+.variable MESSAGE
+
+
+	    
+	    "MESSAGE" is the text of the message that will be 
+	    written to the standard output device and/or to the
+	    terminal, and to the session log file. The maximum
+	    permitted length of the message text is 132 characters.
+	    If, however, the combined size of the text and the
+	    key is more than 130 characters, the message will be
+	    truncated before output.
+!
+.variable KEY
+
+
+
+	    "KEY" specifies the key that the message text will be
+	    tagged with to form the message string. A user may use
+	    this key is to get detailed help for the message by 
+	    invoking the HELP-MESSAGE command.   
+
+	    The maximum allowed size of the key is 17 characters.
+	    It must have the form "XXX-YYYYY" where "XXX" is the
+	    facility name and "YYYYY" is a text string. 
+.PAGE
+
+
+	
+	    Each message within a facility should have a unique key
+	    associated with it.
+
+	    If you do not specify a key value, the TAE Monitor uses 
+	    "TAE-NOKEY" as the message key.
+!	
+.END

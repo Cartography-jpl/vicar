@@ -1,0 +1,37 @@
+!	edited 20-may-83...dm
+.TITLE
+LOOP/END-LOOP
+.HELP
+			Function and Format
+	
+	Function:
+
+	    LOOP provides an infinite loop.
+
+
+	Format:
+
+	    LOOP
+		loop-body
+	    END-LOOP
+.PAGE
+			Usage Notes
+
+
+	o  No other commands may appear on the same line as LOOP.
+
+	o  Since the loop is infinite, BREAK or GOTO must be used
+	   to exit the loop.
+.PAGE
+			Example
+
+
+	    LET I = 1
+	    LOOP				!do until I = 11
+		COPY INFILE&I OUTFILE&I
+		LET I = I+1
+		IF (I = 11)
+		    BREAK
+		END-IF
+	    END-LOOP
+.END

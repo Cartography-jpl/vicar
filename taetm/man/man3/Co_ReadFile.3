@@ -1,0 +1,54 @@
+.TH Co_ReadFile 3 "20 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_ReadFile - read Vm objects from disk
+
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Co_ReadFile (aCollection, fileSpec, mode)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: all Vm objects were read correctly.
+.IP o
+FAIL: file does not exist or is incorrectly formatted.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id aCollection;
+
+Id of the collection into which the Vm objects are to be read.
+The collection must have been created via Co_New. 
+
+.IP \n+L.
+fileSpec: input, TEXT fileSpec[ ];
+
+File specification of a resource file.  The default file extension is ".res". 
+
+.IP \n+L.
+mode:  input, CODE mode;
+
+Mode (P_CONT or P_ABORT) to be used for the Vm objects
+to be created.
+.LP
+
+
+Co_ReadFile reads a TAE Plus resource file and adds each of the file's Vm
+objects to the collection.  Because Co_ReadFile adds to the
+collection, multiple Co_ReadFile calls may be used to build a
+collection that contains members from several resource files. 
+
+The name of the member assigned to each Vm object is the name of the 
+corresponding "subfile."
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

@@ -1,0 +1,67 @@
+!	edited	23-jun-83...dm
+.TITLE
+SUBCMD/END-SUBCMD
+.HELP
+			Function and Format
+
+
+	Function:
+
+	    SUBCMD/END-SUB declares a set of variables (usually
+	    parameters) to be associated with the named subcommand.
+	
+
+.PAGE
+			Function and Format (continued)
+
+
+	Format:
+
+	    1.  SUBCMD  NAME = subcommand-name
+		  declarations
+	        END-SUBCMD
+
+	    2.  SUBCMD-DEFAULT NAME = subcommand-name
+		  declarations
+	        END-SUBCMD
+.PAGE
+			Usage Notes
+
+
+	o  SUBCMD-DEFAULT makes the named subcommand the default
+	   subcommand.
+
+	o  All the parameters and variables declared between SUBCMD
+	   and END-SUBCMD are associated with the specified subcommand.
+
+	o  All parameters and variables declared outside of any SUBCMD
+	   declaration "bracket" are associated with all subcommands.
+
+	o  Only PARM, LOCAL, and REFGBL may appear in a subcommand
+	   bracket.
+!
+.level1
+.subcmd -
+Identify a subcommand.
+.subcmd DEFAULT
+Establish default subcommand.
+.variable NAME
+Subcommand name.
+!
+.level2
+.subcmd DEFAULT
+
+				SUBCMD-DEFAULT
+
+
+	    SUBCMD-DEFAULT makes the named subcommand the default
+	    subcommand.
+
+.variable NAME
+
+
+
+	    "NAME" is the name of the subcommand to be associated
+	    with this command. It must follow the TCL naming
+	    conventions.
+.end

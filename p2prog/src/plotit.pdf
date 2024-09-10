@@ -1,0 +1,129 @@
+process help=*
+PARM INP TYPE=STRING COUNT=(0:1) DEFAULT=--
+PARM DEVICE TYPE=KEYWORD +
+ VALID=(/GIF,/VGIF,/PPM,/VPPM,/PS,/VPS,/CPS,/VCPS,/XSERVE,/XMOTIF, +
+ /GTERM,/XTERM,/XWINDOW) DEFAULT=/XSERVE
+PARM DOT TYPE=KEYWORD VALID=(DOT,NONE1) DEFAULT=NONE1
+PARM LINE TYPE=KEYWORD VALID=(LINE,NONE2) DEFAULT=NONE2
+PARM SPLINE TYPE=KEYWORD VALID=(SPLINE,NONE3) DEFAULT=NONE3
+PARM LOGX TYPE=KEYWORD VALID=(LINEAR,LOGX) DEFAULT=LINEAR
+PARM LOGY TYPE=KEYWORD VALID=(LINEA,LOGY) DEFAULT=LINEA
+PARM XDATA TYPE=REAL COUNT=(0:100) DEFAULT=--
+PARM YDATA TYPE=REAL COUNT=(0:100) DEFAULT=--
+PARM XLABEL TYPE=STRING COUNT=(0:1) DEFAULT='x'
+PARM YLABEL TYPE=STRING COUNT=(0:1) DEFAULT='y'
+PARM TITLE TYPE=STRING COUNT=(0:1) DEFAULT='title'
+PARM PERCENT TYPE=REAL COUNT=(0:1) DEFAULT=2.
+END-PROC
+.TITLE
+VICAR2 Program PLOTIT a plotting and image display program.
+
+.HELP
+PURPOSE
+1. To plot graphs.
+2. To display images.
+
+EXECUTION
+See http://www-astro-theory.fnal.gov/Documentation/Software/pgplot/
+         index.html
+
+*************to plot a graph********************
+plotit +
+xdata=(0.,2.,4.,6.,8.) ydata=(1.,2.,4.,8.,16.) +
+xlabel="x axis" ylabel="y axis" title="a title"
+
+************to display a vicar image *******************
+plotit inp=ref.img
+
+
+.LEVEL1
+
+.VARIABLE INP
+ input image
+.VARIABLE DEVICE
+Output device type.
+.VARIABLE XDATA
+X data to plot
+.VARIABLE YDATA
+Y data to plot
+.VARIABLE XLABEL
+The X axis label
+.VARIABLE YLABEL
+The Y axis label
+.VARIABLE TITLE
+Plot title
+.VARIABLE LOGX
+Log x axis
+.VARIABLE LOGY
+Log y axis
+.VARIABLE DOT
+Plot points as symbols.
+.VARIABLE LINE
+Plot lines connecting
+the dots.
+.VARIABLE SPLINE
+Plot spline interpolated
+data between the dots.
+
+.LEVEL2
+
+.VARIABLE INP
+ input image to be displayed
+
+.VARIABLE PERCENT
+image histogram saturation at each end.
+
+.VARIABLE DEVICE
+Device type to plot or display to. Options are:
+/GIF,    gif format landscape
+/VGIF,   gif format portrait
+/PPM,    portable pixel map landscape 
+/VPPM,   portable pixel map portrait
+/PS,     postscript monochrome landscape
+/VPS,    postscript monochrome portrait
+/CPS,    postscrip color landscape
+/VCPS,   postscrip color portrait
+/XTERM,  tektronix terminal
+/XWINDOW workstations running x windows
+/XSERVE, persistent X window
+/XMOTIF  X motif
+
+The default is: device=/XSERVE
+
+.VARIABLE XDATA
+X data to plot
+
+.VARIABLE YDATA
+Y data to plot
+
+.VARIABLE XLABEL
+The X axis label
+
+.VARIABLE YLABEL
+The Y axis label
+
+.VARIABLE TITLE
+Plot title
+
+.VARIABLE LOGX
+Log x axis.
+
+.VARIABLE LOGY
+Log y axis.
+
+.VARIABLE DOT
+Plot points only as symbols.
+If neither DOT, LINE, or SPLINE are specified then DOT and LINE become
+the default.
+
+.VARIABLE LINE
+Plot lines connecting the dots.
+If neither DOT, LINE, or SPLINE are specified then DOT and LINE become
+the default.
+
+.VARIABLE SPLINE
+Plot spline interpolated data between the dots.
+If neither DOT, LINE, or SPLINE are specified then DOT and LINE become
+the default.
+
+.END

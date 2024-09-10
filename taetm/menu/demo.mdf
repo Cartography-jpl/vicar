@@ -1,0 +1,34 @@
+.title 
+		MENU OF TAE DEMONSTRATION PROGRAMS
+	
+  This menu exists for documentation only.  The proper way to run
+.if1 UNIX
+  the TAE tests is to use the $TDEMO/taetest.scr script from
+.if1 VAX_VMS
+  the TAE tests is to use the TAE$DEMO:TAETEST.SCR script from
+  command mode.  Type "HELP *" for a detailed description.
+
+.help
+  To run the TAE test case, you must be in TAE's command mode.
+  Execute the following sequence:
+
+.if UNIX
+	COMMAND	
+	TAE>SETLIB $TDEMO
+	TAE>ENABLE-SCRIPT $TDEMO/taetest
+.elseif VAX_VMS
+	COMMAND	
+	TAE>SETLIB TAE$DEMO
+	TAE>ENABLE-SCRIPT TAE$DEMO:TAETEST
+.ifend
+
+  This menu is part of the skeleton tree provided as part
+  of the delivery tape and is included for demonstration 
+  only.
+
+.if1 UNIX
+.proc $TDEMO/tcltest
+.if1 VAX_VMS
+.proc TAE$DEMO:TCLTEST
+Demonstration of TCL features.
+.end

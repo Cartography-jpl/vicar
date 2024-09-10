@@ -1,0 +1,34 @@
+# MINIMAL standard setup of environment for TAE Plus users and developers.
+#
+# SCO USERS, PLEASE NOTE:
+#
+# It is recommended that you source this file in your .cshrc file
+# ONLY if you experience an "arg list too long" shell error message when
+# attempting to build large TAE Plus applications (40 or more panels).
+# If so, source this file INSTEAD OF "taesetup".
+#
+# Change Log:
+# 24-jun-94 PR2720: (Limited SCO env) Initial based on taesetup...kbs,cew
+
+
+# The following are needed to compile and link TAE Plus applications.
+setenv TAEPLAT		`$TAE/bin/all/platform`
+setenv TAEINC   	$TAE/include
+setenv TAECXXLIB	$TAE/cxx/lib/$TAEPLAT
+setenv TAEINCXM		$TAEINC/wptinc/Xm
+setenv TAELIB		$TAE/lib/$TAEPLAT
+setenv TAEXTAELIB	$TAE/Xtae/lib/$TAEPLAT
+
+# This is needed to access TAE executables
+setenv TAEBIN		$TAE/bin/$TAEPLAT
+
+# This is needed for Wpt scripting and res2uil
+setenv TAEPERLLIB	$TAE/taeperl/utilities
+
+# This is only needed to access TAE Plus man pages.
+setenv TAEMAN		$TAE/man
+
+# These are needed to run the WorkBench and to use TAE help in applications.
+setenv TAERES           $TAE/res/$TAEPLAT
+setenv TAEHELPWB        $TAE/help/wb
+setenv TAEBITMAPS       $TAEINC/bitmaps

@@ -1,0 +1,317 @@
+process help=*
+PARM OUT TYPE=STRING COUNT=1
+PARM USERID  TYPE=STRING COUNT=(0:1) DEFAULT="u2141ozs"
+PARM PASSWORD  TYPE=STRING COUNT=(0:1) DEFAULT="none"
+PARM PATH    TYPE=(STRING,80) COUNT=(0:1) +
+   DEFAULT=/project/test_work/testdata/general/hip_main.dat
+PARM MODE TYPE=KEYWORD COUNT=(0:1) VALID=(ssm,dsm,dia) DEFAULT=ssm
+PARM TIME TYPE=INTEGER COUNT=(0:1) DEFAULT=125
+PARM REPS TYPE=INTEGER COUNT=(0:1) DEFAULT=5
+PARM PRIORITY TYPE=INTEGER COUNT=(0:1) DEFAULT=1
+PARM OWNER TYPE=STRING COUNT=(0:1) DEFAULT="none"
+PARM SPACING TYPE=INTEGER COUNT=(0:1) DEFAULT=30
+PARM NAME  TYPE=STRING COUNT=1 DEFAULT="none"
+PARM STATUS TYPE=(STRING,100) COUNT=(0:1) DEFAULT=""
+PARM FOV TYPE=REAL COUNT=(0:1) DEFAULT=20.
+PARM VLIMIT TYPE=REAL COUNT=(0:1) DEFAULT=8.0
+PARM KLIMIT TYPE=REAL COUNT=(0:1) DEFAULT=4.5
+PARM PARLIMIT TYPE=REAL COUNT=(0:1) DEFAULT=20.
+PARM LODEC TYPE=REAL COUNT=(0:1) DEFAULT=0.
+PARM HIDEC TYPE=REAL COUNT=(0:1) DEFAULT=50.
+PARM LUMINOSITY TYPE=INTEGER COUNT=(0,5) DEFAULT=(0,0,0,0,5)
+PARM COLOR TYPE=STRING COUNT=(0:1) DEFAULT="FGKM"
+PARM HD TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM HIP TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+PARM BASENAME TYPE=KEYWORD COUNT=(0:1) VALID=(ns,nw) DEFAULT=ns
+END-PROC
+
+.TITLE
+VICAR program OBS_CAT (observation catalogue)
+
+.HELP
+PURPOSE:
+To create an ascii catalogue for input to the Palomar Test Bed Interferometer.
+The catalogue can be used as an observing list but is intended to be given
+to program OBS_LIST for conversion into a schedule.
+
+USAGE:
+You specify an astronomical object by name.
+Obs_cat queries Simbad, the french data base in Strasbourg, to resolve the
+name aliases and return the Hipparcos number. With the HIP number the program
+searches the Hipparcos catalogue for candidate calibrators. You can control the
+selection of calibrators by use of parameters. When OBS_CAT is done it will
+have created a single target catalogue. Many such catalogues can be concatenated
+together (without the time header) to provide input for the scheduler OBS_LIST.
+
+THE OUTPUT CATALOGUE:
+The catalogue header contains the date and time that the program executed.
+The output catalogue contains ascii columns in a format acceptable to the 
+sequencer. Columns are:
+1.   Hipparcos number.
+2-4. RA in j2000.
+5-7. Dec in j2000.
+8.   Proper motion in RA * cos(dec), seconds of arc/year.
+9.   Proper motion in Dec, seconds of arc/year.
+10.  v magnitude.
+11.  k magnitude. "0" if unavailable.
+12.  Spectral type.
+13.  Separation from primary target on the sky, degrees.
+14.  Parallax, milli arc seconds.
+15.  Angle of resolved disk, milli arc seconds.
+16.  Object class: "p" for primary target, "s" for secondary target,
+     "c" for calibrator. Calibrators are sorted by distance to primary,
+     nearest to primary first, farthest from primary last.
+17.  Number of Hipparcos components.
+18.  Double/Multiple systems annex flag from Hipparcos catalogue.
+19.  Hipparcos solution quality.
+20.  Simbad description of object.
+
+EXECUTION:
+obs_cat out=obs__catalogue.ascii name="HD166" password="    "
+
+GETTING INTO SIMBAD:
+The Simbad data base wants a password. You can access SIMBAD two ways:
+ 
+1. Give the password:
+obs_cat ...  name="..." password="   "
+ 
+2. Let kerberos get it for you by running the following unix code before
+getting into vicar:
+selcat o
+kinit (which will ask you for your initials and kerberos password).
+vicar
+obs_cat ...  name="..."
+
+.PAGE
+METHOD:
+1. You specify a target.
+2. The objects coordinates and Hipparcos name are returned by Simbad.
+3. All objects in the Hipparcos catalogue within the fov/2 of the target 
+   are selected and subjected to a series of tests.
+4. The target coordinates are updated using Hipparcos values.
+5. Simbad is queried for each object to determine it's type.
+6. All surviving objects (target first) are written to the output catalogue
+   in order of apparent proximity to the target (nearest first).
+
+Example of the output catalogue:
+
+# UTC= "Fri May  8 16:17:11 1998"  Local= "Fri May  8 09:17:11 1998" GMT=1998128161711   Obs_cat_version=1
+# Target HIP67275 known as tau_boo is a  V*
+# owner=none mode=ssm priority=1 repeats=5 spacing=30 time=125 baseline=ns
+#  HD          RA(2000.0) dec(2000.0)  pmRA    pmDEC   V    K   SpTyp  Separ Paral  Angle O C Flag  Simbad
+ HIP67275     13 47 15.74 +17 27 24.9  -0.480  +0.054  4.5  3.2 F7V     0.00 64.12  0.701 p 01 - -  V*
+ HIP66974     13 43 35.70 +14 21 56.2  -0.315  -0.007  7.0  5.5 G2V     3.21 16.55  0.154 c 01 - -  PM*
+ HIP67470     13 49 36.06 +13 00 37.1  -0.148  +0.025  6.7  5.4 F8V     4.48 17.51  0.187 c 01 - -  Star
+ HIP65350     13 23 37.41 +17 19 16.2  -0.035  -0.006  8.0  6.6 F7V     5.64  6.46  0.071 c 01 - -  Star
+ HIP69178     14 09 37.20 +15 37 17.6  +0.042  -0.064  6.9  5.6 F7V     5.66 18.19  0.199 c 01 - -  Star
+ HIP65085     13 20 25.71 +17 34 50.2  -0.110  +0.048  7.4  6.5 F2V     6.40 17.27  0.207 c 01 - -  Star
+ HIP66640     13 39 34.62 +10 44 46.6  -0.113  -0.013  5.6  4.9 F0V     6.96 18.68  0.234 c 02 C A  **
+ HIP67616     13 51 16.33 +24 41 44.7  -0.000  +0.000  7.7  5.5 K2V     7.30 17.51  0.132 c 01 - S  V*
+ HIP64779     13 16 32.26 +19 47 07.0  -0.110  +0.030  6.5  5.8 F0V     7.64 11.65  0.146 c 02 C A  **
+ HIP68064     13 56 09.52 +25 55 07.4  -0.097  -0.005  6.8  6.0 F2V     8.71  8.88  0.106 c 01 - -  EB*Algol
+ HIP64081     13 07 54.87 +19 55 58.0  +0.000  -0.067  7.9  6.9 F4V     9.64  6.83  0.078 c 01 - -  Star
+
+HISTORY:
+2-1-98  J Lorre. 
+COGNIZANT PROGRAMMER:  Jean Lorre
+
+.LEVEL1
+
+.VARI OUT
+Output catalogue
+
+.VARI USERID
+Simbad userid
+ 
+.VARI PASSWORD
+Simbad password
+
+.VARI PATH
+full pathname of
+hipparcos data file.
+
+.VARI MODE
+ssm (simgle star mode) or
+dsm (dual star mode) or
+dia (stellar diameter mode).
+
+.VARI TIME
+Scan duration.
+(seconds)
+
+.VARI REPS
+Number of observations.
+
+.VARI PRIORITY
+Object priority.
+
+.VARI OWNER
+Your name.
+
+.VARI SPACING
+Time between observations.
+
+.VARI NAME
+Object name
+
+.VARI FOV
+diameter of the field
+of view within which to
+list Hipparcos objects.
+(degrees)
+
+.VARI VLIMIT
+Limiting v magnitude.
+
+.VARI KLIMIT
+Limiting k magnitude.
+
+.VARI PARLIMIT
+Limiting parallax.
+
+.VARI LODEC
+Lower declination limit.
+
+.VARI HIDEC
+Upper declination limit.
+
+.VARI STATUS
+Directory to contain
+status file.
+Defaults to local.
+ 
+.VARI COLOR
+Acceptable MK colors
+
+.VARI LUMINOSITY
+Acceptable luminosities
+
+.VARI HD
+Target HD number.
+Bypasses Simbad.
+
+.VARI HIP
+Target HIP number.
+Bypasses Simbad.
+
+.VARI BASENAME
+The name of the baseline.
+Defaults to ns.
+
+.LEVEL2
+
+.VARI OUT
+Output ascii catalogue.
+
+.VARI USERID
+Simbad userid. 
+This defaults to a valid userid unless you have your own.
+ 
+.VARI PASSWORD
+Simbad password.
+See the METHOD section to permit kerberos to get it for you.
+
+.VARI PATH
+The full pathname of the hipparcos catalogue.
+
+.VARI MODE
+ssm (simgle star mode) or
+dsm (dual star mode) or
+dia (stellar diameter mode).
+Defaults to ssm.
+In dia mode only the target object is written to the output file. There are no
+calibrators for this case.
+ 
+.VARI TIME
+Scan duration in seconds.
+Defaults to 125
+ 
+.VARI REPS
+Number of observations per object.
+Defaults to 5.
+ 
+.VARI PRIORITY
+Object priority. High numbers represent high priority.
+Defaults to 1.
+ 
+.VARI OWNER
+Your name.
+ 
+.VARI SPACING
+Time between observations in minutes.
+Defaults to 30 minutes.
+
+.VARI NAME
+The name of the object whose information goes in the output catalogue.
+Example: name="betelgeuse"
+A query will be sent to SIMBAD to retrieve the object's information.
+ 
+.VARI FOV
+The diameter of the field of view within which to list Hipparcos objects.
+In degrees.
+
+.VARI VLIMIT
+Limiting v magnitude.
+Objects with magnitudes above this (fainter) will be rejected.
+
+.VARI KLIMIT
+Limiting k magnitude.
+Objects with magnitudes above this (fainter) will be rejected.
+
+.VARI PARLIMIT
+Limiting parallax.
+Objects with parallax above this will be rejected.
+In milli arc seconds per year.
+
+.VARI LODEC
+Lower declination limit.
+Objects with declinations below this will be rejected.
+Degrees.
+
+.VARI HIDEC
+Upper declination limit.
+Objects with declinations above this will be rejected.
+Degrees.
+
+.VARI COLOR
+Acceptable MK colors.
+List all the acceptable MK color types as an upper case string.
+Default is: colors="FGKM".
+Just list the upper case letters.
+
+.VARI LUMINOSITY
+Acceptable luminosities classes.
+You input a set of 5 integers representing luminosities: I II III IV V.
+If the integer is 0 the class is ignored.
+Default is: luminosity=(0,0,0,0,5) meaning only objects of class V are accepted.
+(note: Any integer other than a 0 means to accept this class.)
+
+.VARI HD
+Target HD number.
+HD specifies the target Henry Draper number directly. 
+This causes the Simbad query to be skipped and the data to come 
+directly from the Hipparcos catalogue.
+Example: hd=39801
+
+.VARI HIP
+Target HIP number.
+HIP specifies the target Hipparcos number directly. 
+This causes the Simbad query to be skipped and the data to come 
+directly from the Hipparcos catalogue.
+Example HIP=27989
+
+.VARI BASENAME
+The name of the interferometer baseline to use during observations.
+Currently acceptable names are: ns (for pti north-south) 
+and nw (for pti north-west).
+Defaults to ns.
+
+.VARI STATUS
+Directory to contain the status file.
+Defaults to the local directory.
+The status file is called "status_file.txt"
+If the program was successful it will contain the string "success".
+If the program began but failed to run it will contain the string "failure" on
+record 1 followed by optional records containing ascii messages describing
+the nature of the error.
+

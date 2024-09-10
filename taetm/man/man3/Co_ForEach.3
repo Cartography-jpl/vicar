@@ -1,0 +1,182 @@
+.TH Co_ForEach 3 "29 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_ForEach - execute callback function for each member of a collection
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Co_ForEach (aCollection, aFunction, contextArg)
+
+Function return:
+
+.nr L 0 1
+.IP o
+The last value returned to Co_ForEach by aFunction.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id aCollection;
+
+Id of the collection.
+The collection must have been created via Co_New. 
+
+.IP \n+L.
+aFunction:  input, CODE (*aFunction) ();
+
+Pointer to a function to be called for each member of the 
+collection.  The calling sequence for aFunction is described below. 
+
+.IP \n+L.
+contextArg: input, GENPTR contextArg;
+
+Context variable to be passed to aFunction.
+
+.LP
+The aFunction argument is a callback function that is called for
+each member of the collection.  The last function value code from
+aFunction is returned as the Co_ForEach function value.  Presently,
+the "order" of the objects is the same as the order in which the
+objects were added to the collection. 
+
+(Note: Typically the collection's "objects" (members) are Vm Objects,
+although this need not be the case.)
+
+.SH CALLBACK DESCRIPTION
+.IP
+.LP
+The calling sequence for the aFunction callback is:
+
+CODE aFunction (id, contextArg, name, type)
+
+Function return:
+
+.nr L 0 1
+.IP o
+non-zero: do not call aFunction for the remaining objects
+and return to the Co_ForEach caller.
+
+.IP o
+zero: continue to call aFunction for the remaining objects
+in the collection.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+id: input, Id id;
+
+Id of an object in the collection.
+
+.IP \n+L.
+contextArg: input, GENPTR contextArg;
+
+The "context" variable that was originally passed to Co_ForEach.   
+
+.IP \n+L.
+name: input, TEXT name[ ];
+
+The name of the object.
+
+.IP \n+L.
+type: input, CODE type;
+
+The type of the object (as defined when the object was
+added to the collection).
+
+
+Two examples follow.
+
+.SH CODE EXAMPLE 1
+.IP
+.LP
+The following code segment counts the number of member objects whose
+names start with "a": 
+
+.nf
+
+
+FUNCTION main ()
+   {
+   Id               collection;
+   CODE             CountIf ();       /* callback function */
+   int              counter;          /* context argument  */
+
+   collection = Co_New ();            /* create collection */
+   ...
+   counter = 0;
+   Co_ForEach (collection, CountIf, &counter);
+   printf ("The number of 'a' members is %d\\n", counter);
+   ...
+   }
+
+FUNCTION CODE CountIf (collection, counter, name, type)
+   Id            collection;
+   TEXT          name[ ];
+   CODE          type;
+   int           *counter;
+   {
+   if (name[0] == 'a')
+       (*counter)++;
+   return (0);                       /* continue counting */
+   }
+
+.fi
+
+.SH CODE EXAMPLE 2
+.IP
+.LP
+The following code segment searches the collection for the first
+object whose name starts with "a". 
+
+.nf
+FUNCTION main ()
+   {
+   Id     collection;
+   CODE   AFind ();                  /* callback function  */
+   Id     firstAObject;              /* first 'a' object   */    
+   TEXT   aName[STRINGSIZ+1];        /* name of 'a' object */
+
+   collection = Co_New ();           /* create collection  */
+   ...
+   firstAObject = Co_ForEach (collection, AFind, aName);
+   if (firstAObject == NULL)
+       printf ("No 'a' objects exist.");
+   else
+       printf ("The first 'a' member is %s\\n", aName);
+   ...
+   }
+
+FUNCTION CODE AFind (object, firstAName, objectName, type)
+   Id   object; 
+   TEXT firstAName[ ];         / * name of first 'a' object */
+   TEXT objectName[ ];
+   CODE type;
+   {
+   if (objectName[0] == 'a')
+       {
+.ig UNSUPPORTED
+       s_copy (objectName, firstAName);/* capture name     */
+.UNSUPPORTED
+       strcpy (firstAName, objectName);/* capture name     */
+       return (object);                /* terminate search */
+       }
+   else
+       return (0);                     /* continue search  */
+   }
+.fi
+
+.SH SEE ALSO
+.IP
+.LP
+Vm_ForEach
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

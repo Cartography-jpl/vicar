@@ -1,0 +1,17 @@
+process help=*
+parm index type=int
+parm value type=name
+end-proc
+.TITLE
+VICAR Program "tae_path_helper"
+.HELP
+PURPOSE
+
+   This works with tae_path, you wouldn't normally call this directly.
+This return the ith entry in the TAE_PATH environment variable, or
+"---" if we have reached the end.
+
+WRITTEN BY:            Mike Smyth	Feb 2016
+
+COGNIZANT PROGRAMMER:  Mike Smyth
+.END

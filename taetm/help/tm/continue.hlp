@@ -1,0 +1,29 @@
+!	edited	21-may-83...dm
+!		21-jan-84 - conditional text for UNIX
+.TITLE
+CONTINUE
+.HELP
+			Function and Format
+
+	
+	Function:
+
+.if VAX_VMS
+	    CONTINUE  is used in the proc interrupt mode
+	    to resume the execution of the suspended proc.
+.elseif BSD
+	    CONTINUE  is used in the proc interrupt mode
+	    to resume the execution of the suspended proc.
+.elseif UNIX
+	    Under non-Berkeley UNIX systems, the CONTINUE command
+	    is ignored in the proc interrupt mode and the suspended
+	    proc is automatically aborted.
+.ifend	
+
+	    It is ignored by the TAE monitor in the normal command
+	    mode.
+
+	Format:
+
+	    CONTINUE
+.END

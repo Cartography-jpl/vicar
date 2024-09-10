@@ -1,0 +1,109 @@
+!	edited	20-may-83...dm
+!		21-jan-84 - Conditional text for UNIX...dm
+!		19-sep-86 - new MENU-CLOSED...nhe
+.TITLE
+MENU 
+.HELP
+		MENU puts TAE in menu mode.  If you use 
+		the -CLOSED subcommand, re-entry to command 
+		mode is inhibited.
+.page
+			    MENU
+
+			Function and Format
+
+
+	Function:
+
+	    MENU puts TAE in menu mode.
+
+
+	Format:
+
+	    1.  MENU 
+
+	    2.  MENU menu-name
+
+	    3.  MENU-CLOSED optional-menu-name
+.PAGE
+			Usage Notes
+
+
+	o  Menu mode assists in selecting procs for execution. 
+	   The MENU command enters menu mode at the most recent 
+	   menu in the menu tree (or the root menu if no tree 
+	   exists), or at the menu specified by menu-name.
+
+	o  For information on operating menu mode request HELP
+	   from menu mode. 
+
+	o  If you use MENU-CLOSED, then, upon entry to a menu screen,
+	   the "COMMAND" and "MENU" responses are not available.
+	   Typically, MENU-CLOSED is used by system managers in the
+	   SLOGON PDF.	   
+.PAGE
+			Examples
+
+
+	1.  TAE> MENU
+
+	      Return to menu mode, redisplaying the last 
+	      menu displayed.  If none has been displayed,
+	      display the root menu in the TAE menu library.
+
+.if VAX_VMS
+	2.  TAE>MENU [mylib]mymenu
+
+	     Go to menu mode, and display "mymenu" from the
+	     library "[mylib]".  If no menu has been previously
+	     displayed, establish this menu as the root, and
+	     "[mylib]" as the default menu library.
+.elseif UNIX
+	2.  TAE>MENU /mylib/mymenu
+
+	     Go to menu mode, and display "mymenu" from the
+	     library "/mylib".  If no menu has been previously
+	     displayed, establish this menu as the root, and
+	     "/mylib" as the default menu library.
+.ifend
+!
+.level1
+.variable NAME
+Name of menu to be displayed.
+.subcmd OPEN
+Enter menu mode, allowing
+return to command mode.
+.subcmd CLOSED
+Enter menu mode, inhibiting
+return to command mode.
+!
+.level2
+.variable NAME
+
+
+	    The parameter "NAME" specifies the name of the menu
+	    to be displayed when menu mode is entered. If the 
+	    name contains a library name, the menu is accessed 
+	    from that library, else a hierarchy search similar
+	    to the search for a proc is performed to locate the
+	    menu definition file.
+	    
+	    If you omit this parameter, TAE returns to menu mode
+	    redisplaying the last displayed menu. If no menu was 
+	    previously displayed in this session, then the root 
+	    menu from the TAE menu library is displayed.
+!	    
+.subcmd OPEN
+			MENU-OPEN
+
+
+	    MENU-OPEN is equivalent to MENU with no subcommand.
+.subcmd CLOSED
+			MENU-CLOSED
+
+
+	    If you use MENU-CLOSED, then, once menu mode is entered,
+	    you cannot return to command mode.  Typically, MENU-CLOSED 
+	    is used by system managers in the SLOGON PDF.	   
+
+.END 

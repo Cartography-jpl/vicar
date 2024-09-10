@@ -1,0 +1,86 @@
+.TH Vm_SetReal 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetReal - set values for a real variable
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetReal (vmid, name, count, real, mode)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: variable successfully placed in the parameter object.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BADCOUNT: the count is either less than the minimum or greater
+than the maximum allowed for this variable. 
+.IP o
+P_BADTYPE: the variable has a type other than real.
+.IP o
+P_DUPNAME: the variable already exists (for P_ADD mode).
+.IP o
+P_NOPARM: in the case of a qualifier name (form "x.y"), 
+the parent parameter ("x" in the example) does not exist.
+.LP
+
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input/output, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find. 
+Otherwise, this object must have been allocated with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the real variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+
+.IP \n+L.
+count: input, FUNINT   count;
+
+Multiplicity of the variable, i.e., the number of real values in
+the real array.
+
+The count values 0, -1, and -2 are special: a count of 0 means "null 
+value"; a count of -1 means "no value," in which case the parameter
+becomes a mandatory parameter; and a count of -2 means "use the
+default value defined in the PDF."  The negative values apply during 
+a dynamic tutor session.
+
+.IP \n+L.
+real: input, TAEFLOAT   real[ ];
+
+An array of real values (a real value vector) for the variable.
+If count is one, note that real must nonetheless be an array of dimension one;
+if count is less than one, 
+the real argument is ignored.
+
+.IP \n+L.
+mode: input, FUNINT   mode;
+
+.nr L 0 1
+.IP o
+P_ADD: indicates that the variable is being added
+to the parameter object. 
+.IP o
+P_UPDATE: indicates that the variable is already in
+the parameter object, but its value and/or count is being modified. 
+.LP
+
+.IP
+.LP
+Vm_SetReal sets the values of the specified real variable.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

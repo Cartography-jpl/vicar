@@ -1,0 +1,67 @@
+PROCESS HELP=*
+PARM OUT TYPE=STRING
+PARM NL TYPE=INTEGER DEFAULT=256
+PARM NS TYPE=INTEGER DEFAULT=256
+PARM MEAN  TYPE=REAL DEFAULT=128
+PARM SIGMA TYPE=REAL DEFAULT=16
+PARM SEED TYPE=INTEGER DEFAULT=-- COUNT=0:1
+PARM FORMAT TYPE=(STRING,8) DEFAULT=BYTE
+
+!# function="Generating Synthetic Images"
+!# keywords=(image,pixel,random,number,RANGEN,VAX,VMS,RAN)
+END-PROC
+.TITLE
+Create Gaussian noise image
+.HELP
+PURPOSE:
+
+GAUSNOIS generates an image with random pixel values where the pixel values
+are distributed according to a gaussian (normal or bell shaped) probability
+distribution.  This type of a noise image can be useful in tests.
+
+
+EXECUTION:
+
+GAUSNOIS  NOISE.IMG  NL=200 NS=300  MEAN=100 SIGMA=25 FORMAT=BYTE  SEED=7382382
+
+This is an example using all of the parameters:  it produces a 200x300 byte
+image with mean 100 and standard deviation 25, and starts the random number
+generator with that particular seed.
+
+The SEED parameter is provided so that the same random images can be generated.
+If it is defaulted the seed for the random number generator comes from the
+system time.
+
+All of the parameters except the output image can be defaulted.
+.PAGE
+PERFORMANCE:
+
+	The ported version of GAUSNOIS is approximately half the speed of
+the original GAUSNOIS.  The primary reason for this is that the random
+number generator, RANGEN, is half the speed of the VAX/VMS routine RAN.
+Steve Pohorsky agrees that this is unavoidable without a significant
+rewrite to the program, including writing a seperate vectorized version of
+the random number generator.
+
+Original Programmer :	Frank Evans	August 1985
+Ported to UNIX by :	Steve Hwan	June 1994
+Cognizant Programmer:   Frank Evans
+
+.LEVEL1
+.VARIABLE OUT
+Output image
+.VARIABLE NS
+Number of lines
+.VARIABLE NL
+Number of samples
+.VARIABLE MEAN
+The mean of the distribution
+.VARIABLE SIGMA
+The standard deviation
+of the distribution
+.VARIABLE SEED
+The starting seed for the
+random number generator
+.VARIABLE FORMAT
+Output format (default BYTE)
+.END

@@ -1,0 +1,129 @@
+!	edited  13-jun-83...dm
+!		21-jan-84 - Conditional text for UNIX
+!		3-jul-84	Fix 35 limitation...palm
+!		28-jan-85   General V1.3 cleanup...lia
+!		11-aug-88   Add DEFCMD-REPLACE...nhe
+!		20-sep-93   PR2011: ran spell check...dag
+.TITLE
+DEFCMD
+.HELP
+
+
+	DEFCMD defines new names and shorthand forms for
+	TAE commands.  There is one subcommand -REPLACE;
+	for help on -REPLACE, type "help defcmd-replace"
+	(command mode) or "help -replace" (tutor).
+.PAGE
+			Function and Format
+	
+	Function:
+
+	    DEFCMD allows the definition of new names and
+	    shorthand forms for TAE commands.
+
+
+	Format:
+
+	    DEFCMD  COMMAND=new-name  STRING=string-to-be-replaced
+
+.PAGE
+			Usage Notes
+
+
+	    The maximum number of commands that may be defined via
+	    DEFCMD is 500.
+
+	    To view the current list of defined commands, use
+	    "DISPLAY $DEFCMDi", where i=0 thru 9.  There will
+	    only exist as many $DEFCMDs as needed to contain
+	    all currently defined commands.
+
+	    When new commands are defined via DEFCMD, allowable
+	    abbreviations may be specified using the "*" character.
+	    This is demonstrated in the following example.
+.PAGE
+			Examples
+
+
+	1.  TAE>DEFCMD CO*PY STRING=COPY
+
+	      Define the allowable abbreviations for
+	      the proc "COPY" to be "CO", and "COP".
+	
+.if VAX_VMS
+	2.  TAE>DEFCMD zoom [mylib]zoomimage
+
+	      Define an equivalent name, "zoom", for the proc
+	      "[mylib]zoomimage".
+.elseif UNIX
+	2.  TAE>DEFCMD zoom /mylib/zoomimage
+
+	      Define an equivalent name, "zoom", for the proc
+	      "/mylib/zoomimage".
+.ifend
+
+.PAGE
+			Examples (continued)
+
+	3.  TAE>DEFCMD echo "let $echo = ""y"""
+
+	      Defines a command which sets TAE into echo mode.
+.level1
+.subcmd REPLACE
+Replacement with no err msg
+if command exists.
+.variable COMMAND
+Name of command to define.
+.variable STRING
+The string that should replace
+the defined command.
+!
+.level2
+.subcmd REPLACE
+
+
+	-REPLACE defines the command just as DEFCMD does with
+	no subcommand, except that, if the command being defined
+	already exists, then no error message is issued.
+
+	This subcommand is useful for DEFCMD's in procs that are
+	run repeatedly.
+.variable COMMAND
+
+
+	    The parameter "COMMAND" specifies a defined command
+	    to TAE. Before TAE interprets each command line,
+	    it replaces each occurrence of this defined
+	    command to the value of "STRING".
+
+	    The command must not conflict with commands previously
+	    defined via DEFCMD. It may contain an asterisk ('*')
+	    to denote abbreviation, so long as uniqueness is
+	    maintained.
+.PAGE
+	    Example:
+
+	
+.if VAX_VMS
+	    TAE>DEFCMD  zo*om [mylib]zoomimage
+
+	      Define an equivalent name, "zoom", which may also
+	      be abbreviated as "zo" and "zoo", for the proc
+	      "[mylib]zoomimage".
+.elseif UNIX
+	    TAE>DEFCMD  zo*om /mylib/zoomimage
+
+	      Define an equivalent name, "zoom", which may also
+	      be abbreviated as "zo" and "zoo", for the proc
+	      "/mylib/zoomimage".
+.ifend
+!
+.variable STRING
+
+
+
+	    This is the text string that will replace each
+	    occurrence of the command named in the parameter
+	    "COMMAND".
+	    	
+.END

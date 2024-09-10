@@ -1,0 +1,308 @@
+!	23-jun-83  ...dm
+!	21-jan-84 - Conditional text:  examples for UNIX...dm
+!	06-jun-84 - Deleted null subcommand string...lim
+!	03-jul-84 - cleanup ...palm
+!	26-jan-85 - added help for compiled pdfs...jtm
+!	27-jan-85 - added subcommand help...jtm
+!	21-sep-86 - PR 979:  Make subcommand specific info non-redundant...peb
+.TITLE
+SETLIB 
+.HELP
+
+
+	SETLIB has the following forms:
+	
+		SETLIB-SET 	(library1-type, library2-type, ...)
+				(-SET is the default subcommand) 
+        	SETLIB-ADD  	(library1-type, library2-type, ...)
+		SETLIB-DELETE	(library1-type, library2-type, ...)
+
+
+	If you are in command mode, type "HELP SETLIB-sub" for 
+	help on a particular subcommand of SETLIB.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of SETLIB.
+.PAGE
+			General Usage Notes
+
+	
+	o  SETLIB affects the order in which TAE searches for a proc or 
+	   menu and the default proc file type in each library ("PDF" 
+	   or "CPD").
+
+	   The general order of proc or menu search is:
+
+	    1.  The user's library, i.e., the library identified
+		by the contents of the $USERLIB global.
+
+	    2.  The libraries specified via SETLIB.
+
+	    3.  The system library, i.e., the library identified
+		by the contents of the $SYSLIB global.
+
+.PAGE
+		General Usage Notes (continued)
+
+
+	o  Normally, when a user specifies the name of a procedure
+	   without specifying the proc file type, TAE will search for
+	   the type "PDF". A user may modify the default proc file 
+	   type for each library using the SETLIB command. When adding 
+    	   a library using SETLIB, the user may specify the default 
+	   proc type for that library by adding "-type" to the name
+	   of the library.
+
+	   This feature is particularly useful in conjunction with
+	   the ability to compile PDFs. Compiled PDFs normally carry
+	   the "CPD" file type. Thus a user may compile all PDFs in a 
+	   library and then declare the default proc file type of that
+	   library to be "CPD".
+.PAGE
+		General Usage Notes (continued)
+
+
+	o  If an asterisk ("*") is substituted for the 
+	   name of a library, the current search set is placed
+	   in the specified position, (thus providing an "add").
+	   The asterisk may not be used with SETLIB-ADD.
+
+	o  To display the current search order and default proc file
+	   type, use the SHOW command.
+
+	o  The maximum allowed number of application libraries 
+	   is 50.
+!
+.level1
+.subcmd SET
+Establish application library
+search order
+.subcmd ADD
+Add to application library
+search list
+.subcmd DELETE
+Delete a name from application
+library search order list
+.variable LIBRARY
+List of library name(s)
+!
+.level2
+.subcmd SET
+			       SETLIB-SET
+
+			  Function and Format
+
+	Function:
+
+	    SETLIB-SET establishes the list of application
+	    libraries that participate in the library search.
+	    The previous list is overridden.
+
+	    The -SET subcommand is the default subcommand for
+	    SETLIB, i.e., "SETLIB" is equivalent to "SETLIB-SET".
+
+	    If an asterisk ("*") is substituted for the 
+	    name of a library, the current search set is placed
+	    in the specified position, (thus providing an "add").
+.page
+				SETLIB-SET
+
+
+		      Function and Format (continued)
+
+
+	    If you omit the list of libraries from the
+	    command line, the list of application
+	    libraries is cleared.
+
+
+	Format:
+
+	    SETLIB-SET  LIBRARY = (library1-type, library2-type, ...)
+
+	    SETLIB     	LIBRARY = (library1-type, library2-type, ...)
+.PAGE
+			SETLIB-SET
+
+
+			Examples
+
+
+.if VAX_VMS
+	1.  TAE>SETLIB-SET    [taev1.util]
+
+		Establish [taev1.util] as the application library.
+		The default proc file type is set to "PDF".
+
+	2.  TAE>SETLIB      ([taev1.demo]-CPD, db2:[metlib])  
+
+	   	Change the application library list to [taev1.demo]
+	   	and db2:[metlib]. (The search is performed in this
+		order.) The default proc file type for procs in 
+		the [taev1.demo] library is set to "CPD".
+.elseif UNIX
+	1.  TAE>SETLIB-SET    /taev1/util
+
+		Establish /taev1/util as the application library.
+		The default proc file type for procs in this library 
+		is "PDF".
+
+	2.  TAE>SETLIB      (/taev1/demo-cpd, /metlib)  
+
+	   	Change the application library list to /taev1/demo
+	   	and /metlib. (The search is performed in this
+		order.) The default proc file type for procs in 
+		the taev1/demo library is set to "CPD".
+.ifend
+.PAGE
+			      SETLIB-SET
+
+
+			  Examples (continued)
+
+
+.if VAX_VMS
+	3.  TAE>SETLIB-SET    (*, [mylib.test])
+
+		Add [mylib.test] to the already established 
+		application library search order list.
+.elseif UNIX
+	3.  TAE>SETLIB-SET    (*, /mylib/test)
+
+		Add /mylib/test to the already established 
+		application library search order list.
+.ifend
+
+	4.  TAE>SETLIB
+
+	 	Delete all application library names from the list.	 
+.subcmd ADD
+			SETLIB-ADD
+
+		    Function and Format
+	
+	Function:
+
+	    SETLIB-ADD adds the named libraries to the library
+	    search order, and optionally sets default file type 
+	    procs in those libraries.  The named libraries are 
+	    added to the end of the application library list.
+
+
+	Format:
+
+	    SETLIB-ADD LIBRARY = (library1-type, library2-type, ...)
+.PAGE
+			SETLIB-ADD
+
+			 Examples
+
+
+.if VAX_VMS
+	1.  TAE>SETLIB-ADD metlib
+
+	        The library named "metlib" is appended to the
+	        current application library list. The default 
+		file type for procs in the metlib library is "PDF".
+
+	2.  TAE>SETLIB-ADD (metlib, imagelib-CPD)
+
+	        The two libraries, "metlib" and "imagelib" are
+	        appended to the current application library list.
+		The default proc file type for files in the 
+		imagelib library is "CPD".
+.elseif UNIX
+	1.  TAE>SETLIB-ADD $metlib
+
+	        The library defined as the shell variable "metlib" 
+		is appended to the current application library list.
+		(The symbol metlib must have been included in the 
+		environment list for TAE to access it.)
+
+	2.  TAE>SETLIB-ADD ($metlib, $imagelib)
+
+	        The two libraries, defined as shell variables 
+		"metlib" and "imagelib" are appended to the current 
+		application library list.
+
+.ifend
+.subcmd DELETE
+			SETLIB-DELETE
+
+		     Function and Format
+
+	Function:
+
+	    SETLIB-DELETE deletes the specified libraries from
+	    the search order. If a default proc file type was 
+	    specified when the library was added to the list of
+	    libraries, then the type must be included when the
+	    library is deleted.
+
+
+	Format:
+
+	    SETLIB-DELETE LIBRARY=library-list
+.PAGE
+			SETLIB-DELETE
+
+
+			  Examples
+
+
+.if VAX_VMS
+	1.  TAE>SETLIB-DEL metlib
+
+	        Delete the library "metlib" from the search order.
+
+	2.  TAE>SETLIB-DEL (metlib, imagelib-cpd)
+
+	        Delete both "metlib" and "imagelib" from the
+	        search order. 
+.elseif UNIX
+	1.  TAE>SETLIB-DEL $metlib
+
+	        Delete the library defined as the shell variable 
+		"metlib" from the search order.
+
+	2.  TAE>SETLIB-DEL ($metlib, $imagelib-cpd)
+
+	        Delete both libraries defined as "metlib" and 
+		"imagelib" from the search order. When the 
+		"imagelib" library was added to the search list,
+		a default proc file type of "CPD" was specified.
+.ifend
+.variable LIBRARY
+
+
+
+	    "LIBRARY" specifies the name(s) of application libraries, and
+	     optionally, the default proc file type in each library.
+
+	    o If you specify "SETLIB-SET", then:
+		
+	      -	This list replaces the previous application library list.
+	        However, if an asterisk ("*") is substituted for the 
+	        name of a library, the current search set is placed
+	        in the specified position, (thus providing an "add").
+
+	      - If you omit the list of libraries from the command 
+		line, the list of application libraries is cleared.
+.PAGE
+	
+
+
+	   o If the subcommand is "ADD", then the name list is added 
+	     to the existing application library order search list.
+	     The asterisk may not be used with SETLIB-ADD.
+
+	   o If the subcommand is "DELETE" then "LIBRARY" specifies 
+	     the names to be deleted from the existing search 
+	     order list.	    
+
+	   o If no proc file type is specified, then TAE will search for
+	     files of type "PDF". To alter this default, the default 
+	     file type is appended to the name of the library as follows:
+
+			library_name"-type"
+
+.END

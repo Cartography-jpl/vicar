@@ -1,0 +1,48 @@
+!	edited	13-jun-83...dm
+!		28-jan-85  General V1.3 cleanup...lia
+.TITLE
+DELCMD
+.HELP
+			Function and Format
+	
+	Function:
+
+	    DELCMD deletes a command name that was
+	    defined using DEFCMD.  It is equivalent
+	    to DELETE-COMMAND.
+
+
+	Format:
+
+	    DELCMD  COMMAND=name
+
+.PAGE
+			Usage Note
+
+
+	    To view the current list of defined commands, use
+	    "DISPLAY $DEFCMDi", where i=0 thru 9.  There will
+	    only exist as many $DEFCMDs as needed to contain
+	    all currently defined commands.
+
+
+			Example
+
+
+	    TAE>DELCMD COPY
+
+	      Delete the name COPY from the DEFCMD list (but
+	      do not delete the proc named "COPY").
+.level1
+.variable COMMAND
+Name of command to delete.
+!
+.level2
+.variable COMMAND
+
+
+
+	    "COMMAND" specifies the name of a user-defined
+	    command to be deleted from the list of defined
+	    commands (set via DEFCMD).
+.END

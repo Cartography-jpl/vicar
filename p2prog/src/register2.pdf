@@ -1,0 +1,94 @@
+process help=*
+PARM INP     TYPE=STRING  COUNT=1
+PARM OUT     TYPE=STRING  COUNT=1
+PARM QUALITY TYPE=REAL COUNT=(0:1) VALID=(0.:1.) DEFAULT=.65
+PARM SDEV TYPE=REAL COUNT=(0:1) VALID=(0.:1000000.) DEFAULT=0.
+end-proc
+.title
+REGISTER2
+
+.help
+PURPOSE:
+To acquire tiepoints permitting images to be registered.
+Register2 performs 9 registrations and writes the tiepoints into the output 
+file.
+
+EXECUTION STATEMENT:
+register2 inp=listoffilenames out=tiepoints
+superres inp=(listoffilenames,tiepoints) out=superresolutionimage
+
+where:
+listoffilenames is an ascii file with one input image file name per record.
+tiepoints is an ascii file with tiepoints.
+
+METHOD:
+Register2 selects a large region near the picture center and correlates a
+single tiepoint there. It then uses the offset to determine 9 tiepoints
+across the image. These tiepoints are written to the output. 
+Input images should be the same size.
+
+The Gruen correlation scheme used here permits distortions between 
+correlation areas of the form:
+newline=line*A+sample*B+C
+newsamp=line*D+sample*E+F
+The task of the correlator is to determine the coefficients A-F which permit 
+the best correlation value.
+
+Output file format is as follows:
+
+Picture 2
+ref_line ref_sample line sample quality
+ref_line ref_sample line sample quality
+ref_line ref_sample line sample quality
+...
+Picture 3
+ref_line ref_sample line sample quality
+ref_line ref_sample line sample quality
+...
+Picture 4
+...
+end
+
+ref_line & ref_sample refer to the first input file which is always the
+reference. Picture 2 refers to the tiepoints connecting picture 2 to the
+reference picture etc.
+Line and sample refer to the other pictures.
+Quality is a number from 0 to 1. Most good correlations have qualities
+of around .95  .
+
+PROGRAM HISTORY
+
+Cognizant programmer: Jean Lorre
+Revisions: New
+
+.LEVEL1
+.VARI INP
+Ascii list of input files.
+
+.VARI OUT
+Tiepoints.
+
+.VARI QUALITY
+Min permitted correlation
+quality. > 0 & < 1.
+
+.VARI SDEV
+Minimum permitted
+image standard deviation.
+
+.LEVEL2
+.VARI INP
+Input list of filenames, one file name per record.
+
+.VARI OUT
+Tiepoints. See METHOD for format.
+
+.VARI QUALITY
+Min permitted correlation quality. > 0 & < 1.
+Tiepoints with a correlation quality below this are rejected.
+
+.VARI SDEV
+Minimum permitted image standard deviation.
+Tiepoint areas with a standard deviation below this are rejected.
+
+.END

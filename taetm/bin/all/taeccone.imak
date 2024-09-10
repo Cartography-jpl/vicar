@@ -1,0 +1,11 @@
+/**/#
+/**/# simple C program build
+/**/#
+/**/#	
+
+#define program PROG_NAME
+
+CINCLUDES = \
+	-I$(TAEINC)
+
+BuildCProgram(program,program.o)

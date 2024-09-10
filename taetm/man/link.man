@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+#     ULTRIX SPECIFIC 
+#
+# Link all $TAEMAN pages. 
+#
+# Change Log
+# 23-Oct-92    Initial version...kbs
+# 29-Oct-92    Use sed to convert all .so lines to ".l" references...kbs
+
+# NOTE: If you change the suffix, you must change $TAEMAN/sed.man also.
+#
+MANDIR_LOCAL=/usr/man/manl
+LOCAL_SUFFIX=l
+
+if test $TAEPLAT && test "$TAEPLAT" != mipsel
+then
+    echo "This script is only needed for Ultrix on DECStation."
+    echo "Your platform is: $TAEPLAT"
+    exit 1
+fi
+
+if [ ! -d $MANDIR_LOCAL ] ; then
+    echo "Making directory: $MANDIR_LOCAL"
+    mkdir $MANDIR_LOCAL
+    if [ $? != 0 ] ; then
+        echo "mkdir failed"
+        exit 1
+    fi
+fi
+
+# set just in case "taesetup" hasn't been run
+TAEMAN=$TAE/man		
+
+for SUFFIX in 1 3 5    # MAY CHANGE IF WE ADD NEW SECTIONS
+do
+  cd $TAEMAN/man$SUFFIX
+
+  for FILENAME in *.$SUFFIX
+  do
+    # Edit the file using sed to change all .so refs to refer
+    # to .l files.
+    chmod 644 $FILENAME
+    cp $FILENAME temp
+    sed -f $TAEMAN/sed.man temp > $FILENAME
+    chmod 444 $FILENAME
+
+    BASENAME=`basename $FILENAME .${SUFFIX}`
+    # In case this is re-run, must remove old links.
+    if [ -s $MANDIR_LOCAL/$BASENAME.$LOCAL_SUFFIX ] ; then
+        echo "removing old link: $MANDIR_LOCAL/$BASENAME.$LOCAL_SUFFIX"
+        rm $MANDIR_LOCAL/$BASENAME.$LOCAL_SUFFIX
+    fi
+    echo "linking $FILENAME to $MANDIR_LOCAL/$BASENAME.$LOCAL_SUFFIX" 
+    ln -s $TAEMAN/man$SUFFIX/$FILENAME $MANDIR_LOCAL/$BASENAME.$LOCAL_SUFFIX
+    if [ $? != 0 ] ; then
+        echo "link failed"
+        exit 1
+    fi
+  done
+  rm -f temp
+done

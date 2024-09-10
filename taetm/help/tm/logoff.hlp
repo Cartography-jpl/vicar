@@ -1,0 +1,25 @@
+!	edited 23-may-83...dm
+.TITLE
+LOGOFF
+.HELP
+			Function and Format
+	
+	Function:
+
+	    LOGOFF terminates the interactive session, logging the
+	    user off TAE and the host system.
+
+
+	Format:
+
+	    LOGOFF
+.PAGE
+			Usage Notes
+
+
+	o  At logoff, the system and user logoff procedures
+	   (SLOGOFF and ULOGOFF) are executed.
+
+	o  To logoff TAE, but remain logged on to the host, use
+	   EXIT.
+.END

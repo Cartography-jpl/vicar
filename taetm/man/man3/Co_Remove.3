@@ -1,0 +1,42 @@
+.TH Co_Remove 3 "29 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_Remove - remove a member from a collection
+
+.SH DESCRIPTION
+.IP
+.LP
+Id Co_Remove (aCollection, memName)
+
+Function return:
+
+.nr L 0 1
+.IP o
+non-NULL: Id of the removed object.
+.IP o
+NULL: the member does not exist.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id aCollection;
+
+Id of the collection from which a member is to be removed.
+The collection must have been created via Co_New. 
+
+.IP \n+L.
+memName: input, TEXT memName[ ];
+
+Name of the member to be removed.
+.LP
+
+.IP
+.LP
+Note that Co_Remove does not free the member object--the object is
+simply removed from membership in the collection. 
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

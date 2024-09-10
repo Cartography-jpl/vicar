@@ -1,0 +1,53 @@
+.TH Co_Free 3 "29 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_Free - free a collection
+
+.SH DESCRIPTION
+VOID Co_Free (aCollection, freeFunction)
+
+Function return:
+
+.nr L 0 1
+.IP o
+None.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id aCollection;
+
+Id of the collection to be deleted.  The collection must have been
+created via Co_New. 
+
+.IP \n+L.
+freeFunction: input VOID (*freeFunction)();
+
+A pointer to a callback function used to free each member object.
+If this argument is NULL, then the members are not freed. 
+.LP
+
+Co_Free removes the collection from existence.  If freeFunction is
+NULL, then the members of the collection retain their existence.  If
+freeFunction is not NULL, then freeFunction is called for each member,
+with the member's object id passed as an argument. 
+
+As an example, the following code frees a collection of Vm objects and
+all of the Vm objects themselves: 
+
+.nf
+
+    VOID        Vm_Free();
+    Id          aVmCollection;
+
+    aVmCollection = Co_New ();
+    ...
+    Co_Free (aVmCollection, Vm_Free);
+
+.fi
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

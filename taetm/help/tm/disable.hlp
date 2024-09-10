@@ -1,0 +1,160 @@
+!	20-may-83 - ...dm
+!	03-oct-83 - add disable-tol...nhe
+!	28-jan-85 - general V1.3 cleanup...lia
+!	29-apr-85 - Add DISABLE-PATH...nhe
+!	18-sep-86 - Add DISABLE-INTERRUPT, -HOST...nhe
+!	21-sep-86 - PR 979:  Make subcommand specific info non-redundant...peb
+!	26-sep-86 - Add -RECVAR...palm
+!       29-feb-88 - Add -FACELIFT...tpl
+!	29-feb-88   Add help for FORCE_LOWER ...palm
+!	23-may-90   Remove RCJm stuff...ljn
+!	08-nov-90   Remove Facelift stuff...ljn
+.TITLE
+DISABLE 
+.HELP
+
+
+	DISABLE has the basic subcommands, DISABLE-HOST,
+	DISABLE-INTERRUPT, DISABLE-LOG, DISABLE-RECVAR, 
+	and DISABLE-TOL.
+
+	If you are in command mode, type "HELP DISABLE-sub" for 
+	help on a particular subcommand of DISABLE.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of DISABLE.
+!
+.LEVEL1
+.SUBCMD FORCE_LOWER
+Disable lowercase translation
+of file specifications, i.e.,
+file specs become "literal".
+.SUBCMD HOST
+.if1 VAX_VMS
+Disable DCL and EXIT.
+.if1 UNIX
+Disable USH and EXIT.
+.SUBCMD INTERRUPT
+Disable TAE interrupt
+mode.
+.SUBCMD LOG
+Disable session logging.
+.SUBCMD TOL
+Disable terminal output
+logging.
+.subcmd RECVAR
+Disable message receipt.
+.LEVEL2
+.SUBCMD HOST
+			DISABLE-HOST
+
+
+		    Function and Format
+	
+
+	Function:
+
+	    DISABLE-HOST disables the "EXIT" command
+.if1 VAX_VMS
+	    and the "DCL" command.
+.if1 UNIX
+	    and the "USH" command.
+
+
+	Format:
+
+	    DISABLE-HOST
+.page
+			DISABLE-HOST
+
+
+			Usage Notes
+
+
+
+.if1 VAX_VMS
+	o  Once entry into DCL is disabled, there is no 
+.if1 UNIX
+	o  Once entry into the UNIX shell is disabled, there is no 
+	   TCL command to re-enable entry.
+.subcmd INTERRUPT
+		     DISABLE-INTERRUPT
+
+
+		    Function and Format
+	
+
+	Function:
+
+	    DISABLE-INTERRUPT disables TAE interrupt mode.
+
+
+	Format:
+
+	    DISABLE-INTERRUPT
+.page
+			DISABLE-INTERRUPT
+
+
+			Usage Notes
+
+
+	o  DISABLE-INTERRUPT disables TAE interrupt mode; 
+	   if TAE interrupt mode is disabled when you 
+.if1 VAX_VMS
+	   enter CONTROL/C, the currently executing proc 
+.if1 UNIX
+	   enter CONTROL/C, the currently executing proc 
+	   is unconditionally terminated.
+
+	o  The ENABLE-INTERRUPT reverses the effect of 
+	   DISABLE-INTERRUPT.
+.SUBCMD LOG
+			DISABLE-LOG
+
+
+		    Function and Format
+	
+
+	Function:
+
+	    DISABLE-LOG disables TAE session logging,
+	    initiated by ENABLE-LOG.
+
+
+	Format:
+
+	    DISABLE-LOG
+.SUBCMD RECVAR
+			DISABLE-RECVAR
+
+
+		    Function and Format
+	
+
+	Function:
+
+	    DISABLE-RECVAR disables the receipt of messages
+	    for the RECVAR command.  DISABLE-RECVAR deletes
+	    the input mailbox associated with the current job.
+
+
+	Format:
+
+	    DISABLE-RECVAR
+.SUBCMD TOL
+			DISABLE-TOL
+
+
+		    Function and Format
+
+
+	Function:
+
+	    DISABLE-TOL disables terminal output 
+	    logging, initiated by ENABLE-TOL.
+
+
+	Format:
+
+    	    DISABLE-TOL 
+.END

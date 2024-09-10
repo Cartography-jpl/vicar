@@ -1,0 +1,41 @@
+.TH Vm_Copy 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_Copy - copy a Vm object
+
+.SH DESCRIPTION
+.IP
+.LP
+
+VOID Vm_Copy (target, source)
+
+
+Function return:
+
+.nr L 0 1
+.IP o
+None.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+target: input, Id target;
+
+Id of the target Vm object.
+
+.IP \n+L.
+source: input, Id source;
+
+Id of the source Vm object.
+.LP
+
+
+Vm_Copy makes a full copy of a Vm object, adding all of the 
+VARIABLEs from the source Vm object to the target Vm object. The
+target Vm object must have already been created via a call to Vm_New.
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

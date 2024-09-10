@@ -1,0 +1,83 @@
+.TITLE
+RECVAR
+.HELP
+			Function and Format
+	
+	Function:
+
+            RECVAR receives a collection of variables 
+            from another job.  RECVAR blocks until the 
+            message is received.
+
+
+	Format:
+
+            RECVAR  VARIABLE =(v1, v2, v3, ...) JOB =jobname
+
+	    Subscripted variables may not appear in the variable
+	    list.  If more than one variable is specified, the
+	    names must be enclosed within parentheses.
+.PAGE
+			Usage Notes
+
+
+	o  RECVAR blocks until the next message is received 
+           on the job's input queue.  Under VMS, a RECVAR command
+           may not be interrupted with CONTROL/C.
+ 
+        o  If the incoming message does not supply values for
+           one or more of the variables specified on the RECVAR 
+           command,  the specified variables are not changed and
+           no error condition is indicated.
+
+        o  If no variables are specified on the RECVAR command, 
+           then RECVAR waits until the next message is received.
+.page
+			Usage Notes  (continued)
+
+
+        o  The variables specified on the command line must be 
+           compatible with the definition of the received variables.
+           For example, an INTEGER named X in a received message
+           may not be assigned to a REAL named X in the receiving 
+           proc.
+
+        o  If JOB is specified, then RECVAR examines the next
+           message on the input queue for a match; messages are 
+           discarded until a match is found.
+
+        o  An ENABLE-RECVAR command must be issued before RECVAR is 
+           used.
+
+.page
+			Usage Notes  (continued)
+
+
+        o  Every message should contain a string variable named _JOB,
+           the jobname of the sender.  Messages initiated by the
+           SENDVAR command automatically have the _JOB variable.
+          
+.PAGE
+			Examples
+
+
+	1.  TAE>RECVAR (name1, name2)
+
+	      Receive values for name1 and name2.
+.level1
+.variable VARIABLE 
+The list of TCL variables to be received. 
+.variable JOB
+Name of the job transmitting the message.  The default
+is "ALL", meaning RECVAR will receive from any job.
+.level2
+.variable VARIABLE 
+
+
+The list of TCL variables to be received. 
+.variable JOB
+
+
+Name of the job transmitting the message.  The default
+is "ALL", meaning RECVAR will receive from any job.
+

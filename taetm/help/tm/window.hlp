@@ -1,0 +1,164 @@
+.TITLE
+WINDOW
+.HELP
+			Function and Format
+	
+
+	Function:
+
+	The WINDOW command is used to manipulate TAE
+	windows.   The subcommands are -INIT, -CREATE, -COLORMAP,
+	-CLEAR, -DELETE, -DRAW, -INFO, -LOWER, -MODIFY, -RAISE, 
+	and -TEXT.
+
+.page
+			Usage Notes
+
+	o  The command assumes that you are positioned at
+	   a graphics terminal supported by the X window 
+	   system.
+
+	o  WINDOW-INIT must be executed before you attempt
+	   any other WINDOW commands.
+
+	o  The window system must be active at the time
+	   you execute WINDOW-INIT.
+
+	o  Windows may be concurrently accessed by concurrently
+	   executing jobs.
+
+.page
+
+			Examples
+
+	   1.  WINDOW-INIT	
+
+	   2.  WINDOW-CREATE MYWIND ORIGIN=(0,0) SIZE=(300,300)
+
+	   3.  WINDOW-MODIFY MYWIND WIDTH=500
+
+	   4.  WINDOW-DRAW MYWIND X=(0,20) Y=(0,20) COLOR=red
+
+	   5.  WINDOW-TEXT MYWIND ORIGIN=(10,10) STRING="Text to display"
+
+.level1
+.subcmd init
+Initialize the window system.
+.subcmd colormap
+Dump the current color map.
+.subcmd create
+Create a new window.
+.subcmd clear
+Clear an existing window.
+.subcmd delete
+Delete an existing window.
+.subcmd draw
+Draw lines in a window.
+.subcmd info
+Obtain window origin/size.
+.subcmd lower
+Lower a window on the desktop.
+.subcmd modify
+Modify position and/or size.
+.subcmd raise
+Raise a window on the desktop.
+.subcmd text
+Display text in a window.
+!
+!
+.VARIABLE HOST
+Name of display's host node.
+.VARIABLE DISPLAY
+Display number.
+.VARIABLE PROTOCOL
+DECNET or TCP.
+.VARIABLE NAME
+Window name (from WINDOW-CREATE)
+.VARIABLE COLOR
+black, red, blue, green, cyan, 
+navy, LightBlue, etc.
+.VARIABLE TITLE
+Not currently used.
+.VARIABLE PARENT
+Parent window name.  
+.VARIABLE ORIGIN -CREATE
+Top/left corner in (x,y) pixels.
+.VARIABLE SIZE -CREATE
+Size in (x,y) pixels.
+.VARIABLE BG -CREATE
+Background color.
+.VARIABLE FG -CREATE
+Foreground color.
+.VARIABLE BORDER -CREATE
+Pixels in border.
+.VARIABLE FONT -CREATE
+Not currently used.
+.VARIABLE CURSOR -CREATE
+Not currently used.
+.VARIABLE ORIGIN -MODIFY
+New origin in (x,y) pixels.
+-- means no change.
+.VARIABLE WIDTH -MODIFY
+New width in pixels.
+-- means no change.
+.VARIABLE HEIGHT -MODIFY
+New height in pixels.
+-- means no change.
+.VARIABLE X -DRAW
+X coordinate of line points.
+These values are placed into
+a Vertex structure for a 
+call to XDraw.
+.VARIABLE Y -DRAW
+Y coordinates of line points.
+These values are placed into
+a Vertex structure for a 
+call to XDraw.
+.VARIABLE FLAGS
+Vertex flags for XDraw.
+See Xlib documentation.
+.VARIABLE WIDTH -DRAW
+Not currently used.
+.VARIABLE HEIGHT -DRAW
+Not currently used.
+.VARIABLE FUNC -DRAW
+BitBlt operation.  See Xlib.
+.VARIABLE PLANES -DRAW
+Mask for planes to be touched.
+See XDraw documentation.
+.VARIABLE FONT -TEXT
+Font file name.
+.VARIABLE ORIGIN -TEXT
+Top/left of first character.
+Negative means that TAE will
+pick something reasonable.
+.VARIABLE STRING -TEXT
+String to write.
+.VARIABLE ORIGIN -INFO
+Name of TCL variable to
+receive the origin.  The
+variable must be an integer
+vector with two elements.
+.VARIABLE SIZE -INFO
+Name of TCL variable to
+receive the size.  The 
+variable must be an integer
+vector with two elements.
+!
+.level2
+.VARIABLE COLOR
+The full list of available colors is contained
+in the file /usr/lib/rgb.txt.  When specifying
+colors, note that case and blanks are significant.
+So, for example, use "LightBlue" rather than 
+"lightblue" and "dark green" rather than "darkgreen".
+.VARIABLE PARENT
+If you let this parameter default to "Root",
+the parent window is the display itself.  Generally,
+"Root" is the proper value for the PARENT parameter.
+.VARIABLE BG
+Currently, the background color must be either
+"black" or "white".
+.VARIABLE FG
+Currently, the foreground color must be either
+"black" or "white".

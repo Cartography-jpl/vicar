@@ -1,0 +1,65 @@
+.TH Vm_SetValidString 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetValidString - set string valids
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetValidString (vmid, name, count, vector)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: variable successfully placed.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BADTYPE: the variable has a type other than string.
+.IP o
+P_ERROR: the current value is incompatible with the valids.  This
+status code is only a warning and the valids are placed in the parameter
+object.  The current value may be corrected by calling Vm_SetString
+with a valid value.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input/output, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+Otherwise, this object must have been initialized with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the string variable.  The name may be qualified to any number
+of levels, for example, "x.q".
+
+.IP \n+L.
+count: input, FUNINT   count;
+
+Multiplicity of the valids, i.e., the number of string pointers in
+the vector argument.
+
+.IP \n+L.
+vector: input, TEXT   *vector[ ];
+
+An array of pointers to strings (a string value vector) for the variable.
+.LP
+
+.IP
+.LP
+Vm_SetValidString sets the list of acceptable strings for a string variable.
+
+If count is one, note that vector must nonetheless be an array of
+dimension one.  If count is less than one, then the vector argument is
+ignored.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

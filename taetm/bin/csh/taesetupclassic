@@ -1,0 +1,25 @@
+# Standard setup of environment for TAE Classic users and developers.
+#
+# It is recommended that you source this file in your .cshrc file
+# ONLY IF YOU ARE A TAE CLASSIC USER.
+
+# CHANGE LOG:
+#       05-25-93 Created based on Classic vars from v5.2 taesetup...kbs
+#       06-02-93 Moved ULIB to taesetup.sh...kbs,palm
+#	18-jul-94 Added TDEMO, some old classic apps need this...krw
+
+# Classic.
+setenv TAEDEMOCLASSIC    $TAEDEMO/classic
+if ( $?ISISMENU ) then
+   setenv TAEMENU    $ISISMENU
+else
+   setenv TAEMENU    $TAE/menu
+endif
+
+# These are old logical names, necessary for backwards compatibility.
+setenv THELP	$TAEHELPTM
+setenv TINC 	$TAEINC
+setenv TLIB     $TAEPDF
+setenv TMENU    $TAEMENU
+setenv TSYSLIB  $TAEPDF
+setenv TDEMO	$TAEDEMOCLASSIC

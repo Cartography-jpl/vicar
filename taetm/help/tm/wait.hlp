@@ -1,0 +1,77 @@
+!	28-mar-84	Created for V1.2...peb
+.TITLE
+WAIT-ASYNC
+.HELP
+			Function and Format
+	
+	Function:
+
+
+	    WAIT-ASYNC causes TAE to wait for completion of the
+	    specified asynchronous job(s).
+
+	    If the job name is the special job name "ALL", TAE
+	    waits on completion of all active asynchronous
+	    jobs.
+
+	Format:
+
+	    WAIT  JOB = job-name-list
+.PAGE
+			Usage Notes
+
+
+	    Following completion of the WAIT-ASYNC command, the
+	    status variables $SFI and $SKEY are set to the
+	    termination status of the last job in the list.
+
+	    If the job has already terminated when the
+	    WAIT-ASYNC command is executed, TAE copies the
+	    completion status from the job list into $SFI and
+	    $SKEY.  If the job is active, TAE waits on completion
+	    and then copies the completion status.
+
+.page
+	    			Usage Notes (continued)
+
+
+	    Because completed jobs remain in the asynchronous job
+	    list, it is acceptable to wait on the same job more
+	    than once.
+
+	    The WAIT-ASYNC command may be aborted by typing the
+	    attention sequence (CONTROL/C under VAX/VMS and UNIX).
+
+	    If a job requests dynamic parameters while TAE is
+	    waiting due to WAIT-ASYNC then the wait is terminated.
+
+.level1
+.subcmd ASYNC
+Wait for asynchronous jobs
+to complete.
+.variable JOB
+Job(s) to wait for
+completion of.
+.level2
+.subcmd ASYNC
+
+
+
+	    WAIT-ASYNC causes TAE to wait for completion of the
+	    specified asynchronous job(s).
+
+	    Following completion of the WAIT-ASYNC command, the
+	    status variables $SFI and $SKEY are set to the
+	    termination status of the last job in the list.
+
+	    The WAIT-ASYNC command may be aborted by typing the
+	    attention sequence (CONTROL/C under VAX/VMS and UNIX).
+.variable JOB
+
+
+
+	    JOB is the list of asynchronous jobs to wait for
+	    completion of.   If the job name is the special
+	    job name "ALL", TAE waits on completion of all
+	    active asynchronous jobs.
+.END

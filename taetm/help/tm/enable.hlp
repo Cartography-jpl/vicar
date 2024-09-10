@@ -1,0 +1,303 @@
+!	20-may-83  ...dm
+!	03-oct-83  ...nhe
+!	21-jan-84  Update for UNIX...dm
+!	25-jun-84  Fix for TOL...palm
+!	01-oct-84  Fix %LCLR...lia
+!	28-jan-85  General V1.3 cleanup...lia
+!	29-apr-85  RCJM - add ENABLE-PATH...nhe
+!	19-set-86  Add ENABLE-INTERRUPT
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+!	26-sep-86  Add ENABLE-RECVAR...palm
+!	30-sep-87  Add ENABLE-FORCE_LOWER...rww
+!       29-feb-88  Add ENABLE-FACELIFT...tpl
+!       31-oct-89  remove unix line in enable-facelift...tpl
+!	23-may-90  Remove RCJM stuff...ljn
+!	08-nov-90  Remove Facelift stuff...ljn
+.TITLE
+ENABLE
+.HELP
+
+
+	ENABLE has five basic subcommands, ENABLE-INTERRUPT, 
+	ENABLE-LOG, ENABLE-RECVAR, ENABLE-SCRIPT, and ENABLE-TOL.
+    	ENABLE-FORCE_LOWER is available for UNIX systems.
+
+	If you are in command mode, type "HELP ENABLE-sub" for 
+	help on a particular subcommand of ENABLE.  If you are
+	tutoring for parameters, type "HELP  -" for help on your
+	particular subcommand of ENABLE.
+.level1
+.subcmd INTERRUPT
+Enable TAE interrupt 
+mode.
+.subcmd	LOG
+Enable session logging.
+.subcmd RECVAR
+Enable the receipt of 
+messages for the RECVAR
+command.
+.subcmd SCRIPT
+Accept TAE input from 
+a script file.
+.subcmd FORCE_LOWER
+Force conversion of 
+file references to 
+lower case.
+!
+!
+.variable FILE -SCRIPT
+Name of script file.
+.variable FILE -TOL
+Name of terminal output file.
+.variable COUNT
+Script repeat count.
+.variable SIZE
+Bytes to be allocated to
+the input mailbox.
+.subcmd TOL
+Enable terminal output
+logging.
+!
+.level2
+.variable FILE  -SCRIPT
+
+
+	    The parameter FILE specifies the name of the script 
+	    file from which TAE will get its subsequent inputs.
+	    The file must consist of a sequence of commands to 
+	    TAE, just as if the operator had typed those commands.
+	    (Escape characters in the script file are not 
+	    recognized.)  TAE sequences through this file, echoing 
+	    each command as it is executed.  
+
+.variable FILE  -TOL
+
+
+
+	    The parameter FILE specifies the name of the terminal 
+	    output logging file.  For the format of the file, type
+    	    "HELP *".
+!
+.variable COUNT
+
+
+	    COUNT is an optional parameter indicating the number
+	    of times the script file execution is to repeated.
+	    If COUNT is omitted, the the script file is executed
+	    once. If COUNT is set to 0 the script file is executed 
+	    repeatedly until you abort TAE.
+.subcmd INTERRUPT
+			ENABLE-INTERRUPT
+
+
+		    Function and Format
+	
+
+	Function:
+
+	    ENABLE-INTERRUPT enables TAE interrupt mode.
+
+
+	Format:
+
+	    ENABLE-INTERRUPT
+
+.PAGE
+			ENABLE-INTERRUPT
+
+
+			Usage Notes
+
+
+	 o  To disable TAE interrupt mode, use DISABLE-INTERRUPT; 
+	    if you disable TAE interrupt mode, and subsequently 
+.if1 VAX_VMS
+	    enter CONTROL/C, the currently executing proc is
+.if1 UNIX
+	    enter CONTROL/C, the currently executing proc is
+	    unconditionally terminated.
+.subcmd LOG
+			ENABLE-LOG
+
+
+		    Function and Format
+	
+
+	Function:
+
+	    ENABLE-LOG enables TAE session logging.
+
+
+	Format:
+
+	    ENABLE-LOG
+
+.PAGE
+			ENABLE-LOG 
+
+
+			Usage Notes
+
+
+	 o  Session logging causes the following types of
+	    information (with the prefixes shown) to be 
+	    written to the session log file.
+
+	    TS:	time stamp for logging enable
+	    TS:	time stamps for proc activation/termination
+	    PA:	proc name, parameter names and values at activation
+	    PR:	referenced global parameter names and values
+	    DP: dynamic parameter names and values
+	    MS:	Messages sent to the TAE monitor
+	    PT:	Proc termination information
+.PAGE
+			ENABLE-LOG
+
+
+		    Usage Notes (continued)
+
+	    
+	o  In a nested procedure proc activation 
+	   information is logged for the highest level only.
+
+    	o  DISABLE-LOG disables TAE session logging.
+
+	o  The session log file created is named "SESSION"
+	   and has file type "TSL".
+
+.if VAX_VMS
+	o  Session log may be displayed any time using the
+	   session log utility proc, TAE$UTIL:SESSLOG.
+.ifend
+.subcmd RECVAR
+			ENABLE-RECVAR	
+
+
+		     Function and Format
+	
+
+	Function:
+
+	    ENABLE-RECVAR creates an input mailbox so
+	    that interproc messages may be received with the 
+	    RECVAR command.
+
+
+	Format:
+
+	    ENABLE-RECVAR  SIZE=size-in-bytes
+.PAGE
+			ENABLE-RECVAR
+
+
+			Usage Notes
+
+
+	    ENABLE-RECVAR must be executed before a job
+	    can receive messages with the RECVAR command.
+
+
+			  Example
+
+	          ENABLE-RECVAR SIZE=10000
+
+
+	
+.subcmd SCRIPT
+			ENABLE-SCRIPT	
+
+
+		     Function and Format
+	
+
+	Function:
+
+	    ENABLE-SCRIPT redirects TAE input to the specified
+	    script file.
+
+
+	Format:
+
+	    ENABLE-SCRIPT FILE=file-name COUNT=integer
+.PAGE
+			ENABLE-SCRIPT 
+
+
+			Usage Notes
+
+
+	o  The SCRIPT mode treats the indicated file as a sequence
+	   of commands to TAE, just as if the operator had typed
+	   those commands.  TAE sequences through the file, echoing 
+	   each command as it is executed.  
+	   
+
+	o  If COUNT is omitted, the commands in the script file are 
+	   executed once. If COUNT is set to 0, the script file 
+	   is executed repeatedly until you abort TAE.
+.PAGE
+			ENABLE-SCRIPT 
+
+
+			  Examples
+
+
+	1.  TAE>ENABLE-SCR  test100
+
+	        Execute the "test100" script one time.
+
+	2.  TAE>ENABLE-SCRIPT  test100  5
+
+	      Execute the "test100" script five times.
+.subcmd TOL
+			ENABLE-TOL
+
+
+		    Function and Format
+
+
+	Function:
+
+	    ENABLE-TOL enables logging of all terminal
+	    output to the specified file.
+
+
+	Format:
+
+    	    ENABLE-TOL FILE=file-name 
+.PAGE
+			ENABLE-TOL
+
+
+			Usage Notes
+
+
+	o  The default file type is type "TOL".
+
+    	o  DISABLE-TOL disables terminal output logging.
+
+    	o  The entries into the TOL file are as follows:
+
+    	    -  %!BELL - the bell was sounded
+    	    -  %!CLR - the screen was cleared
+	    -  %!LCLRnncc - line cleared at line nn, col cc
+    	    -  %!POSnncc - cursor positioned to line nn, col cc
+    	    -  anything else is a line of text written to the screen
+.subcmd FORCE_LOWER
+			ENABLE-FORCE_LOWER
+
+
+		    Function and Format
+
+	Function:
+
+	    ENABLE-FORCE_LOWER is the default (and traditional) 
+	    TAE mode.  All file references from the TAE Monitor 
+	    are unconditionally converted to lower case.  This 
+	    command is for UNIX implementations where the command
+	    DISABLE-FORCE_LOWER may be used.
+
+	Format:
+
+    	    ENABLE-FORCE_LOWER
+.END

@@ -1,0 +1,53 @@
+.TH Vm_SetMin 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetMin - set minimum vector count of a variable 
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetMin (vmid, name, min) 
+
+Function return: 
+
+.IP o
+SUCCESS: variable's minimum vector count successfully updated.
+.IP o
+P_BADCOUNT: min count > max count, or < 0.
+.IP o
+P_BADNAME: the variable does not exist.
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input/output, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+Otherwise, this object must have been initialized with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+
+.IP \n+L.
+min: input, FUNINT   min;
+
+An integer value for the minimum vector count of the variable
+.LP
+
+.IP
+.LP
+Vm_SetMin sets the minimum vector count of the variable.
+
+A call to Vm_SetMin replaces the previous minimum vector count for
+the variable.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

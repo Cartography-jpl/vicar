@@ -1,0 +1,50 @@
+.TH Vm_ReadFromTM 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_ReadFromTM - receive variables from TM; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_ReadFromTM (vmid)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: the message containing the variables was successfully 
+received from the Terminal Monitor.
+.IP o
+P_KILLED: the user exited from dynamic tutor mode, implicitly 
+requesting that the application be aborted.
+.IP o
+P_FAIL: general failure indication.
+.LP
+Note that the status codes listed above are available only if
+the object was initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object to receive data
+from the Terminal Monitor.
+.LP
+
+.IP
+.LP
+Vm_ReadFromTM reads a set of variables from the 
+Terminal Monitor into a Vm 
+object.  If Vm_ReadFromTM is called to receive the variables of 
+a dynamic tutor session, 
+only the parameters are returned - the implicit variables (_STDOUT, 
+etc.) are not.
+
+If a status code of P_KILLED is returned, the application should 
+terminate after performing any necessary clean-up operations.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

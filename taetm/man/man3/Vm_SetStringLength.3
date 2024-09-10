@@ -1,0 +1,53 @@
+.TH Vm_SetStringLength 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetStringLength - set maximum length of a string or keyword variable 
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetStringLength (vmid, name, strlen)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: variable's string length successfully set.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BADSIZE: the string length is either less than the minimum or greater
+than the maximum string length allowed for a string variable. 
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode  with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input/output, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+Otherwise, this object must have been allocated with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the string variable.  The name may be qualified to any number
+of levels, for example, "x.q".
+
+.IP \n+L.
+strlen: input, FUNINT  strlen;
+
+The maximum length of a string for the variable.
+.LP
+
+.IP
+.LP
+Vm_SetStringLength sets the maximum length of a
+string for the variable.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

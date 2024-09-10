@@ -1,0 +1,35 @@
+.TH Vm_Free 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_Free - deallocate a Vm object
+
+.SH DESCRIPTION
+.IP
+.LP
+VOID Vm_Free (vmid)
+
+Function return:
+
+.IP o
+None.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+.LP
+
+.IP
+.LP
+Vm_Free destroys the Vm object, releasing all memory allocated to 
+the object.  Following a call to Vm_Free, references to the 
+object are invalid.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

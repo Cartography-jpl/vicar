@@ -1,0 +1,37 @@
+.TITLE
+                        TAE UTILITIES
+
+.HELP        
+                This menu contains entries for a number of utilities 
+                useful for performing various functions. Type 
+                HELP n to obtain more information on each entry.
+.if UNIX
+.PROC $TUTIL/msgbld
+Message Build Utility                (msgbld)
+.elseif VAX_VMS
+.PROC TAE$UTIL:MSGBLD
+Message Build Utility                (MSGBLD)
+.PROC tae$util:PROTOCON
+Prototype Conversion Utility         (PCU)
+.PROC TAE$UTIL:MENUTREE
+Draw menu tree                       (MENUTREE)
+.proc TAE$UTIL:PROCS
+List all procs in specified library  (PROCS)
+.proc TAE$UTIL:PROCGEN
+Generate a proc and execute it       (PROCGEN)
+.proc tae$util:sesslog
+Format session log data              (SESSLOG)
+.PROC TAE$UTIL:SCREENON
+Enable logging of screens            (SCREENON)
+.PROC TAE$UTIL:SCREENOFF
+Disable logging of screens           (SCREENOFF)
+.proc TAE$UTIL:SCRIPTON
+Start creation of script file        (SCRIPTON)
+.proc tae$util:scriptoff
+End generation of script file        (SCRIPTOFF)
+.proc TAE$LIB:batch-submit
+Submit a proc to batch               (BATCH-SUBMIT)
+.proc TAE$LIB:async-submit
+Submit a proc to async               (ASYNC-SUBMIT)
+.ifend
+.end

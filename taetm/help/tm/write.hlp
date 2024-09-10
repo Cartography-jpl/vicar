@@ -1,0 +1,49 @@
+!	edited	22-jun-83...dm
+!		27-jan-85 - qualifier -> command qualifier...jtm
+.TITLE
+WRITE
+.HELP
+			Function and Format
+	
+	Function:
+
+	    WRITE writes the specified string to the standard 
+	    output device.
+
+
+	Format:
+
+	    WRITE   STRING=string
+
+.PAGE
+		        Usage Notes
+
+
+	    The standard output device is generally the user's
+	    terminal.  To change the standard output for a
+	    proc, use the command qualifier STDOUT.
+.PAGE
+			Example
+
+
+	    TAE> LOCAL X
+	    TAE> LET X="HELLO"
+	    TAE> WRITE @X
+
+
+	    The above example causes "HELLO" to be displayed on the
+	    terminal.
+!
+.level1
+.variable STRING
+Text string to write.
+!
+.level2
+.variable STRING
+
+
+
+	    "STRING" specifies the text string that is to be written
+	    to the standard output device.  It must be quoted if the
+	    text contains blank characters.  The maximum size of the 
+	    string is 132 characters.

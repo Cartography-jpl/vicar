@@ -1,0 +1,162 @@
+!	edited 23-jun-83...dm
+!	fixed example...palm 16-nov-83
+.TITLE
+LOCAL
+.HELP
+			Function and Format
+
+
+	Function:
+
+	    LOCAL declares a local variable.
+.page
+			Function and Format (continued)
+
+
+	Format:
+
+	    LOCAL  NAME = variable-name
+		   TYPE = INTEGER or
+		 	  REAL or
+			  (STRING, max size of string) or
+			  FILE
+		   COUNT = integer:integer
+		   INITIAL = initial-value
+		   VALID = list-of-valid-values	
+		   ACCESS = IN or OUT or INOUT or NOCHECK	
+.PAGE
+			Usage Notes
+
+
+	o  A local variable may be declared only once in a
+	   procedure.
+
+	o  LOCAL is not permitted in the body of a procedure.
+
+	o  LOCAL may be used interactively.
+
+	o  TYPE defaults to STRING.
+
+	o  The maximum size of the string defaults to 132.
+
+	o  COUNT gives the minimum and maximum number of values
+	   in a list of values for the variable.  The default is (1:1).
+	   If the variable is to be nullable, the minimum count
+	   must be zero.
+.PAGE
+			Usage Notes (continued)
+
+
+	o  INITIAL sets the initial value and is optional.
+
+	o  ACCESS is valid for FILE types only.
+
+.PAGE
+			Examples
+
+
+	1.  LOCAL I TYPE=INTEGER
+
+	2.  LOCAL A TYPE=REAL COUNT=2 INITIAL=(1.1, 2.3E-3)
+
+	3.  LOCAL S INITIAL="first message"
+.level1
+.variable NAME
+Name of the variable.
+.variable TYPE
+Variable type.
+.variable COUNT
+Value vector count.
+.variable INITIAL
+Initial value.
+.variable VALID
+Valid values of the parameter.
+.variable ACCESS
+File access mode.
+!
+.level2
+.variable NAME
+
+
+
+	    "NAME" identifies the name of the variable that is
+	    being declared as a local variable.
+!
+.variable TYPE
+
+
+
+ 	    "TYPE" is the type of the local variable.  Permitted
+	    types are INTEGER, REAL, STRING and FILE.  If the
+	    type is STRING, then "TYPE" may have two elements:
+	    the first element is "STRING", the optional second
+	    element is the maximum string length.  The default
+	    maximum string length is 132 characters.
+
+	    If you omit this parameter, STRING is assumed as
+	    default.
+!
+.variable COUNT
+
+
+
+	    "COUNT" specifies the minimum and maximum number of
+	    values that the variable may assume.  It has the form
+	    "m:n" where "m" is the minimum and "n" is the maximum.
+	    No spaces are permitted before or after the separator
+	    ":".  If the minimum and the maximum values are the
+	    same, then COUNT is single-valued, with the form
+	    "COUNT = m".
+
+	    If you omit "COUNT", a count of 1 is assumed.
+
+	    If the variable is to be nullable, the minimum count
+	    must be zero.
+!
+.variable INITIAL
+	
+
+
+	    "INITIAL" specifies the initial value assigned to
+	    to the local variable.  This is an optional parameter
+	    and may be omitted.
+
+	    If the variable is nullable, the initial value may be
+	    the null value.  This is specified by setting INITIAL
+	    to "--".
+!
+.variable VALID
+
+
+
+	    "VALID" lists the restricted set of values that the
+	    local variable may assume.  For integer and real
+	    variables the "VALID" list consists of a list of
+	    inclusive ranges.  If the parameter is a string, then
+	    the list is a list of acceptable values.
+
+	    A range is specified as "m:n" meaning "m through n
+	    inclusive".  No space is permitted before or after the
+	    separator ":".
+
+	    A valid string may consists of eight or fewer characters.
+.PAGE
+
+
+			Examples
+
+	
+	1.  LOCAL A TYPE=REAL COUNT=1 VALID=(1.5:3.5, 1.13E+3)
+
+	2.  LOCAL STR TYPE=(STRING,6) VALID=(AA, BBBB, CCCCCC)
+!
+.variable ACCESS
+
+
+
+	    "ACCESS" is an optional parameter.  It is required only
+	    if the variable has the type "FILE".  Permitted
+	    access modes are IN, OUT, INOUT and NOCHECK.  If the
+	    mode is IN or INOUT, TM opens the file to assure that
+	    it exists.  If it is NOCHECK, no check is made.
+.END

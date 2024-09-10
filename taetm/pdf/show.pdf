@@ -1,0 +1,70 @@
+! SHOW is a semi-intrinsic. The rest is here.
+procedure help=*
+
+subcmd  batch
+    parm queue (string,25) def=sys$batch
+end-subcmd
+
+refgbl $syschar
+body
+if ($syschar(1) = "UNIX")
+  ush ps -x
+else
+  if (queue = "all")
+    dcl show queue/all/batch/full
+  else
+    dcl show queue/full  &queue
+  end-if
+end-if
+end-proc
+!
+.level1
+.variable QUEUE
+.if UNIX
+(This parm is not
+supported under UNIX.)
+.elseif VAX_VMS
+Batch queue name.
+.ifend
+.subcmd BATCH
+.if VAX_VMS
+Display batch queue status.
+.elseif UNIX
+Execute a UNIX ps -x command.
+.ifend
+.level2
+.variable QUEUE
+
+.if UNIX
+	    (This parm is not supported under UNIX.)
+.elseif VAX_VMS
+	    The name of the VMS batch queue.  The queue name "ALL" is 
+	    a special queue name that causes the status of all jobs in
+	    all batch queues to be displayed.  If QUEUE is omitted,
+	    the default is "SYS$BATCH".
+.ifend
+.subcmd BATCH
+			    SHOW-BATCH
+
+			Function and Format
+
+	Function:
+
+.if VAX_VMS
+	    SHOW-BATCH displays the status of jobs in a batch queue.
+	    It is the same as BATCH-STATUS.
+
+	    The queue name identifies the system batch queue.
+	    If QUEUE is omitted, the default is "SYS$BATCH", a
+	    standard batch queue name.  The user may specify
+	    a queue name at the time the batch job is submitted.
+
+	Format:
+
+	    SHOW-BATCH  QUEUE = queue-name
+.elseif UNIX
+	    SHOW-BATCH executes a UNIX 'ps -x' command to show
+	    the status of your current processes.  (In UNIX/TAE,
+	    there is no real implementation of BATCH.)
+.ifend
+.end

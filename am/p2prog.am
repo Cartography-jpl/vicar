@@ -1,0 +1,3190 @@
+# This is the automake file for compiling the p2 programs. This was
+# originally created by the file ../comunpack. All this did was go through
+# all of the imake files found in the various .com files and generate this
+# automake file. Feel free to edit this file if needed, or you can recreate
+# it using comunpack.
+
+# This shouldn't be needed. As near as I can tell, there is a bug in 
+# automake using fortran. But this seems to do the trick to allow building.
+vpath %.F @srcdir@/@srcp2prog@
+
+# Not really a p2prog, but not sure where else to put this
+taepdf_PROGRAMS+= tae_path_helper
+taepdf_DATA+= @srcp2prog@/tae_path_helper.pdf
+taepdf_DATA+= @srcp2prog@/tae_path.pdf
+tae_path_helper_SOURCES = @srcp2prog@/tae_path_helper.cc
+tae_path_helper_LDADD = $(VICAR_RTL_LIBS)
+tae_path_helper_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+EXTRA_DIST+= @srcp2prog@/engrhdr.h
+EXTRA_DIST+= @srcp2prog@/gcfdata.h
+EXTRA_DIST+= @srcp2prog@/header.h
+EXTRA_DIST+= @srcp2prog@/ibis_local.h
+EXTRA_DIST+= @srcp2prog@/linesfx.h
+EXTRA_DIST+= @srcp2prog@/novascon.h
+EXTRA_DIST+= @srcp2prog@/novas.h
+EXTRA_DIST+= @srcp2prog@/prototypes.h
+EXTRA_DIST+= @srcp2prog@/qfile.h
+EXTRA_DIST+= @srcp2prog@/tiffcompat.h
+EXTRA_DIST+= @srcp2prog@/tiff.h
+EXTRA_DIST+= @srcp2prog@/tiffio.h
+EXTRA_DIST+= @srcp2prog@/tiffiop.h
+EXTRA_DIST+= @srcp2prog@/uengrhdr.h
+EXTRA_DIST+= @srcp2prog@/ugcfdata.h
+EXTRA_DIST+= @srcp2prog@/util.h
+EXTRA_DIST+= @srcp2prog@/uvgrsubcom.h
+EXTRA_DIST+= @srcp2prog@/vgrsubcom.h
+
+# Program addnoise - Remove 2013-08-28
+############  Now in afids/vdev
+# p2prog_PROGRAMS = addnoise
+# p2prog_DATA = @srcp2prog@/addnoise.pdf
+# addnoise_SOURCES = 
+# addnoise_LDADD = $(VICAR_RTL_LIBS)
+# addnoise_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# addnoise_SOURCES += @srcp2prog@/addnoise.F
+
+# Program addtofil
+p2prog_PROGRAMS = addtofil
+p2prog_DATA = @srcp2prog@/addtofil.pdf
+addtofil_SOURCES = 
+addtofil_LDADD = $(VICAR_RTL_LIBS)
+addtofil_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+addtofil_SOURCES += @srcp2prog@/addtofil.c
+
+# Program addtofile. This is just a PDF file to add
+p2prog_DATA += @srcp2prog@/addtofile.pdf
+
+# Program adespike
+p2prog_PROGRAMS += adespike
+p2prog_DATA += @srcp2prog@/adespike.pdf
+adespike_SOURCES = 
+adespike_LDADD = $(VICAR_RTL_LIBS)
+adespike_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+adespike_SOURCES += @srcp2prog@/adespike.F
+
+# Program adl
+p2prog_PROGRAMS += adl
+p2prog_DATA += @srcp2prog@/adl.pdf
+adl_SOURCES = 
+adl_LDADD = $(VICAR_RTL_LIBS)
+adl_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+adl_SOURCES += @srcp2prog@/adl.F
+
+# Program ads_server
+# We don't have the spice needed for this
+# p2prog_PROGRAMS += ads_server
+# p2prog_DATA += @srcp2prog@/ads_server.pdf
+# ads_server_SOURCES = 
+# ads_server_LDADD = $(VICAR_RTL_LIBS)
+# ads_server_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ads_server_SOURCES += @srcp2prog@/ads_Body.cc
+# ads_server_SOURCES += @srcp2prog@/ads_CassiniDataFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_DataBase.cc
+# ads_server_SOURCES += @srcp2prog@/ads_DefaultDataFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_DefaultGeometryFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_error.cc
+# ads_server_SOURCES += @srcp2prog@/ads_FixedInstGeometryFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_Frame.cc
+# ads_server_SOURCES += @srcp2prog@/ads_GeometryFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_getcamcon.cc
+# ads_server_SOURCES += @srcp2prog@/ads_MiplSpiceLib_i.cc
+# ads_server_SOURCES += @srcp2prog@/ads_MissionDataFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_Rotate180GeometryFinder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_ServerHelper.cc
+# ads_server_SOURCES += @srcp2prog@/ads_SpiceLib_i.cc
+# ads_server_SOURCES += @srcp2prog@/ads_ORB.cc
+# ads_server_SOURCES += @srcp2prog@/ads_Time.cc
+# ads_server_SOURCES += @srcp2prog@/ads_TraceAdder.cc
+# ads_server_SOURCES += @srcp2prog@/ads_server.cc
+
+# Program aggrg
+############  Now in afids/vdev
+# p2prog_PROGRAMS += aggrg
+# p2prog_DATA += @srcp2prog@/aggrg.pdf
+# aggrg_SOURCES = 
+# aggrg_LDADD = $(VICAR_RTL_LIBS)
+# aggrg_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# aggrg_SOURCES += @srcp2prog@/aggrg.F
+
+# Program aggrg2
+############  Now in afids/vdev
+# p2prog_PROGRAMS += aggrg2
+# p2prog_DATA += @srcp2prog@/aggrg2.pdf
+# aggrg2_SOURCES = 
+# aggrg2_LDADD = $(VICAR_RTL_LIBS)
+# aggrg2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# aggrg2_SOURCES += @srcp2prog@/aggrg2.F
+
+# Program apodize - Remove 2013-08-28
+############  Now in afids/vdev
+# p2prog_PROGRAMS += apodize
+# p2prog_DATA += @srcp2prog@/apodize.pdf
+# apodize_SOURCES = 
+# apodize_LDADD = $(VICAR_RTL_LIBS)
+# apodize_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# apodize_SOURCES += @srcp2prog@/apodize.F
+
+# Program append
+p2prog_PROGRAMS += append
+p2prog_DATA += @srcp2prog@/append.pdf
+append_SOURCES = 
+append_LDADD = $(VICAR_RTL_LIBS)
+append_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+append_SOURCES += @srcp2prog@/append.c
+
+# Program arc2graf.
+# This uses "DECODE" command, which is a HP extension. G77 doesn't 
+# support this.
+# p2prog_PROGRAMS += arc2graf
+# p2prog_DATA += @srcp2prog@/arc2graf.pdf
+# arc2graf_SOURCES = 
+# arc2graf_LDADD = $(VICAR_RTL_LIBS)
+# arc2graf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# arc2graf_SOURCES += @srcp2prog@/arc2graf.F
+
+# Program areaiso
+p2prog_PROGRAMS += areaiso
+p2prog_DATA += @srcp2prog@/areaiso.pdf
+areaiso_SOURCES = 
+areaiso_LDADD = $(VICAR_RTL_LIBS)
+areaiso_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+areaiso_SOURCES += @srcp2prog@/areaiso.c
+areaiso_SOURCES += @srcp2prog@/ludcmp.c
+areaiso_SOURCES += @srcp2prog@/newt.c
+areaiso_SOURCES += @srcp2prog@/spline.c
+areaiso_SOURCES += @srcp2prog@/util.c
+areaiso_SOURCES += @srcp2prog@/util.h
+
+# Program aschist
+p2prog_PROGRAMS += aschist
+p2prog_DATA += @srcp2prog@/aschist.pdf
+aschist_SOURCES = 
+aschist_LDADD = $(VICAR_RTL_LIBS)
+aschist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+aschist_SOURCES += @srcp2prog@/aschist.F
+
+# Program astrtchr - Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+############  Now in afids/vdev
+#p2prog_PROGRAMS += astrtchr
+#p2prog_DATA += @srcp2prog@/astrtchr.pdf
+#astrtchr_SOURCES = 
+#astrtchr_LDADD = $(VICAR_RTL_LIBS)
+#astrtchr_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#astrtchr_SOURCES += @srcp2prog@/astrtchr.F
+
+# Program automatch
+p2prog_PROGRAMS += automatch
+p2prog_DATA += @srcp2prog@/automatch.pdf
+automatch_SOURCES = 
+automatch_LDADD = $(VICAR_RTL_LIBS)
+automatch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+automatch_SOURCES += @srcp2prog@/automatch.F
+
+# Program auxiliary
+p2prog_PROGRAMS += auxiliary
+p2prog_DATA += @srcp2prog@/auxiliary.pdf
+auxiliary_SOURCES = 
+auxiliary_LDADD = $(VICAR_RTL_LIBS)
+auxiliary_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+auxiliary_SOURCES += @srcp2prog@/auxiliary.F
+
+# Program average - Remove 2013-08-28
+############  Now in afids/vdev
+# p2prog_PROGRAMS += average
+# p2prog_DATA += @srcp2prog@/average.pdf
+# average_SOURCES = 
+# average_LDADD = $(VICAR_RTL_LIBS)
+# average_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# average_SOURCES += @srcp2prog@/average.F
+
+# Program bestfocus
+p2prog_PROGRAMS += bestfocus
+p2prog_DATA += @srcp2prog@/bestfocus.pdf
+bestfocus_SOURCES = 
+bestfocus_LDADD = $(VICAR_RTL_LIBS)
+bestfocus_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+bestfocus_SOURCES += @srcp2prog@/bestfocus.F
+
+# Program bestscale
+p2prog_PROGRAMS += bestscale
+p2prog_DATA += @srcp2prog@/bestscale.pdf
+bestscale_SOURCES = 
+bestscale_LDADD = $(VICAR_RTL_LIBS)
+bestscale_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+bestscale_SOURCES += @srcp2prog@/bestscale.F
+
+# Program bicubic
+p2prog_PROGRAMS += bicubic
+p2prog_DATA += @srcp2prog@/bicubic.pdf
+bicubic_SOURCES = 
+bicubic_LDADD = $(VICAR_RTL_LIBS)
+bicubic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+bicubic_SOURCES += @srcp2prog@/bicubic.c
+
+# Program blemgen
+p2prog_PROGRAMS += blemgen
+p2prog_DATA += @srcp2prog@/blemgen.pdf
+blemgen_SOURCES = 
+blemgen_LDADD = $(VICAR_RTL_LIBS)
+blemgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+blemgen_SOURCES += @srcp2prog@/blemgen.c
+
+# Program blempic
+p2prog_PROGRAMS += blempic
+p2prog_DATA += @srcp2prog@/blempic.pdf
+blempic_SOURCES = 
+blempic_LDADD = $(VICAR_RTL_LIBS)
+blempic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+blempic_SOURCES += @srcp2prog@/blempic.F
+
+# Program blemvorb
+p2prog_PROGRAMS += blemvorb
+p2prog_DATA += @srcp2prog@/blemvorb.pdf
+blemvorb_SOURCES = 
+blemvorb_LDADD = $(VICAR_RTL_LIBS)
+blemvorb_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+blemvorb_SOURCES += @srcp2prog@/blemvorb.F
+
+# Program boxflt2 - Remove 2013-08-28
+# link with stacka_big in p2sub
+# ############  Now in afids/vdev
+# # p2prog_PROGRAMS += boxflt2
+# p2prog_DATA += @srcp2prog@/boxflt2.pdf
+# boxflt2_SOURCES = 
+# boxflt2_LDADD = $(VICAR_RTL_LIBS)
+# boxflt2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# boxflt2_SOURCES += @srcp2prog@/boxflt2.F
+# boxflt2_SOURCES += @srcp2prog@/boxflt2c.c
+
+# Program camparam
+p2prog_PROGRAMS += camparam
+p2prog_DATA += @srcp2prog@/camparam.pdf
+camparam_SOURCES = 
+camparam_LDADD = $(VICAR_RTL_LIBS)
+camparam_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+camparam_SOURCES += @srcp2prog@/camparam.F
+
+# Program ccdnoise
+############  Now in afids/vdev
+# p2prog_PROGRAMS += ccdnoise
+# p2prog_DATA += @srcp2prog@/ccdnoise.pdf
+# ccdnoise_SOURCES = 
+# ccdnoise_LDADD = $(VICAR_RTL_LIBS)
+# ccdnoise_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ccdnoise_SOURCES += @srcp2prog@/ccdnoise.F
+
+# Program ccdrecip
+############  Now in afids/vdev
+# p2prog_PROGRAMS += ccdrecip
+# p2prog_DATA += @srcp2prog@/ccdrecip.pdf
+# ccdrecip_SOURCES = 
+# ccdrecip_LDADD = $(VICAR_RTL_LIBS)
+# ccdrecip_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ccdrecip_SOURCES += @srcp2prog@/ccdrecip.F
+
+# Program ccdslope
+############  Now in afids/vdev
+# p2prog_PROGRAMS += ccdslope
+# p2prog_DATA += @srcp2prog@/ccdslope.pdf
+# ccdslope_SOURCES = 
+# ccdslope_LDADD = $(VICAR_RTL_LIBS)
+# ccdslope_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ccdslope_SOURCES += @srcp2prog@/ccdslope.F
+
+# Program ccomp - removed 2013-08-30
+############  Now in afids/vdev
+# p2prog_PROGRAMS += ccomp
+# p2prog_DATA += @srcp2prog@/ccomp.pdf
+# ccomp_SOURCES = 
+# ccomp_LDADD = $(VICAR_RTL_LIBS)
+# ccomp_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ccomp_SOURCES += @srcp2prog@/ccomp.F
+
+# Program cform
+p2prog_PROGRAMS += cform
+p2prog_DATA += @srcp2prog@/cform.pdf
+cform_SOURCES = 
+cform_LDADD = $(VICAR_RTL_LIBS)
+cform_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# On centos 7 with gfortran 4.8.3 this fails unit test:
+# gen a 10 10 'REAL8
+# cform  a b 'BYTE IRANGE=(0.0. 18.0) ORANGE=(0,255)
+# list b 'BYTE
+# b has 0's in everything other than first column.
+# This is compiled with -O2. Compile with -O1 fixes this.
+# Not sure why, looking at code I'm not sure this isn't a compiler
+# bug as opposed to a problem in the code. But in any case, just
+# reduce optimization level
+cform_FFLAGS = $(AM_FFLAGS) -O1
+cform_SOURCES += @srcp2prog@/cform.F
+
+# Program chkspace
+p2prog_PROGRAMS += chkspace
+p2prog_DATA += @srcp2prog@/chkspace.pdf
+chkspace_SOURCES = 
+chkspace_LDADD = $(VICAR_RTL_LIBS)
+chkspace_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+chkspace_SOURCES += @srcp2prog@/chkspace_unix.c
+
+# Program clabel
+p2prog_PROGRAMS += clabel
+p2prog_DATA += @srcp2prog@/clabel.pdf
+clabel_SOURCES = 
+clabel_LDADD = $(VICAR_RTL_LIBS)
+clabel_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+clabel_SOURCES += @srcp2prog@/clabel.c
+
+# Program clean
+p2prog_PROGRAMS += cleanf
+p2prog_DATA += @srcp2prog@/clean.pdf
+cleanf_SOURCES = 
+cleanf_LDADD = $(VICAR_RTL_LIBS)
+cleanf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+cleanf_SOURCES += @srcp2prog@/clean.F
+
+# Program cleanlabel
+p2prog_PROGRAMS += cleanlabel
+p2prog_DATA += @srcp2prog@/cleanlabel.pdf
+cleanlabel_SOURCES = 
+cleanlabel_LDADD = $(VICAR_RTL_LIBS)
+cleanlabel_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+cleanlabel_SOURCES += @srcp2prog@/cleanlabel.c
+
+# Program clusan
+## Not in afids/vdev
+# p2prog_PROGRAMS += clusan
+# p2prog_DATA += @srcp2prog@/clusan.pdf
+# clusan_SOURCES = 
+# clusan_LDADD = $(VICAR_RTL_LIBS)
+# clusan_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# clusan_SOURCES += @srcp2prog@/clusan.F
+
+# Program clustest
+# p2prog_PROGRAMS += clustest
+# p2prog_DATA += @srcp2prog@/clustest.pdf
+# clustest_SOURCES = 
+# clustest_LDADD = $(VICAR_RTL_LIBS)
+# clustest_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# clustest_SOURCES += @srcp2prog@/clustest.F
+
+# Program cnt
+p2prog_PROGRAMS += cnt
+p2prog_DATA += @srcp2prog@/cnt.pdf
+cnt_SOURCES = 
+cnt_LDADD = $(VICAR_RTL_LIBS)
+cnt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+cnt_SOURCES += @srcp2prog@/cnt.c
+
+# Program colorfit
+p2prog_PROGRAMS += colorfit
+p2prog_DATA += @srcp2prog@/colorfit.pdf
+colorfit_SOURCES = 
+colorfit_LDADD = $(VICAR_RTL_LIBS)
+colorfit_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+colorfit_SOURCES += @srcp2prog@/colorfit.F
+
+# Program colorme
+p2prog_PROGRAMS += colorme
+p2prog_DATA += @srcp2prog@/colorme.pdf
+colorme_SOURCES = 
+colorme_LDADD = $(VICAR_RTL_LIBS)
+colorme_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+colorme_SOURCES += @srcp2prog@/colorme.F
+
+# Program colorrgb
+p2prog_PROGRAMS += colorrgb
+p2prog_DATA += @srcp2prog@/colorrgb.pdf
+colorrgb_SOURCES = 
+colorrgb_LDADD = $(VICAR_RTL_LIBS)
+colorrgb_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+colorrgb_SOURCES += @srcp2prog@/colorrgb.F
+
+# Program colort - Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+###########  Now in afids/vdev
+#p2prog_PROGRAMS += colort
+#p2prog_DATA += @srcp2prog@/colort.pdf
+#colort_SOURCES = 
+#colort_LDADD = $(VICAR_RTL_LIBS)
+#colort_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#colort_SOURCES += @srcp2prog@/colort.F
+
+# Program columnar
+p2prog_PROGRAMS += columnar
+p2prog_DATA += @srcp2prog@/columnar.pdf
+columnar_SOURCES = 
+columnar_LDADD = $(VICAR_RTL_LIBS)
+columnar_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+columnar_SOURCES += @srcp2prog@/columnar.c
+
+# Program comment
+p2prog_PROGRAMS += comment
+p2prog_DATA += @srcp2prog@/comment.pdf
+comment_SOURCES = 
+comment_LDADD = $(VICAR_RTL_LIBS)
+comment_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+comment_SOURCES += @srcp2prog@/comment.c
+
+# Program common_subpdf
+# p2prog_PROGRAMS += common_subpdf
+# p2prog_DATA += @srcp2prog@/common_subpdf.pdf
+# common_subpdf_SOURCES = 
+# common_subpdf_LDADD = $(VICAR_RTL_LIBS)
+# common_subpdf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program concat
+p2prog_PROGRAMS += concat
+p2prog_DATA += @srcp2prog@/concat.pdf
+concat_SOURCES = 
+concat_LDADD = $(VICAR_RTL_LIBS)
+concat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+concat_SOURCES += @srcp2prog@/concat.F
+
+# Program concomp1 - Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+#############  Now in afids/vdev
+#p2prog_PROGRAMS += concomp1
+#p2prog_DATA += @srcp2prog@/concomp1.pdf
+#concomp1_SOURCES = 
+#concomp1_LDADD = $(VICAR_RTL_LIBS)
+#concomp1_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#concomp1_SOURCES += @srcp2prog@/concomp1.F
+
+# Program conlab
+# p2prog_PROGRAMS += conlab
+# p2prog_DATA += @srcp2prog@/conlab.pdf
+# conlab_SOURCES = 
+# conlab_LDADD = $(VICAR_RTL_LIBS)
+# conlab_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program contour
+p2prog_PROGRAMS += contour
+p2prog_DATA += @srcp2prog@/contour.pdf
+contour_SOURCES = 
+contour_LDADD = $(VICAR_RTL_LIBS)
+contour_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+contour_SOURCES += @srcp2prog@/contour.F
+
+# Program copy
+p2prog_PROGRAMS += copy
+p2prog_DATA += @srcp2prog@/copy.pdf
+copy_SOURCES = 
+copy_LDADD = $(VICAR_RTL_LIBS)
+copy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+copy_SOURCES += @srcp2prog@/copy.F
+
+# Program corner
+p2prog_PROGRAMS += corner
+p2prog_DATA += @srcp2prog@/corner.pdf
+corner_SOURCES = 
+corner_LDADD = $(VICAR_RTL_LIBS)
+corner_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+corner_SOURCES += @srcp2prog@/corner.F
+
+# Program correlate1d
+p2prog_PROGRAMS += correlate1d
+p2prog_DATA += @srcp2prog@/correlate1d.pdf
+correlate1d_SOURCES = 
+correlate1d_LDADD = $(VICAR_RTL_LIBS)
+correlate1d_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+correlate1d_SOURCES += @srcp2prog@/correlate1d.F
+
+# Program createfile
+############  Now in afids/vdev
+# p2prog_PROGRAMS += createfile
+# p2prog_DATA += @srcp2prog@/createfile.pdf
+# createfile_SOURCES = 
+# createfile_LDADD = $(VICAR_RTL_LIBS)
+# createfile_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program datetime
+p2prog_PROGRAMS += datetime
+p2prog_DATA += @srcp2prog@/datetime.pdf
+datetime_SOURCES = 
+datetime_LDADD = $(VICAR_RTL_LIBS)
+datetime_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+datetime_SOURCES += @srcp2prog@/datetime.c
+
+# Program dc
+p2prog_PROGRAMS += dc
+p2prog_DATA += @srcp2prog@/dc.pdf
+dc_SOURCES = 
+dc_LDADD = $(VICAR_RTL_LIBS)
+dc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+dc_SOURCES += @srcp2prog@/dc.F
+
+# Program ddd2vic
+p2prog_PROGRAMS += ddd2vic
+p2prog_DATA += @srcp2prog@/ddd2vic.pdf
+ddd2vic_SOURCES = 
+ddd2vic_LDADD = $(VICAR_RTL_LIBS)
+ddd2vic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ddd2vic_SOURCES += @srcp2prog@/ddd2vic.c
+
+# Program despike
+p2prog_PROGRAMS += despike
+p2prog_DATA += @srcp2prog@/despike.pdf
+despike_SOURCES = 
+despike_LDADD = $(VICAR_RTL_LIBS)
+despike_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+despike_SOURCES += @srcp2prog@/despike.F
+
+# Program difpic - Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+#############  Now in afids/vdev
+#p2prog_PROGRAMS += difpic
+#p2prog_DATA += @srcp2prog@/difpic.pdf
+#difpic_SOURCES = 
+#difpic_LDADD = $(VICAR_RTL_LIBS)
+#difpic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#difpic_SOURCES += @srcp2prog@/difpic.F
+
+# Program disparity
+p2prog_PROGRAMS += disparity
+p2prog_DATA += @srcp2prog@/disparity.pdf
+disparity_SOURCES = 
+disparity_LDADD = $(VICAR_RTL_LIBS)
+disparity_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+disparity_SOURCES += @srcp2prog@/disparity.F
+
+# Program dntoxyy
+p2prog_PROGRAMS += dntoxyy
+p2prog_DATA += @srcp2prog@/dntoxyy.pdf
+dntoxyy_SOURCES = 
+dntoxyy_LDADD = $(VICAR_RTL_LIBS)
+dntoxyy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+dntoxyy_SOURCES += @srcp2prog@/dntoxyy.F
+
+# Program dropout
+p2prog_PROGRAMS += dropout
+p2prog_DATA += @srcp2prog@/dropout.pdf
+dropout_SOURCES = 
+dropout_LDADD = $(VICAR_RTL_LIBS)
+dropout_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+dropout_SOURCES += @srcp2prog@/dropout.F
+
+# Program ds4
+p2prog_PROGRAMS += ds4
+p2prog_DATA += @srcp2prog@/ds4.pdf
+ds4_SOURCES = 
+ds4_LDADD = $(VICAR_RTL_LIBS)
+ds4_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ds4_SOURCES += @srcp2prog@/ds4.F
+
+# Program dvector
+p2prog_PROGRAMS += dvector
+p2prog_DATA += @srcp2prog@/dvector.pdf
+dvector_SOURCES = 
+dvector_LDADD = $(VICAR_RTL_LIBS)
+dvector_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+dvector_SOURCES += @srcp2prog@/dvector.F
+
+# Program edibis - removed 2013-08-30
+############  Now in afids/vdev
+# p2prog_PROGRAMS += edibis
+# p2prog_DATA += @srcp2prog@/edibis.pdf
+# edibis_SOURCES = 
+# edibis_LDADD = $(VICAR_RTL_LIBS)
+# edibis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# edibis_SOURCES += @srcp2prog@/edibis.F
+# edibis_SOURCES += @srcp2prog@/edibis_windows.c
+# edibis_SOURCES += @srcp2prog@/edibis_terminal.c
+
+# Program edimage
+# p2prog_PROGRAMS += edimage
+# p2prog_DATA += @srcp2prog@/edimage.pdf
+# edimage_SOURCES = 
+# edimage_LDADD = $(VICAR_RTL_LIBS)
+# edimage_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# edimage_SOURCES += @srcp2prog@/edimage.F
+# edimage_SOURCES += @srcp2prog@/edimage.Fin
+
+# Program efgiso
+p2prog_PROGRAMS += efgiso
+p2prog_DATA += @srcp2prog@/efgiso.pdf
+efgiso_SOURCES = 
+efgiso_LDADD = $(VICAR_RTL_LIBS)
+efgiso_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+efgiso_SOURCES += @srcp2prog@/efgiso.c
+
+# Program eigen
+# p2prog_PROGRAMS += eigen
+# p2prog_DATA += @srcp2prog@/eigen.pdf
+# eigen_SOURCES = 
+# eigen_LDADD = $(VICAR_RTL_LIBS)
+# eigen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program eigenvec
+p2prog_PROGRAMS += eigenvec
+p2prog_DATA += @srcp2prog@/eigenvec.pdf
+eigenvec_SOURCES = 
+eigenvec_LDADD = $(VICAR_RTL_LIBS)
+eigenvec_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+eigenvec_SOURCES += @srcp2prog@/eigenvec.F
+
+# Program ellipse
+# p2prog_PROGRAMS += ellipse
+# p2prog_DATA += @srcp2prog@/ellipse.pdf
+# ellipse_SOURCES = 
+# ellipse_LDADD = $(VICAR_RTL_LIBS)
+# ellipse_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ellipse_SOURCES += @srcp2prog@/ellipse.F
+
+# Program entropy
+p2prog_PROGRAMS += entropy
+p2prog_DATA += @srcp2prog@/entropy.pdf
+entropy_SOURCES = 
+entropy_LDADD = $(VICAR_RTL_LIBS)
+entropy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+entropy_SOURCES += @srcp2prog@/entropy.F
+
+# Program ephemeris
+# p2prog_PROGRAMS += ephemeris
+# p2prog_DATA += @srcp2prog@/ephemeris.pdf
+# ephemeris_SOURCES = 
+# ephemeris_LDADD = $(VICAR_RTL_LIBS)
+# ephemeris_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ephemeris_SOURCES += @srcp2prog@/ephemeris.F
+
+# Program ezlist
+p2prog_PROGRAMS += ezlist
+p2prog_DATA += @srcp2prog@/ezlist.pdf
+ezlist_SOURCES = 
+ezlist_LDADD = $(VICAR_RTL_LIBS)
+ezlist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ezlist_SOURCES += @srcp2prog@/ezlist.F
+
+# Program f2
+############  Now in afids/vdev
+# p2prog_PROGRAMS += f2
+# p2prog_DATA += @srcp2prog@/f2.pdf
+# f2_SOURCES = 
+# f2_LDADD = $(VICAR_RTL_LIBS)
+# f2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# f2_SOURCES += @srcp2prog@/f2.F
+# f2_SOURCES += @srcp2prog@/f2.Fin
+
+# Program farenc
+# p2prog_PROGRAMS += farenc
+# p2prog_DATA += @srcp2prog@/farenc.pdf
+# farenc_SOURCES = 
+# farenc_LDADD = $(VICAR_RTL_LIBS)
+# farenc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# farenc_SOURCES += @srcp2prog@/farenc.F
+
+# Program fastclas - Remove 2016-08-17 - rjb
+############  Now in afids/vdev
+#p2prog_PROGRAMS += fastclas
+#p2prog_DATA += @srcp2prog@/fastclas.pdf
+#fastclas_SOURCES = 
+#fastclas_LDADD = $(VICAR_RTL_LIBS)
+#fastclas_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#fastclas_SOURCES += @srcp2prog@/fastclas.F
+
+# Program fastmos- Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += fastmos
+#p2prog_DATA += @srcp2prog@/fastmos.pdf
+#fastmos_SOURCES = 
+#fastmos_LDADD = $(VICAR_RTL_LIBS)
+#fastmos_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#fastmos_SOURCES += @srcp2prog@/fastmos.F
+
+# Program fcnpolar
+# p2prog_PROGRAMS += fcnpolar
+# p2prog_DATA += @srcp2prog@/fcnpolar.pdf
+# fcnpolar_SOURCES = 
+# fcnpolar_LDADD = $(VICAR_RTL_LIBS)
+# fcnpolar_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# fcnpolar_SOURCES += @srcp2prog@/fcnpolar.F
+
+# Program featherv
+############  Now in afids/vdev
+# p2prog_PROGRAMS += featherv
+# p2prog_DATA += @srcp2prog@/featherv.pdf
+# featherv_SOURCES = 
+# featherv_LDADD = $(VICAR_RTL_LIBS)
+# featherv_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# featherv_SOURCES += @srcp2prog@/featherv.c
+
+# Program fft11 - Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += fft11
+#p2prog_DATA += @srcp2prog@/fft11.pdf
+#fft11_SOURCES = 
+#fft11_LDADD = $(VICAR_RTL_LIBS)
+#fft11_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#fft11_SOURCES += @srcp2prog@/fft11.F
+
+# Program fft1pix
+p2prog_PROGRAMS += fft1pix
+p2prog_DATA += @srcp2prog@/fft1pix.pdf
+fft1pix_SOURCES = 
+fft1pix_LDADD = $(VICAR_RTL_LIBS)
+fft1pix_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fft1pix_SOURCES += @srcp2prog@/fft1pix.F
+
+# Procedure fft2
+p2prog_DATA += @srcp2prog@/fft2.pdf
+
+# Program fft22 - Remove 2016-08-17 - rjb
+# link with stacka_big in p2sub
+############  Now in afids/vdev
+#p2prog_PROGRAMS += fft22
+#p2prog_DATA += @srcp2prog@/fft22.pdf
+#fft22_SOURCES = 
+#fft22_LDADD = $(VICAR_RTL_LIBS)
+#fft22_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#fft22_SOURCES += @srcp2prog@/fft22.F
+
+# Program fftadd
+p2prog_PROGRAMS += fftadd
+p2prog_DATA += @srcp2prog@/fftadd.pdf
+fftadd_SOURCES = 
+fftadd_LDADD = $(VICAR_RTL_LIBS)
+fftadd_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fftadd_SOURCES += @srcp2prog@/fftadd.F
+
+# Program fftfit
+p2prog_PROGRAMS += fftfit
+p2prog_DATA += @srcp2prog@/fftfit.pdf
+fftfit_SOURCES = 
+fftfit_LDADD = $(VICAR_RTL_LIBS)
+fftfit_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fftfit_SOURCES += @srcp2prog@/fftfit.F
+
+# Program fftflip - Removed 203-09-18
+# link with stacka_big in p2sub
+############  Now in afids/vdev
+# # p2prog_PROGRAMS += fftflip
+# p2prog_DATA += @srcp2prog@/fftflip.pdf
+# fftflip_SOURCES = 
+# fftflip_LDADD = $(VICAR_RTL_LIBS)
+# fftflip_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# fftflip_SOURCES += @srcp2prog@/fftflip.F
+
+# Program fftmag - Remove 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += fftmag
+#p2prog_DATA += @srcp2prog@/fftmag.pdf
+#fftmag_SOURCES = 
+#fftmag_LDADD = $(VICAR_RTL_LIBS)
+#fftmag_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#fftmag_SOURCES += @srcp2prog@/fftmag.F
+
+# Program fftmagic- Remove 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+# p2prog_PROGRAMS += fftmagic
+# p2prog_DATA += @srcp2prog@/fftmagic.pdf
+# fftmagic_SOURCES = 
+# fftmagic_LDADD = $(VICAR_RTL_LIBS)
+# fftmagic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# fftmagic_SOURCES += @srcp2prog@/fftmagic.F
+
+# Program fftpic
+p2prog_PROGRAMS += fftpic
+p2prog_DATA += @srcp2prog@/fftpic.pdf
+fftpic_SOURCES = 
+fftpic_LDADD = $(VICAR_RTL_LIBS)
+fftpic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fftpic_SOURCES += @srcp2prog@/fftpic.F
+
+# Program ficor77
+# p2prog_PROGRAMS += ficor77
+# p2prog_DATA += @srcp2prog@/ficor77.pdf
+# ficor77_SOURCES = 
+# ficor77_LDADD = $(VICAR_RTL_LIBS)
+# ficor77_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ficor77_SOURCES += @srcp2prog@/ficor77.F
+
+# Program fil2
+p2prog_PROGRAMS += fil2
+p2prog_DATA += @srcp2prog@/fil2.pdf
+fil2_SOURCES = 
+fil2_LDADD = $(VICAR_RTL_LIBS)
+fil2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fil2_SOURCES += @srcp2prog@/fil2.F
+
+# Program filter. We have a version of this in AFIDS that overrides this one.
+#p2prog_PROGRAMS += filter
+#p2prog_DATA += @srcp2prog@/filter.pdf
+#filter_SOURCES = 
+#filter_LDADD = $(VICAR_RTL_LIBS)
+#filter_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#filter_SOURCES += @srcp2prog@/filter.F
+
+# Program filter2
+# p2prog_PROGRAMS += filter2
+# p2prog_DATA += @srcp2prog@/filter2.pdf
+# filter2_SOURCES = 
+# filter2_LDADD = $(VICAR_RTL_LIBS)
+# filter2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program fit
+p2prog_PROGRAMS += fit
+p2prog_DATA += @srcp2prog@/fit.pdf
+fit_SOURCES = 
+fit_LDADD = $(VICAR_RTL_LIBS)
+fit_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fit_SOURCES += @srcp2prog@/fit.F
+
+# Program fitsin - Removed 2013-08-22
+############  Now in afids/vdev
+# p2prog_PROGRAMS += fitsin
+# p2prog_DATA += @srcp2prog@/fitsin.pdf
+# fitsin_SOURCES = 
+# fitsin_LDADD = $(VICAR_RTL_LIBS)
+# fitsin_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# fitsin_SOURCES += @srcp2prog@/fitsin.F
+
+# Program fixloc
+p2prog_PROGRAMS += fixloc
+p2prog_DATA += @srcp2prog@/fixloc.pdf
+fixloc_SOURCES = 
+fixloc_LDADD = $(VICAR_RTL_LIBS)
+fixloc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fixloc_SOURCES += @srcp2prog@/fixloc.F
+
+# Program fixvgr
+# p2prog_PROGRAMS += fixvgr
+# p2prog_DATA += @srcp2prog@/fixvgr.pdf
+# fixvgr_SOURCES = 
+# fixvgr_LDADD = $(VICAR_RTL_LIBS)
+# fixvgr_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# fixvgr_SOURCES += @srcp2prog@/fixvgr.F
+
+# Program flot - Remove 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += flot
+#p2prog_DATA += @srcp2prog@/flot.pdf
+#flot_SOURCES = 
+#flot_LDADD = $(VICAR_RTL_LIBS)
+#flot_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#flot_SOURCES += @srcp2prog@/flot.F
+#flot_SOURCES += @srcp2prog@/flot_unix.F
+
+# Program font. We have a version of this in AFIDS that overrides this one.
+# p2prog_PROGRAMS += font
+# p2prog_DATA += @srcp2prog@/font.pdf
+# font_SOURCES = 
+# font_LDADD = $(VICAR_RTL_LIBS)
+# font_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# font_SOURCES += @srcp2prog@/font.F
+
+# Program form
+p2prog_PROGRAMS += form
+p2prog_DATA += @srcp2prog@/form.pdf
+form_SOURCES = 
+form_LDADD = $(VICAR_RTL_LIBS)
+form_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+form_SOURCES += @srcp2prog@/form.F
+
+# Program fracgen
+p2prog_PROGRAMS += fracgen
+p2prog_DATA += @srcp2prog@/fracgen.pdf
+fracgen_SOURCES = 
+fracgen_LDADD = $(VICAR_RTL_LIBS)
+fracgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+fracgen_SOURCES += @srcp2prog@/fracgen.F
+
+# Program galgen
+p2prog_PROGRAMS += galgen
+p2prog_DATA += @srcp2prog@/galgen.pdf
+galgen_SOURCES = 
+galgen_LDADD = $(VICAR_RTL_LIBS)
+galgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+galgen_SOURCES += @srcp2prog@/galgen.F
+
+# Program galsos
+# p2prog_PROGRAMS += galsos
+# p2prog_DATA += @srcp2prog@/galsos.pdf
+# galsos_SOURCES = 
+# galsos_LDADD = $(VICAR_RTL_LIBS)
+# galsos_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# galsos_SOURCES += @srcp2prog@/galsos.c
+
+# Program gausnois - removed 2012-08-11
+############  Now in afids/vdev
+# p2prog_PROGRAMS += gausnois
+# p2prog_DATA += @srcp2prog@/gausnois.pdf
+# gausnois_SOURCES = 
+# gausnois_LDADD = $(VICAR_RTL_LIBS)
+# gausnois_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# gausnois_SOURCES += @srcp2prog@/gausnois.F
+
+# Program gen
+p2prog_PROGRAMS += gen
+p2prog_DATA += @srcp2prog@/gen.pdf
+gen_SOURCES = 
+gen_LDADD = $(VICAR_RTL_LIBS)
+gen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+gen_SOURCES += @srcp2prog@/gen.c
+
+# Program genthis
+p2prog_PROGRAMS += genthis
+p2prog_DATA += @srcp2prog@/genthis.pdf
+genthis_SOURCES = 
+genthis_LDADD = $(VICAR_RTL_LIBS)
+genthis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+genthis_SOURCES += @srcp2prog@/genthis.F
+
+# Program geom
+p2prog_DATA += @srcp2prog@/geom.pdf
+
+# Program geoma
+p2prog_PROGRAMS += geoma
+p2prog_DATA += @srcp2prog@/geoma.pdf
+geoma_SOURCES = 
+geoma_LDADD = $(VICAR_RTL_LIBS)
+geoma_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+geoma_SOURCES += @srcp2prog@/geoma.F
+
+# Program geomrec
+p2prog_PROGRAMS += geomrec
+p2prog_DATA += @srcp2prog@/geomrec.pdf
+geomrec_SOURCES = 
+geomrec_LDADD = $(VICAR_RTL_LIBS)
+geomrec_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+geomrec_SOURCES += @srcp2prog@/geomrec.F
+
+# Program geomv
+############  Now in afids/vdev
+# p2prog_PROGRAMS += geomv
+# p2prog_DATA += @srcp2prog@/geomv.pdf
+# geomv_SOURCES = 
+# geomv_LDADD = $(VICAR_RTL_LIBS)
+# geomv_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# geomv_SOURCES += @srcp2prog@/geomv.c
+
+# Program geomz
+p2prog_PROGRAMS += geomz
+p2prog_DATA += @srcp2prog@/geomz.pdf
+geomz_SOURCES = 
+geomz_LDADD = $(VICAR_RTL_LIBS)
+geomz_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+geomz_SOURCES += @srcp2prog@/geomz.F
+
+# Program getlab
+p2prog_PROGRAMS += getlab
+p2prog_DATA += @srcp2prog@/getlab.pdf
+getlab_SOURCES = 
+getlab_LDADD = $(VICAR_RTL_LIBS)
+getlab_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+getlab_SOURCES += @srcp2prog@/getlab.c
+
+# Program getll
+# p2prog_PROGRAMS += getll
+# p2prog_DATA += @srcp2prog@/getll.pdf
+# getll_SOURCES = 
+# getll_LDADD = $(VICAR_RTL_LIBS)
+# getll_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# getll_SOURCES += @srcp2prog@/getll.c
+
+# Program getloc
+p2prog_PROGRAMS += getloc
+p2prog_DATA += @srcp2prog@/getloc.pdf
+getloc_SOURCES = 
+getloc_LDADD = $(VICAR_RTL_LIBS)
+getloc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+getloc_SOURCES += @srcp2prog@/getloc.F
+
+# Program getpc
+# p2prog_PROGRAMS += getpc
+# p2prog_DATA += @srcp2prog@/getpc.pdf
+# getpc_SOURCES = 
+# getpc_LDADD = $(VICAR_RTL_LIBS)
+# getpc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# getpc_SOURCES += @srcp2prog@/getpc.F
+
+# Program getzval
+############  Now in afids/vdev
+# p2prog_PROGRAMS += getzval
+# p2prog_DATA += @srcp2prog@/getzval.pdf
+# getzval_SOURCES = 
+# getzval_LDADD = $(VICAR_RTL_LIBS)
+# getzval_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# getzval_SOURCES += @srcp2prog@/getzval.F
+
+# Program gf
+# p2prog_PROGRAMS += gf
+# p2prog_DATA += @srcp2prog@/gf.pdf
+# gf_SOURCES = 
+# gf_LDADD = $(VICAR_RTL_LIBS)
+# gf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program giaconda
+p2prog_PROGRAMS += giaconda
+p2prog_DATA += @srcp2prog@/giaconda.pdf
+giaconda_SOURCES = 
+giaconda_LDADD = $(VICAR_RTL_LIBS)
+giaconda_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+giaconda_SOURCES += @srcp2prog@/giaconda.c
+
+# Program graf2arc
+# p2prog_PROGRAMS += graf2arc
+# p2prog_DATA += @srcp2prog@/graf2arc.pdf
+# graf2arc_SOURCES = 
+# graf2arc_LDADD = $(VICAR_RTL_LIBS)
+# graf2arc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# graf2arc_SOURCES += @srcp2prog@/graf2arc.F
+
+# Program grafimg
+p2prog_PROGRAMS += grafimg
+p2prog_DATA += @srcp2prog@/grafimg.pdf
+grafimg_SOURCES = 
+grafimg_LDADD = $(VICAR_RTL_LIBS)
+grafimg_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+grafimg_SOURCES += @srcp2prog@/grafimg.F
+
+# Program grid
+p2prog_PROGRAMS += grid
+p2prog_DATA += @srcp2prog@/grid.pdf
+grid_SOURCES = 
+grid_LDADD = $(VICAR_RTL_LIBS)
+grid_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+grid_SOURCES += @srcp2prog@/grid.F
+
+# Program gridgen
+p2prog_PROGRAMS += gridgen
+p2prog_DATA += @srcp2prog@/gridgen.pdf
+gridgen_SOURCES = 
+gridgen_LDADD = $(VICAR_RTL_LIBS)
+gridgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+gridgen_SOURCES += @srcp2prog@/gridgen.F
+
+# Program gridlocb
+p2prog_PROGRAMS += gridlocb
+p2prog_DATA += @srcp2prog@/gridlocb.pdf
+gridlocb_SOURCES = 
+gridlocb_LDADD = $(VICAR_RTL_LIBS)
+gridlocb_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+gridlocb_SOURCES += @srcp2prog@/gridlocb.F
+
+# Program grutil
+p2prog_PROGRAMS += grutil
+p2prog_DATA += @srcp2prog@/grutil.pdf
+grutil_SOURCES = 
+grutil_LDADD = $(VICAR_RTL_LIBS)
+grutil_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+grutil_SOURCES += @srcp2prog@/grutil.F
+
+# Program gspice
+# p2prog_PROGRAMS += gspice
+# p2prog_DATA += @srcp2prog@/gspice.pdf
+# gspice_SOURCES = 
+# gspice_LDADD = $(VICAR_RTL_LIBS)
+# gspice_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# gspice_SOURCES += @srcp2prog@/gspice.F
+
+# Program headergen
+p2prog_PROGRAMS += headergen
+p2prog_DATA += @srcp2prog@/headergen.pdf
+headergen_SOURCES = 
+headergen_LDADD = $(VICAR_RTL_LIBS)
+headergen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+headergen_SOURCES += @srcp2prog@/headergen.c
+
+# Program hiccup
+p2prog_PROGRAMS += hiccup
+p2prog_DATA += @srcp2prog@/hiccup.pdf
+hiccup_SOURCES = 
+hiccup_LDADD = $(VICAR_RTL_LIBS)
+hiccup_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+hiccup_SOURCES += @srcp2prog@/hiccup.F
+
+# Program hist. We have a version of this in AFIDS that overrides this one.
+############  Now in afids/vdev
+#p2prog_PROGRAMS += hist
+#p2prog_DATA += @srcp2prog@/hist.pdf
+#hist_SOURCES = 
+#hist_LDADD = $(VICAR_RTL_LIBS)
+#hist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#hist_SOURCES += @srcp2prog@/hist.F
+#hist_SOURCES += @srcp2prog@/splot.c
+
+# Program hist2d
+p2prog_PROGRAMS += hist2d
+p2prog_DATA += @srcp2prog@/hist2d.pdf
+hist2d_SOURCES = 
+hist2d_LDADD = $(VICAR_RTL_LIBS)
+hist2d_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+hist2d_SOURCES += @srcp2prog@/hist2d.c
+
+# Program histgen
+p2prog_PROGRAMS += histgen
+p2prog_DATA += @srcp2prog@/histgen.pdf
+histgen_SOURCES = 
+histgen_LDADD = $(VICAR_RTL_LIBS)
+histgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+histgen_SOURCES += @srcp2prog@/histgen.F
+
+# Program hstretch
+p2prog_PROGRAMS += hstretch
+p2prog_DATA += @srcp2prog@/hstretch.pdf
+hstretch_SOURCES = 
+hstretch_LDADD = $(VICAR_RTL_LIBS)
+hstretch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+hstretch_SOURCES += @srcp2prog@/hstretch.F
+
+# Program ibis
+p2prog_PROGRAMS += ibis
+p2prog_DATA += @srcp2prog@/ibis.pdf
+ibis_SOURCES = 
+ibis_LDADD = $(VICAR_RTL_LIBS)
+ibis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ibis_SOURCES += @srcp2prog@/ibis_main.c
+ibis_SOURCES += @srcp2prog@/ibis_gen.c
+ibis_SOURCES += @srcp2prog@/ibis_list.c
+ibis_SOURCES += @srcp2prog@/ibis_copy.c
+ibis_SOURCES += @srcp2prog@/ibis_catenate.c
+ibis_SOURCES += @srcp2prog@/ibis_groups.c
+ibis_SOURCES += @srcp2prog@/ibis_local.h
+
+# Program ibis2tcl
+p2prog_PROGRAMS += ibis2tcl
+p2prog_DATA += @srcp2prog@/ibis2tcl.pdf
+ibis2tcl_SOURCES = 
+ibis2tcl_LDADD = $(VICAR_RTL_LIBS)
+ibis2tcl_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ibis2tcl_SOURCES += @srcp2prog@/ibis2tcl.F
+
+# Program ibisgcp
+# p2prog_PROGRAMS += ibisgcp
+# p2prog_DATA += @srcp2prog@/ibisgcp.pdf
+# ibisgcp_SOURCES = 
+# ibisgcp_LDADD = $(VICAR_RTL_LIBS)
+# ibisgcp_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ibisgcp_SOURCES += @srcp2prog@/ibisgcp.F
+
+# Program ibislsq
+p2prog_PROGRAMS += ibislsq
+p2prog_DATA += @srcp2prog@/ibislsq.pdf
+ibislsq_SOURCES = 
+ibislsq_LDADD = $(VICAR_RTL_LIBS)
+ibislsq_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ibislsq_SOURCES += @srcp2prog@/ibislsq.F
+
+# Program ibisnav
+# p2prog_PROGRAMS += ibisnav
+# p2prog_DATA += @srcp2prog@/ibisnav.pdf
+# ibisnav_SOURCES = 
+# ibisnav_LDADD = $(VICAR_RTL_LIBS)
+# ibisnav_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ibisnav_SOURCES += @srcp2prog@/ibisnav.F
+
+# Program ibisregr
+p2prog_PROGRAMS += ibisregr
+p2prog_DATA += @srcp2prog@/ibisregr.pdf
+ibisregr_SOURCES = 
+ibisregr_LDADD = $(VICAR_RTL_LIBS)
+ibisregr_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ibisregr_SOURCES += @srcp2prog@/ibisregr.F
+
+# Program ibisstat
+p2prog_PROGRAMS += ibisstat
+p2prog_DATA += @srcp2prog@/ibisstat.pdf
+ibisstat_SOURCES = 
+ibisstat_LDADD = $(VICAR_RTL_LIBS)
+ibisstat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ibisstat_SOURCES += @srcp2prog@/ibisstat.F
+
+# Program ibisupdate
+# p2prog_PROGRAMS += ibisupdate
+# p2prog_DATA += @srcp2prog@/ibisupdate.pdf
+# ibisupdate_SOURCES = 
+# ibisupdate_LDADD = $(VICAR_RTL_LIBS)
+# ibisupdate_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ibisupdate_SOURCES += @srcp2prog@/ibisupdate.F
+
+# Program ifft
+#p2prog_PROGRAMS += ifft
+#p2prog_DATA += @srcp2prog@/ifft.pdf
+#ifft_SOURCES = 
+#ifft_LDADD = libvif.la $(VICAR_RTL_LIBS)
+#ifft_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#ifft_SOURCES += @srcp2prog@/ifft.F
+
+# Program img2ascii - removed 2013-09-01
+############  Now in afids/vdev
+# p2prog_PROGRAMS += img2ascii
+# p2prog_DATA += @srcp2prog@/img2ascii.pdf
+# img2ascii_SOURCES = 
+# img2ascii_LDADD = $(VICAR_RTL_LIBS)
+# img2ascii_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# img2ascii_SOURCES += @srcp2prog@/img2ascii.F
+
+# Program imgstat - Removed 2013-09-01
+############  Now in afids/vdev
+# p2prog_PROGRAMS += imgstat
+# p2prog_DATA += @srcp2prog@/imgstat.pdf
+# imgstat_SOURCES = 
+# imgstat_LDADD = $(VICAR_RTL_LIBS)
+# imgstat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# imgstat_SOURCES += @srcp2prog@/imgstat.F
+
+# Program insect - removed 2013-09-30
+############  Now in afids/vdev
+# p2prog_PROGRAMS += insect
+# p2prog_DATA += @srcp2prog@/insect.pdf
+# insect_SOURCES = 
+# insect_LDADD = $(VICAR_RTL_LIBS)
+# insect_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# insect_SOURCES += @srcp2prog@/insect.F
+
+# Program insert - Remove 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += insert
+#p2prog_DATA += @srcp2prog@/insert.pdf
+#insert_SOURCES = 
+#insert_LDADD = $(VICAR_RTL_LIBS)
+#insert_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#insert_SOURCES += @srcp2prog@/insert.F
+
+# Program insert3d
+p2prog_PROGRAMS += insert3d
+p2prog_DATA += @srcp2prog@/insert3d.pdf
+insert3d_SOURCES = 
+insert3d_LDADD = $(VICAR_RTL_LIBS)
+insert3d_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+insert3d_SOURCES += @srcp2prog@/insert3d.c
+
+# Program interloc
+# Does not build properly - Centos 7
+# p2prog_PROGRAMS += interloc
+# p2prog_DATA += @srcp2prog@/interloc.pdf
+# interloc_SOURCES = 
+# interloc_LDADD = $(VICAR_RTL_LIBS)
+# interloc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# interloc_SOURCES += @srcp2prog@/interloc.F
+
+# Program isislab
+p2prog_PROGRAMS += isislab
+p2prog_DATA += @srcp2prog@/isislab.pdf
+isislab_SOURCES = 
+isislab_LDADD = $(VICAR_RTL_LIBS)
+isislab_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+isislab_SOURCES += @srcp2prog@/isislab.c
+
+# Program jpegfix
+# p2prog_PROGRAMS += jpegfix
+# p2prog_DATA += @srcp2prog@/jpegfix.pdf
+# jpegfix_SOURCES = 
+# jpegfix_LDADD = $(VICAR_RTL_LIBS)
+# jpegfix_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# jpegfix_SOURCES += @srcp2prog@/jpegfix.F
+
+# Program lab2tcl - Removed 2013-09-01
+############  Now in afids/vdev
+# p2prog_PROGRAMS += lab2tcl
+# p2prog_DATA += @srcp2prog@/lab2tcl.pdf
+# lab2tcl_SOURCES = 
+# lab2tcl_LDADD = $(VICAR_RTL_LIBS)
+# lab2tcl_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# lab2tcl_SOURCES += @srcp2prog@/lab2tcl.F
+
+# Program label
+p2prog_PROGRAMS += label
+p2prog_DATA += @srcp2prog@/label.pdf
+label_SOURCES = 
+label_LDADD = $(VICAR_RTL_LIBS)
+label_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+label_SOURCES += @srcp2prog@/label.c
+
+# Program lablist
+p2prog_PROGRAMS += lablist
+p2prog_DATA += @srcp2prog@/lablist.pdf
+lablist_SOURCES = 
+lablist_LDADD = $(VICAR_RTL_LIBS)
+lablist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+lablist_SOURCES += @srcp2prog@/lablist.c
+
+# Program labswtch
+p2prog_PROGRAMS += labswtch
+p2prog_DATA += @srcp2prog@/labswtch.pdf
+labswtch_SOURCES = 
+labswtch_LDADD = $(VICAR_RTL_LIBS)
+labswtch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+labswtch_SOURCES += @srcp2prog@/labswtch.F
+
+# Program labvfy
+p2prog_PROGRAMS += labvfy
+p2prog_DATA += @srcp2prog@/labvfy.pdf
+labvfy_SOURCES = 
+labvfy_LDADD = $(VICAR_RTL_LIBS)
+labvfy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+labvfy_SOURCES += @srcp2prog@/labvfy.F
+
+# Program lave
+############  Now in afids/vdev
+# p2prog_PROGRAMS += lave
+# p2prog_DATA += @srcp2prog@/lave.pdf
+# lave_SOURCES = 
+# lave_LDADD = $(VICAR_RTL_LIBS)
+# lave_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# lave_SOURCES += @srcp2prog@/lave.F
+
+# Program lgeom - Remove 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+# Note: the program now in afids removed the module:
+#     mvb.mar since the VAX is no longer supported.
+#     lgeom_unix.F needs to be removed since stacka_big
+#     removes its function but code has to be rewritten. 
+#p2prog_PROGRAMS += lgeom
+#p2prog_DATA += @srcp2prog@/lgeom.pdf
+#lgeom_SOURCES = 
+#lgeom_LDADD = $(VICAR_RTL_LIBS)
+#lgeom_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#lgeom_SOURCES += @srcp2prog@/mvb.mar
+#lgeom_SOURCES += @srcp2prog@/lgeom.F
+#lgeom_SOURCES += @srcp2prog@/lgeom_unix.F
+#lgeom_SOURCES += @srcp2prog@/mvb.c
+
+# Program libjpl_mipl_spice
+# p2prog_PROGRAMS += libjpl_mipl_spice
+# p2prog_DATA += @srcp2prog@/libjpl_mipl_spice.pdf
+# libjpl_mipl_spice_SOURCES = 
+# libjpl_mipl_spice_LDADD = $(VICAR_RTL_LIBS)
+# libjpl_mipl_spice_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# libjpl_mipl_spice_SOURCES += @srcp2prog@/jpl_mipl_spice_jni_SpiceLib.c
+
+# Program linemtch
+p2prog_PROGRAMS += linemtch
+p2prog_DATA += @srcp2prog@/linemtch.pdf
+linemtch_SOURCES = 
+linemtch_LDADD = $(VICAR_RTL_LIBS)
+linemtch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+linemtch_SOURCES += @srcp2prog@/linemtch.F
+
+# Program list
+p2prog_PROGRAMS += list
+p2prog_DATA += @srcp2prog@/list.pdf
+list_SOURCES = 
+list_LDADD = $(VICAR_RTL_LIBS)
+list_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+list_SOURCES += @srcp2prog@/list.c
+
+# Program listbits
+p2prog_PROGRAMS += listbits
+p2prog_DATA += @srcp2prog@/listbits.pdf
+listbits_SOURCES = 
+listbits_LDADD = $(VICAR_RTL_LIBS)
+listbits_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+listbits_SOURCES += @srcp2prog@/listbits.c
+
+# Program locus2
+p2prog_PROGRAMS += locus2
+p2prog_DATA += @srcp2prog@/locus2.pdf
+locus2_SOURCES = 
+locus2_LDADD = $(VICAR_RTL_LIBS)
+locus2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+locus2_SOURCES += @srcp2prog@/locus2.F
+
+# Program lstoxyz
+# p2prog_PROGRAMS += lstoxyz
+# p2prog_DATA += @srcp2prog@/lstoxyz.pdf
+# lstoxyz_SOURCES = 
+# lstoxyz_LDADD = $(VICAR_RTL_LIBS)
+# lstoxyz_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# lstoxyz_SOURCES += @srcp2prog@/lstoxyz.F
+
+# Program ltgen - removed 2013-08-11
+# p2prog_PROGRAMS += ltgen
+# p2prog_DATA += @srcp2prog@/ltgen.pdf
+# ltgen_SOURCES = 
+# ltgen_LDADD = $(VICAR_RTL_LIBS)
+# ltgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ltgen_SOURCES += @srcp2prog@/ltgen.F
+
+# Program makeck
+# p2prog_PROGRAMS += makeck
+# p2prog_DATA += @srcp2prog@/makeck.pdf
+# makeck_SOURCES = 
+# makeck_LDADD = $(VICAR_RTL_LIBS)
+# makeck_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# makeck_SOURCES += @srcp2prog@/makeck.F
+
+# Program makesrchlist
+# p2prog_PROGRAMS += makesrchlist
+# p2prog_DATA += @srcp2prog@/makesrchlist.pdf
+# makesrchlist_SOURCES = 
+# makesrchlist_LDADD = $(VICAR_RTL_LIBS)
+# makesrchlist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program manmatch
+# p2prog_PROGRAMS += manmatch
+# p2prog_DATA += @srcp2prog@/manmatch.pdf
+# manmatch_SOURCES = 
+# manmatch_LDADD = $(VICAR_RTL_LIBS)
+# manmatch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# manmatch_SOURCES += @srcp2prog@/manmatch.F
+# manmatch_SOURCES += @srcp2prog@/tc4sedr.F
+# manmatch_SOURCES += @srcp2prog@/tc4nosedr.F
+
+# Program map3
+# p2prog_PROGRAMS += map3
+# p2prog_DATA += @srcp2prog@/map3.pdf
+# map3_SOURCES = 
+# map3_LDADD = $(VICAR_RTL_LIBS)
+# map3_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# map3_SOURCES += @srcp2prog@/map3.F
+# map3_SOURCES += @srcp2prog@/map3a.F
+
+# Program mapaux
+# p2prog_PROGRAMS += mapaux
+# p2prog_DATA += @srcp2prog@/mapaux.pdf
+# mapaux_SOURCES = 
+# mapaux_LDADD = $(VICAR_RTL_LIBS)
+# mapaux_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# mapaux_SOURCES += @srcp2prog@/mapaux.F
+
+# Program mapcoord
+# p2prog_PROGRAMS += mapcoord
+# p2prog_DATA += @srcp2prog@/mapcoord.pdf
+# mapcoord_SOURCES = 
+# mapcoord_LDADD = $(VICAR_RTL_LIBS)
+# mapcoord_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# mapcoord_SOURCES += @srcp2prog@/mapcoord.F
+
+# Program mapgrid
+p2prog_PROGRAMS += mapgrid
+p2prog_DATA += @srcp2prog@/mapgrid.pdf
+mapgrid_SOURCES = 
+mapgrid_LDADD = $(VICAR_RTL_LIBS)
+mapgrid_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mapgrid_SOURCES += @srcp2prog@/mapgrid.F
+
+# Program maplabprog
+# p2prog_PROGRAMS += maplabprog
+# p2prog_DATA += @srcp2prog@/maplabprog.pdf
+# maplabprog_SOURCES = 
+# maplabprog_LDADD = $(VICAR_RTL_LIBS)
+# maplabprog_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# maplabprog_SOURCES += @srcp2prog@/maplabprog.F
+# maplabprog_SOURCES += @srcp2prog@/common.Fin
+
+# Program maptran
+p2prog_PROGRAMS += maptran
+p2prog_DATA += @srcp2prog@/maptran.pdf
+maptran_SOURCES = 
+maptran_LDADD = $(VICAR_RTL_LIBS)
+maptran_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+maptran_SOURCES += @srcp2prog@/maptran.F
+
+# Program mark
+p2prog_PROGRAMS += mark
+p2prog_DATA += @srcp2prog@/mark.pdf
+mark_SOURCES = 
+mark_LDADD = $(VICAR_RTL_LIBS)
+mark_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mark_SOURCES += @srcp2prog@/mark.F
+
+# Program markibis
+p2prog_PROGRAMS += markibis
+p2prog_DATA += @srcp2prog@/markibis.pdf
+markibis_SOURCES = 
+markibis_LDADD = $(VICAR_RTL_LIBS)
+markibis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+markibis_SOURCES += @srcp2prog@/markibis.F
+
+# Program maskmos
+p2prog_PROGRAMS += maskmos
+p2prog_DATA += @srcp2prog@/maskmos.pdf
+maskmos_SOURCES = 
+maskmos_LDADD = $(VICAR_RTL_LIBS)
+maskmos_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+maskmos_SOURCES += @srcp2prog@/maskmos.F
+
+# Program maskv
+# p2prog_PROGRAMS += maskv
+# p2prog_DATA += @srcp2prog@/maskv.pdf
+# maskv_SOURCES = 
+# maskv_LDADD = $(VICAR_RTL_LIBS)
+# maskv_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# maskv_SOURCES += @srcp2prog@/maskv.F
+# maskv_SOURCES += @srcp2prog@/flt_lab_maskv.c
+
+# Program maxmin - removed 2013-08-11
+############  Now in afids/vdev
+# p2prog_PROGRAMS += maxmin
+# p2prog_DATA += @srcp2prog@/maxmin.pdf
+# maxmin_SOURCES = 
+# maxmin_LDADD = $(VICAR_RTL_LIBS)
+# maxmin_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# maxmin_SOURCES += @srcp2prog@/maxmin.F
+
+# Program median  - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += median
+#p2prog_DATA += @srcp2prog@/median.pdf
+#median_SOURCES = 
+#median_LDADD = $(VICAR_RTL_LIBS)
+#median_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#median_SOURCES += @srcp2prog@/median.F
+
+# Program mem
+# p2prog_PROGRAMS += mem
+# p2prog_DATA += @srcp2prog@/mem.pdf
+# mem_SOURCES = 
+# mem_LDADD = $(VICAR_RTL_LIBS)
+# mem_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# mem_SOURCES += @srcp2prog@/mem.F
+
+# Program mf.
+############  Now in afids/vdev
+#p2prog_PROGRAMS += mf
+#p2prog_DATA += @srcp2prog@/mf.pdf
+#mf_SOURCES = 
+#mf_LDADD = $(VICAR_RTL_LIBS)
+#mf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#mf_SOURCES += @srcp2prog@/mf.c
+
+# Program mf3
+############  Now in afids/vdev
+# p2prog_PROGRAMS += mf3
+# p2prog_DATA += @srcp2prog@/mf3.pdf
+# mf3_SOURCES = 
+# mf3_LDADD = $(VICAR_RTL_LIBS)
+# mf3_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# mf3_SOURCES += @srcp2prog@/mf3.c
+
+# Program mfd
+p2prog_PROGRAMS += mfd
+p2prog_DATA += @srcp2prog@/mfd.pdf
+mfd_SOURCES = 
+mfd_LDADD = $(VICAR_RTL_LIBS)
+mfd_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mfd_SOURCES += @srcp2prog@/mfd.F
+
+# Program mgeom
+p2prog_PROGRAMS += mgeom
+p2prog_DATA += @srcp2prog@/mgeom.pdf
+mgeom_SOURCES = 
+mgeom_LDADD = $(VICAR_RTL_LIBS)
+mgeom_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mgeom_SOURCES += @srcp2prog@/mgeom.c
+
+# Program minfilt - Removed 2013-09-01
+############  Now in afids/vdev
+# p2prog_PROGRAMS += minfilt
+# p2prog_DATA += @srcp2prog@/minfilt.pdf
+# minfilt_SOURCES = 
+# minfilt_LDADD = $(VICAR_RTL_LIBS)
+# minfilt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# minfilt_SOURCES += @srcp2prog@/minfilt.F
+
+# Program minmax
+# p2prog_PROGRAMS += minmax
+# p2prog_DATA += @srcp2prog@/minmax.pdf
+# minmax_SOURCES = 
+# minmax_LDADD = $(VICAR_RTL_LIBS)
+# minmax_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# minmax_SOURCES += @srcp2prog@/minmax.F
+# minmax_SOURCES += @srcp2prog@/zminmax.c
+
+# Program momgen
+p2prog_PROGRAMS += momgen
+p2prog_DATA += @srcp2prog@/momgen.pdf
+momgen_SOURCES = 
+momgen_LDADD = $(VICAR_RTL_LIBS)
+momgen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+momgen_SOURCES += @srcp2prog@/momgen.F
+
+# Program momgen2
+# p2prog_PROGRAMS += momgen2
+# p2prog_DATA += @srcp2prog@/momgen2.pdf
+# momgen2_SOURCES = 
+# momgen2_LDADD = $(VICAR_RTL_LIBS)
+# momgen2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program momlist
+p2prog_PROGRAMS += momlist
+p2prog_DATA += @srcp2prog@/momlist.pdf
+momlist_SOURCES = 
+momlist_LDADD = $(VICAR_RTL_LIBS)
+momlist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+momlist_SOURCES += @srcp2prog@/momlist.F
+
+# Program morph
+p2prog_PROGRAMS += morph
+p2prog_DATA += @srcp2prog@/morph.pdf
+morph_SOURCES = 
+morph_LDADD = $(VICAR_RTL_LIBS)
+morph_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+morph_SOURCES += @srcp2prog@/morph.F
+
+# Program mosplot
+############  Now in afids/vdev
+# generates gnuplot code
+# p2prog_PROGRAMS += mosplot
+# p2prog_DATA += @srcp2prog@/mosplot.pdf
+# mosplot_SOURCES = 
+# mosplot_LDADD = $(VICAR_RTL_LIBS)
+# mosplot_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# mosplot_SOURCES += @srcp2prog@/mosplot.F
+
+# Program mpftpt1
+p2prog_PROGRAMS += mpftpt1
+p2prog_DATA += @srcp2prog@/mpftpt1.pdf
+mpftpt1_SOURCES = 
+mpftpt1_LDADD = $(VICAR_RTL_LIBS)
+mpftpt1_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mpftpt1_SOURCES += @srcp2prog@/mpftpt1.F
+
+# Program mss - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_DATA += @srcp2prog@/mss.pdf
+#mss_SOURCES = 
+#mss_LDADD = $(VICAR_RTL_LIBS)
+#mss_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#mss_SOURCES += @srcp2prog@/mss.F
+
+# Program msserver
+# p2prog_PROGRAMS += msserver
+# p2prog_DATA += @srcp2prog@/msserver.pdf
+# msserver_SOURCES = 
+# msserver_LDADD = $(VICAR_RTL_LIBS)
+# msserver_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# msserver_SOURCES += @srcp2prog@/msserver.c
+
+# Program mssibis
+p2prog_PROGRAMS += mssibis
+p2prog_DATA += @srcp2prog@/mssibis.pdf
+mssibis_SOURCES = 
+mssibis_LDADD = $(VICAR_RTL_LIBS)
+mssibis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mssibis_SOURCES += @srcp2prog@/mssibis.F
+
+# Program mssview
+p2prog_PROGRAMS += mssview
+p2prog_DATA += @srcp2prog@/mssview.pdf
+mssview_SOURCES = 
+mssview_LDADD = $(VICAR_RTL_LIBS)
+mssview_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+mssview_SOURCES += @srcp2prog@/mssview.F
+
+# Program multovly
+############  Now in afids/vdev
+# p2prog_PROGRAMS += multovly
+# p2prog_DATA += @srcp2prog@/multovly.pdf
+# multovly_SOURCES = 
+# multovly_LDADD = $(VICAR_RTL_LIBS)
+# multovly_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# multovly_SOURCES += @srcp2prog@/multovly.F
+
+# Program nav
+# p2prog_PROGRAMS += nav
+# p2prog_DATA += @srcp2prog@/nav.pdf
+# nav_SOURCES = 
+# nav_LDADD = $(VICAR_RTL_LIBS)
+# nav_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# nav_SOURCES += @srcp2prog@/nav.F
+# nav_SOURCES += @srcp2prog@/spicesub.F
+# nav_SOURCES += @srcp2prog@/limbfit.F
+# nav_SOURCES += @srcp2prog@/ringfit.F
+# nav_SOURCES += @srcp2prog@/phasprof.F
+# nav_SOURCES += @srcp2prog@/starfit.F
+# nav_SOURCES += @srcp2prog@/t1950.F
+# nav_SOURCES += @srcp2prog@/carea.F
+# nav_SOURCES += @srcp2prog@/getangles.F
+# nav_SOURCES += @srcp2prog@/planet.F
+# nav_SOURCES += @srcp2prog@/editnav.F
+# nav_SOURCES += @srcp2prog@/display.F
+# nav_SOURCES += @srcp2prog@/dpic.F
+
+# Program nav2
+# p2prog_PROGRAMS += nav2
+# p2prog_DATA += @srcp2prog@/nav2.pdf
+# nav2_SOURCES = 
+# nav2_LDADD = $(VICAR_RTL_LIBS)
+# nav2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# nav2_SOURCES += @srcp2prog@/nav2.F
+# nav2_SOURCES += @srcp2prog@/vparam.F
+# nav2_SOURCES += @srcp2prog@/maplabel.F
+# nav2_SOURCES += @srcp2prog@/editnav.F
+# nav2_SOURCES += @srcp2prog@/tac.F
+# nav2_SOURCES += @srcp2prog@/planet.F
+# nav2_SOURCES += @srcp2prog@/sdsply.F
+# nav2_SOURCES += @srcp2prog@/jupiter_zvp.F
+# nav2_SOURCES += @srcp2prog@/const.Fin
+# nav2_SOURCES += @srcp2prog@/cpic.Fin
+# nav2_SOURCES += @srcp2prog@/cpts.Fin
+# nav2_SOURCES += @srcp2prog@/dev.Fin
+# nav2_SOURCES += @srcp2prog@/xdgclr.Fin
+# nav2_SOURCES += @srcp2prog@/cmap.Fin
+
+# Program newmos
+# p2prog_PROGRAMS += newmos
+# p2prog_DATA += @srcp2prog@/newmos.pdf
+# newmos_SOURCES = 
+# newmos_LDADD = $(VICAR_RTL_LIBS)
+# newmos_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# newmos_SOURCES += @srcp2prog@/newmos.F
+
+# Program nimscmm2
+# p2prog_PROGRAMS += nimscmm2
+# p2prog_DATA += @srcp2prog@/nimscmm2.pdf
+# nimscmm2_SOURCES = 
+# nimscmm2_LDADD = $(VICAR_RTL_LIBS)
+# nimscmm2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# nimscmm2_SOURCES += @srcp2prog@/nimscmm2.c
+# nimscmm2_SOURCES += @srcp2prog@/nims_fsubs2.F
+# nimscmm2_SOURCES += @srcp2prog@/getom.F
+# nimscmm2_SOURCES += @srcp2prog@/nims_cal.F
+# nimscmm2_SOURCES += @srcp2prog@/load_spice95.F
+# nimscmm2_SOURCES += @srcp2prog@/calwork.Fin
+# nimscmm2_SOURCES += @srcp2prog@/darkwork.Fin
+# nimscmm2_SOURCES += @srcp2prog@/calfile.Fin
+
+# Program nut. This is just PDF files to add.
+p2prog_DATA += @srcp2prog@/nut.pdf @srcp2prog@/nut.banner
+
+# Program nutinp
+p2prog_PROGRAMS += nutinp
+p2prog_DATA += @srcp2prog@/nutinp.pdf
+nutinp_SOURCES = 
+nutinp_LDADD = $(VICAR_RTL_LIBS)
+nutinp_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+nutinp_SOURCES += @srcp2prog@/nutinp.F
+
+# Program nutprompt
+p2prog_PROGRAMS += nutprompt
+p2prog_DATA += @srcp2prog@/nutprompt.pdf
+nutprompt_SOURCES = 
+nutprompt_LDADD = $(VICAR_RTL_LIBS)
+nutprompt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+nutprompt_SOURCES += @srcp2prog@/nutprompt.c
+
+# Program nxt - removed 2013-08-12
+############  Now in afids/vdev
+# p2prog_PROGRAMS += nxt
+# p2prog_DATA += @srcp2prog@/nxt.pdf
+# nxt_SOURCES = 
+# nxt_LDADD = $(VICAR_RTL_LIBS)
+# nxt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# nxt_SOURCES += @srcp2prog@/nxt.c
+
+# Program obs_cat
+# p2prog_PROGRAMS += obs_cat
+# p2prog_DATA += @srcp2prog@/obs_cat.pdf
+# obs_cat_SOURCES = 
+# obs_cat_LDADD = $(VICAR_RTL_LIBS)
+# obs_cat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# obs_cat_SOURCES += @srcp2prog@/obs_cat.c
+
+# Program obs_list
+p2prog_PROGRAMS += obs_list
+p2prog_DATA += @srcp2prog@/obs_list.pdf
+obs_list_SOURCES = 
+obs_list_LDADD = $(VICAR_RTL_LIBS)
+obs_list_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+obs_list_SOURCES += @srcp2prog@/obs_list.c
+obs_list_SOURCES += @srcp2prog@/novascon.c
+obs_list_SOURCES += @srcp2prog@/solsys3.c
+obs_list_SOURCES += @srcp2prog@/novas.h
+obs_list_SOURCES += @srcp2prog@/novascon.h
+
+# Program oldgeoma2ibis
+# p2prog_PROGRAMS += oldgeoma2ibis
+# p2prog_DATA += @srcp2prog@/oldgeoma2ibis.pdf
+# oldgeoma2ibis_SOURCES = 
+# oldgeoma2ibis_LDADD = $(VICAR_RTL_LIBS)
+# oldgeoma2ibis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# oldgeoma2ibis_SOURCES += @srcp2prog@/oldgeoma2ibis.F
+
+# Program omc
+p2prog_PROGRAMS += omc
+p2prog_DATA += @srcp2prog@/omc.pdf
+omc_SOURCES = 
+omc_LDADD = $(VICAR_RTL_LIBS)
+omc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+omc_SOURCES += @srcp2prog@/omc.F
+
+# Program omcor2
+p2prog_PROGRAMS += omcor2
+p2prog_DATA += @srcp2prog@/omcor2.pdf
+omcor2_SOURCES = 
+omcor2_LDADD = $(VICAR_RTL_LIBS)
+omcor2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+omcor2_SOURCES += @srcp2prog@/omcor2.F
+
+# Program osblemloc
+p2prog_PROGRAMS += osblemloc
+p2prog_DATA += @srcp2prog@/osblemloc.pdf
+osblemloc_SOURCES = 
+osblemloc_LDADD = $(VICAR_RTL_LIBS)
+osblemloc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+osblemloc_SOURCES += @srcp2prog@/osblemloc.F
+
+# Program otf1
+############  Now in afids/vdev
+# generates gnuplot code
+# # p2prog_PROGRAMS += otf1
+# p2prog_DATA += @srcp2prog@/otf1.pdf
+# otf1_SOURCES = 
+# otf1_LDADD = $(VICAR_RTL_LIBS)
+# otf1_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# otf1_SOURCES += @srcp2prog@/otf1.F
+
+# Program overlay
+# p2prog_PROGRAMS += overlay
+# p2prog_DATA += @srcp2prog@/overlay.pdf
+# overlay_SOURCES = 
+# overlay_LDADD = $(VICAR_RTL_LIBS)
+# overlay_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# overlay_SOURCES += @srcp2prog@/overlay.F
+
+# Program paint
+############  Now in afids/vdev
+# p2prog_PROGRAMS += paint
+# p2prog_DATA += @srcp2prog@/paint.pdf
+# paint_SOURCES = 
+# paint_LDADD = $(VICAR_RTL_LIBS)
+# paint_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# paint_SOURCES += @srcp2prog@/paint.F
+
+# Program perslab
+# p2prog_PROGRAMS += perslab
+# p2prog_DATA += @srcp2prog@/perslab.pdf
+# perslab_SOURCES = 
+# perslab_LDADD = $(VICAR_RTL_LIBS)
+# perslab_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# perslab_SOURCES += @srcp2prog@/perslab.F
+
+# Program phodem
+p2prog_PROGRAMS += phodem
+p2prog_DATA += @srcp2prog@/phodem.pdf
+phodem_SOURCES = 
+phodem_LDADD = $(VICAR_RTL_LIBS)
+phodem_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+phodem_SOURCES += @srcp2prog@/phodem.c
+
+# Program phopdf
+# p2prog_PROGRAMS += phopdf
+# p2prog_DATA += @srcp2prog@/phopdf.pdf
+# phopdf_SOURCES = 
+# phopdf_LDADD = $(VICAR_RTL_LIBS)
+# phopdf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program photfit2
+p2prog_PROGRAMS += photfit2
+p2prog_DATA += @srcp2prog@/photfit2.pdf
+photfit2_SOURCES = 
+photfit2_LDADD = $(VICAR_RTL_LIBS)
+photfit2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+photfit2_SOURCES += @srcp2prog@/photfit2.c
+
+# Program photfunc
+# p2prog_PROGRAMS += photfunc
+# p2prog_DATA += @srcp2prog@/photfunc.pdf
+# photfunc_SOURCES = 
+# photfunc_LDADD = $(VICAR_RTL_LIBS)
+# photfunc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# photfunc_SOURCES += @srcp2prog@/photfunc.F
+# photfunc_SOURCES += @srcp2prog@/image_geometry.F
+# photfunc_SOURCES += @srcp2prog@/map_label.F
+# photfunc_SOURCES += @srcp2prog@/get_mission.F
+# photfunc_SOURCES += @srcp2prog@/os_parms.F
+# photfunc_SOURCES += @srcp2prog@/farenc_mode.F
+# photfunc_SOURCES += @srcp2prog@/phot_parms.F
+# photfunc_SOURCES += @srcp2prog@/grid_labels.F
+# photfunc_SOURCES += @srcp2prog@/photb.F
+# photfunc_SOURCES += @srcp2prog@/compute_segment.F
+# photfunc_SOURCES += @srcp2prog@/setup.F
+# photfunc_SOURCES += @srcp2prog@/phot_sub.F
+# photfunc_SOURCES += @srcp2prog@/toplanet.F
+
+# Program photlist
+# p2prog_PROGRAMS += photlist
+# p2prog_DATA += @srcp2prog@/photlist.pdf
+# photlist_SOURCES = 
+# photlist_LDADD = $(VICAR_RTL_LIBS)
+# photlist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# photlist_SOURCES += @srcp2prog@/photlist.F
+
+# Program phottest
+p2prog_PROGRAMS += phottest
+p2prog_DATA += @srcp2prog@/phottest.pdf
+phottest_SOURCES = 
+phottest_LDADD = $(VICAR_RTL_LIBS)
+phottest_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+phottest_SOURCES += @srcp2prog@/phottest.c
+phottest_SOURCES += @srcp2prog@/pho_label.c
+
+# Program pic2vic
+# p2prog_PROGRAMS += pic2vic
+# p2prog_DATA += @srcp2prog@/pic2vic.pdf
+# pic2vic_SOURCES = 
+# pic2vic_LDADD = $(VICAR_RTL_LIBS)
+# pic2vic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# pic2vic_SOURCES += @srcp2prog@/pic2vic.c
+# pic2vic_SOURCES += @srcp2prog@/pic_read.c
+
+# Program picmatch
+p2prog_PROGRAMS += picmatch
+p2prog_DATA += @srcp2prog@/picmatch.pdf
+picmatch_SOURCES = 
+picmatch_LDADD = $(VICAR_RTL_LIBS)
+picmatch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+picmatch_SOURCES += @srcp2prog@/picmatch.F
+
+# Program picreg
+# p2prog_PROGRAMS += picreg
+# p2prog_DATA += @srcp2prog@/picreg.pdf
+# picreg_SOURCES = 
+# picreg_LDADD = $(VICAR_RTL_LIBS)
+# picreg_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# picreg_SOURCES += @srcp2prog@/picreg.F
+
+# Program picsum
+p2prog_PROGRAMS += picsum
+p2prog_DATA += @srcp2prog@/picsum.pdf
+picsum_SOURCES = 
+picsum_LDADD = $(VICAR_RTL_LIBS)
+picsum_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+picsum_SOURCES += @srcp2prog@/picsum.F
+
+# Program pixgrad
+p2prog_PROGRAMS += pixgrad
+p2prog_DATA += @srcp2prog@/pixgrad.pdf
+pixgrad_SOURCES = 
+pixgrad_LDADD = $(VICAR_RTL_LIBS)
+pixgrad_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+pixgrad_SOURCES += @srcp2prog@/pixgrad.F
+
+# Program pixstat - Removed 2013-09-17
+############  Now in afids/vdev
+# p2prog_PROGRAMS += pixstat
+# p2prog_DATA += @srcp2prog@/pixstat.pdf
+# pixstat_SOURCES = 
+# pixstat_LDADD = $(VICAR_RTL_LIBS)
+# pixstat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# pixstat_SOURCES += @srcp2prog@/pixstat.c
+# pixstat_SOURCES += @srcp2prog@/unit_filter.c
+# pixstat_SOURCES += @srcp2prog@/unit_filter2.c
+# pixstat_SOURCES += @srcp2prog@/output.c
+
+# Program plot3d
+# generates gnuplot code
+# # p2prog_PROGRAMS += plot3d
+# p2prog_DATA += @srcp2prog@/plot3d.pdf
+# plot3d_SOURCES = 
+# plot3d_LDADD = $(VICAR_RTL_LIBS)
+# plot3d_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# plot3d_SOURCES += @srcp2prog@/plot3d.F
+
+# Program plotint
+# generates gnuplot code
+# ############  Now in afids/vdev
+# p2prog_PROGRAMS += plotint
+# p2prog_DATA += @srcp2prog@/plotint.pdf
+# plotint_SOURCES = 
+# plotint_LDADD = $(VICAR_RTL_LIBS)
+# plotint_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# plotint_SOURCES += @srcp2prog@/plotint.F
+
+# Program plotit
+# p2prog_PROGRAMS += plotit
+# p2prog_DATA += @srcp2prog@/plotit.pdf
+# plotit_SOURCES = 
+# plotit_LDADD = $(VICAR_RTL_LIBS)
+# plotit_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# plotit_SOURCES += @srcp2prog@/plotit.F
+
+# Program pltgraf
+# generates gnuplot code
+############  Now in afids/vdev
+# p2prog_PROGRAMS += pltgraf
+# p2prog_DATA += @srcp2prog@/pltgraf.pdf
+# pltgraf_SOURCES = 
+# pltgraf_LDADD = $(VICAR_RTL_LIBS)
+# pltgraf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# pltgraf_SOURCES += @srcp2prog@/pltgraf.F
+
+# Program polarect - Removed 2016-08-17 - rjb
+# link with stacka_big in p2sub
+#############  Now in afids/vdev
+#p2prog_PROGRAMS += polarect
+#p2prog_DATA += @srcp2prog@/polarect.pdf
+#polarect_SOURCES = 
+#polarect_LDADD = $(VICAR_RTL_LIBS)
+#polarect_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#polarect_SOURCES += @srcp2prog@/polarect.F
+
+# Program polarect2
+p2prog_PROGRAMS += polarect2
+p2prog_DATA += @srcp2prog@/polarect2.pdf
+polarect2_SOURCES = 
+polarect2_LDADD = $(VICAR_RTL_LIBS)
+polarect2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polarect2_SOURCES += @srcp2prog@/polarect2.F
+
+# Program polyclip
+p2prog_PROGRAMS += polyclip
+p2prog_DATA += @srcp2prog@/polyclip.pdf
+polyclip_SOURCES = 
+polyclip_LDADD = $(VICAR_RTL_LIBS)
+polyclip_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polyclip_SOURCES += @srcp2prog@/polyclip.F
+
+# Program polygen
+p2prog_PROGRAMS += polygen
+p2prog_DATA += @srcp2prog@/polygen.pdf
+polygen_SOURCES = 
+polygen_LDADD = $(VICAR_RTL_LIBS)
+polygen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polygen_SOURCES += @srcp2prog@/polygen.F
+
+# Program polygeom
+p2prog_PROGRAMS += polygeom
+p2prog_DATA += @srcp2prog@/polygeom.pdf
+polygeom_SOURCES = 
+polygeom_LDADD = $(VICAR_RTL_LIBS)
+polygeom_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polygeom_SOURCES += @srcp2prog@/polygeom.F
+
+# Program polymap
+# p2prog_PROGRAMS += polymap
+# p2prog_DATA += @srcp2prog@/polymap.pdf
+# polymap_SOURCES = 
+# polymap_LDADD = $(VICAR_RTL_LIBS)
+# polymap_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# polymap_SOURCES += @srcp2prog@/polymap.F
+
+# Program polynois
+p2prog_PROGRAMS += polynois
+p2prog_DATA += @srcp2prog@/polynois.pdf
+polynois_SOURCES = 
+polynois_LDADD = $(VICAR_RTL_LIBS)
+polynois_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polynois_SOURCES += @srcp2prog@/polynois.F
+
+# Program polypmap
+# p2prog_PROGRAMS += polypmap
+# p2prog_DATA += @srcp2prog@/polypmap.pdf
+# polypmap_SOURCES = 
+# polypmap_LDADD = $(VICAR_RTL_LIBS)
+# polypmap_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# polypmap_SOURCES += @srcp2prog@/polypmap.F
+
+# Program polypnt
+p2prog_PROGRAMS += polypnt
+p2prog_DATA += @srcp2prog@/polypnt.pdf
+polypnt_SOURCES = 
+polypnt_LDADD = $(VICAR_RTL_LIBS)
+polypnt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polypnt_SOURCES += @srcp2prog@/polypnt.F
+
+# Program polyreg
+p2prog_PROGRAMS += polyreg
+p2prog_DATA += @srcp2prog@/polyreg.pdf
+polyreg_SOURCES = 
+polyreg_LDADD = $(VICAR_RTL_LIBS)
+polyreg_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polyreg_SOURCES += @srcp2prog@/polyreg.F
+
+# Program polyscrb
+p2prog_PROGRAMS += polyscrb
+p2prog_DATA += @srcp2prog@/polyscrb.pdf
+polyscrb_SOURCES = 
+polyscrb_LDADD = $(VICAR_RTL_LIBS)
+polyscrb_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+polyscrb_SOURCES += @srcp2prog@/polyscrb.F
+
+# Program power
+############  Now in afids/vdev
+# generates gnuplot code
+# # p2prog_PROGRAMS += power
+# p2prog_DATA += @srcp2prog@/power.pdf
+# power_SOURCES = 
+# power_LDADD = $(VICAR_RTL_LIBS)
+# power_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# power_SOURCES += @srcp2prog@/power.F
+
+# Program printpix
+p2prog_PROGRAMS += printpix
+p2prog_DATA += @srcp2prog@/printpix.pdf
+printpix_SOURCES = 
+printpix_LDADD = $(VICAR_RTL_LIBS)
+printpix_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+printpix_SOURCES += @srcp2prog@/printpix.F
+
+# Program pscript
+p2prog_PROGRAMS += pscript
+p2prog_DATA += @srcp2prog@/pscript.pdf
+pscript_SOURCES = 
+pscript_LDADD = $(VICAR_RTL_LIBS)
+pscript_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+pscript_SOURCES += @srcp2prog@/pscript.c
+
+# Program psf
+# link with stacka_big in p2sub
+# generates gnuplot code
+############  Now in afids/vdev
+# p2prog_DATA += @srcp2prog@/psf.pdf
+# psf_SOURCES = 
+# psf_LDADD = $(VICAR_RTL_LIBS)
+# psf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# psf_SOURCES += @srcp2prog@/psf.F
+
+# Program ptp
+# p2prog_PROGRAMS += ptp
+# p2prog_DATA += @srcp2prog@/ptp.pdf
+# ptp_SOURCES = 
+# ptp_LDADD = $(VICAR_RTL_LIBS)
+# ptp_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ptp_SOURCES += @srcp2prog@/ptp.F
+# ptp_SOURCES += @srcp2prog@/open_images.F
+# ptp_SOURCES += @srcp2prog@/get_inp_nav.F
+# ptp_SOURCES += @srcp2prog@/get_ref_nav.F
+# ptp_SOURCES += @srcp2prog@/fix_pointing.F
+# ptp_SOURCES += @srcp2prog@/icproject.F
+# ptp_SOURCES += @srcp2prog@/project_quad.F
+# ptp_SOURCES += @srcp2prog@/project_quad2.F
+# ptp_SOURCES += @srcp2prog@/check_gridsize.F
+# ptp_SOURCES += @srcp2prog@/psub.F
+# ptp_SOURCES += @srcp2prog@/old_ptp_sub.F
+
+# Program qb
+# p2prog_PROGRAMS += qb
+# p2prog_DATA += @srcp2prog@/qb.pdf
+# qb_SOURCES = 
+# qb_LDADD = $(VICAR_RTL_LIBS)
+# qb_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program qplot
+# generates gnuplot code
+# ############  Now in afids/vdev
+# p2prog_PROGRAMS += qplot
+# p2prog_DATA += @srcp2prog@/qplot.pdf
+# qplot_SOURCES = 
+# qplot_LDADD = $(VICAR_RTL_LIBS)
+# qplot_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program qplot2
+# generates gnuplot code
+# link with stacka_big in p2sub
+# ############  Now in afids/vdev
+# p2prog_PROGRAMS += qplot2
+# p2prog_DATA += @srcp2prog@/qplot2.pdf
+# qplot2_SOURCES = 
+# qplot2_LDADD = $(VICAR_RTL_LIBS)
+# qplot2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# qplot2_SOURCES += @srcp2prog@/qplot2.F
+
+# Program qsar. 
+############  Now in afids/vdev
+#p2prog_PROGRAMS += qsar
+#p2prog_DATA += @srcp2prog@/qsar.pdf
+#qsar_SOURCES = 
+#qsar_LDADD = $(VICAR_RTL_LIBS)
+#qsar_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#qsar_SOURCES += @srcp2prog@/qsar.F
+
+# Program radagen - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += radagen
+#p2prog_DATA += @srcp2prog@/radagen.pdf
+#radagen_SOURCES = 
+#radagen_LDADD = $(VICAR_RTL_LIBS)
+#radagen_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#radagen_SOURCES += @srcp2prog@/radagen.F
+
+# Program raddist
+p2prog_PROGRAMS += raddist
+p2prog_DATA += @srcp2prog@/raddist.pdf
+raddist_SOURCES = 
+raddist_LDADD = $(VICAR_RTL_LIBS)
+raddist_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+raddist_SOURCES += @srcp2prog@/raddist.F
+
+# Program rapidmos
+p2prog_PROGRAMS += rapidmos
+p2prog_DATA += @srcp2prog@/rapidmos.pdf
+rapidmos_SOURCES = 
+rapidmos_LDADD = $(VICAR_RTL_LIBS)
+rapidmos_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+rapidmos_SOURCES += @srcp2prog@/rapidmos.F
+
+# Program rastograf
+p2prog_PROGRAMS += rastograf
+p2prog_DATA += @srcp2prog@/rastograf.pdf
+rastograf_SOURCES = 
+rastograf_LDADD = $(VICAR_RTL_LIBS)
+rastograf_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+rastograf_SOURCES += @srcp2prog@/rastograf.F
+
+# Program ratio
+############  Now in afids/vdev
+# p2prog_PROGRAMS += ratio
+# p2prog_DATA += @srcp2prog@/ratio.pdf
+# ratio_SOURCES = 
+# ratio_LDADD = $(VICAR_RTL_LIBS)
+# ratio_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program ratio0- Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += ratio0
+#p2prog_DATA += @srcp2prog@/ratio0.pdf
+#ratio0_SOURCES = 
+#ratio0_LDADD = $(VICAR_RTL_LIBS)
+#ratio0_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#ratio0_SOURCES += @srcp2prog@/ratio0.F
+
+# Program register
+p2prog_PROGRAMS += register
+p2prog_DATA += @srcp2prog@/register.pdf
+register_SOURCES = 
+register_LDADD = $(VICAR_RTL_LIBS)
+register_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+register_SOURCES += @srcp2prog@/register.c
+
+# Program register2
+p2prog_PROGRAMS += register2
+p2prog_DATA += @srcp2prog@/register2.pdf
+register2_SOURCES = 
+register2_LDADD = $(VICAR_RTL_LIBS)
+register2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+register2_SOURCES += @srcp2prog@/register2.c
+
+# Program remnoise
+p2prog_PROGRAMS += remnoise
+p2prog_DATA += @srcp2prog@/remnoise.pdf
+remnoise_SOURCES = 
+remnoise_LDADD = $(VICAR_RTL_LIBS)
+remnoise_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+remnoise_SOURCES += @srcp2prog@/remnoise.F
+
+# Program remray
+p2prog_PROGRAMS += remray
+p2prog_DATA += @srcp2prog@/remray.pdf
+remray_SOURCES = 
+remray_LDADD = $(VICAR_RTL_LIBS)
+remray_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+remray_SOURCES += @srcp2prog@/remray.F
+
+# Program repair  - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += repair
+#p2prog_DATA += @srcp2prog@/repair.pdf
+#repair_SOURCES = 
+#repair_LDADD = $(VICAR_RTL_LIBS)
+#repair_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#repair_SOURCES += @srcp2prog@/repair.F
+
+# Program reset
+p2prog_PROGRAMS += reset
+p2prog_DATA += @srcp2prog@/reset.pdf
+reset_SOURCES = 
+reset_LDADD = $(VICAR_RTL_LIBS)
+reset_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+reset_SOURCES += @srcp2prog@/reset.c
+
+# Program resloc
+p2prog_PROGRAMS += resloc
+p2prog_DATA += @srcp2prog@/resloc.pdf
+resloc_SOURCES = 
+resloc_LDADD = $(VICAR_RTL_LIBS)
+resloc_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+resloc_SOURCES += @srcp2prog@/resloc.F
+
+# Program reslocvo
+p2prog_PROGRAMS += reslocvo
+p2prog_DATA += @srcp2prog@/reslocvo.pdf
+reslocvo_SOURCES = 
+reslocvo_LDADD = $(VICAR_RTL_LIBS)
+reslocvo_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+reslocvo_SOURCES += @srcp2prog@/reslocvo.F
+
+# Program ressar75
+p2prog_PROGRAMS += ressar75
+p2prog_DATA += @srcp2prog@/ressar75.pdf
+ressar75_SOURCES = 
+ressar75_LDADD = $(VICAR_RTL_LIBS)
+ressar75_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ressar75_SOURCES += @srcp2prog@/ressar75.F
+
+# Program ressar77
+# p2prog_PROGRAMS += ressar77
+# p2prog_DATA += @srcp2prog@/ressar77.pdf
+# ressar77_SOURCES = 
+# ressar77_LDADD = $(VICAR_RTL_LIBS)
+# ressar77_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# ressar77_SOURCES += @srcp2prog@/ressar77.F
+
+# Program restorw
+# p2prog_PROGRAMS += restorw
+# p2prog_DATA += @srcp2prog@/restorw.pdf
+# restorw_SOURCES = 
+# restorw_LDADD = $(VICAR_RTL_LIBS)
+# restorw_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program rgb2pseudo
+p2prog_PROGRAMS += rgb2pseudo
+p2prog_DATA += @srcp2prog@/rgb2pseudo.pdf
+rgb2pseudo_SOURCES = 
+rgb2pseudo_LDADD = $(VICAR_RTL_LIBS)
+rgb2pseudo_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+rgb2pseudo_SOURCES += @srcp2prog@/rgb2pseudo.c
+
+# Program rgbtoxyy
+p2prog_PROGRAMS += rgbtoxyy
+p2prog_DATA += @srcp2prog@/rgbtoxyy.pdf
+rgbtoxyy_SOURCES = 
+rgbtoxyy_LDADD = $(VICAR_RTL_LIBS)
+rgbtoxyy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+rgbtoxyy_SOURCES += @srcp2prog@/rgbtoxyy.F
+
+# Program ringorbs
+p2prog_PROGRAMS += ringorbs
+p2prog_DATA += @srcp2prog@/ringorbs.pdf
+ringorbs_SOURCES = 
+ringorbs_LDADD = $(VICAR_RTL_LIBS)
+ringorbs_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+ringorbs_SOURCES += @srcp2prog@/ringorbs.F
+
+# Procedure rotate - Removed 2013-08-30
+############  Now in afids/vdev
+# p2prog_DATA += @srcp2prog@/rotate.pdf
+
+# Program rotate2 - Removed 2013-08-30
+############  Now in afids/vdev
+# p2prog_PROGRAMS += rotate2
+# p2prog_DATA += @srcp2prog@/rotate2.pdf
+# rotate2_SOURCES = 
+# rotate2_LDADD = $(VICAR_RTL_LIBS)
+# rotate2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# rotate2_SOURCES += @srcp2prog@/rotate2.F
+
+# Program rowop
+p2prog_PROGRAMS += rowop
+p2prog_DATA += @srcp2prog@/rowop.pdf
+rowop_SOURCES = 
+rowop_LDADD = $(VICAR_RTL_LIBS)
+rowop_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+rowop_SOURCES += @srcp2prog@/rowop.F
+
+# Program run_isql
+# p2prog_PROGRAMS += run_isql
+# p2prog_DATA += @srcp2prog@/run_isql.pdf
+# run_isql_SOURCES = 
+# run_isql_LDADD = $(VICAR_RTL_LIBS)
+# run_isql_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program sargon
+# p2prog_PROGRAMS += sargon
+# p2prog_DATA += @srcp2prog@/sargon.pdf
+# sargon_SOURCES = 
+# sargon_LDADD = $(VICAR_RTL_LIBS)
+# sargon_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# sargon_SOURCES += @srcp2prog@/sargon.F
+# sargon_SOURCES += @srcp2prog@/vsort.F
+# sargon_SOURCES += @srcp2prog@/relevant_dsubs.F
+# sargon_SOURCES += @srcp2prog@/sargon.F
+# sargon_SOURCES += @srcp2prog@/usort.F
+# sargon_SOURCES += @srcp2prog@/relevant_dsubs.F
+
+# Program sargonb
+# p2prog_PROGRAMS += sargonb
+# p2prog_DATA += @srcp2prog@/sargonb.pdf
+# sargonb_SOURCES = 
+# sargonb_LDADD = $(VICAR_RTL_LIBS)
+# sargonb_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# sargonb_SOURCES += @srcp2prog@/sargonb.F
+
+# Program sboxflt
+# p2prog_PROGRAMS += sboxflt
+# p2prog_DATA += @srcp2prog@/sboxflt.pdf
+# sboxflt_SOURCES = 
+# sboxflt_LDADD = $(VICAR_RTL_LIBS)
+# sboxflt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program shady - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += shady
+#p2prog_DATA += @srcp2prog@/shady.pdf
+#shady_SOURCES = 
+#shady_LDADD = $(VICAR_RTL_LIBS)
+#shady_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#shady_SOURCES += @srcp2prog@/shady.F
+
+# Program shady2 - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += shady2
+#p2prog_DATA += @srcp2prog@/shady2.pdf
+#shady2_SOURCES = 
+#shady2_LDADD = $(VICAR_RTL_LIBS)
+#shady2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#shady2_SOURCES += @srcp2prog@/shady2.F
+
+# Program signal
+p2prog_PROGRAMS += signal
+p2prog_DATA += @srcp2prog@/signal.pdf
+signal_SOURCES = 
+signal_LDADD = $(VICAR_RTL_LIBS)
+signal_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+signal_SOURCES += @srcp2prog@/signal.F
+
+# Program simbad
+# p2prog_PROGRAMS += simbad
+# p2prog_DATA += @srcp2prog@/simbad.pdf
+# simbad_SOURCES = 
+# simbad_LDADD = $(VICAR_RTL_LIBS)
+# simbad_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# simbad_SOURCES += @srcp2prog@/simbad.c
+
+# Program simbadcat
+# p2prog_PROGRAMS += simbadcat
+# p2prog_DATA += @srcp2prog@/simbadcat.pdf
+# simbadcat_SOURCES = 
+# simbadcat_LDADD = $(VICAR_RTL_LIBS)
+# simbadcat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# simbadcat_SOURCES += @srcp2prog@/simbadcat.c
+
+# Program sinproj
+p2prog_PROGRAMS += sinproj
+p2prog_DATA += @srcp2prog@/sinproj.pdf
+sinproj_SOURCES = 
+sinproj_LDADD = $(VICAR_RTL_LIBS)
+sinproj_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+sinproj_SOURCES += @srcp2prog@/sinproj.c
+
+# Program size
+############  Now in afids/vdev
+#p2prog_PROGRAMS += size
+#p2prog_DATA += @srcp2prog@/size.pdf
+#size_SOURCES = 
+#size_LDADD = $(VICAR_RTL_LIBS)
+#size_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#size_SOURCES += @srcp2prog@/size.F
+#size_SOURCES += @srcp2prog@/getsize.F
+#size_SOURCES += @srcp2prog@/update_label.F
+#size_SOURCES += @srcp2prog@/snoin.F
+#size_SOURCES += @srcp2prog@/sintrp.F
+#size_SOURCES += @srcp2prog@/sread.F
+#size_SOURCES += @srcp2prog@/magnify.F
+#size_SOURCES += @srcp2prog@/compress.F
+#size_FFLAGS = $(FFLAGS) -fbounds-check
+
+# Program sizemgn
+############  Now in afids/vdev
+# p2prog_PROGRAMS += sizemgn
+# p2prog_DATA += @srcp2prog@/sizemgn.pdf
+# sizemgn_SOURCES = 
+# sizemgn_LDADD = $(VICAR_RTL_LIBS)
+# sizemgn_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# sizemgn_SOURCES += @srcp2prog@/sizemgn.F
+# sizemgn_SOURCES += @srcp2prog@/getsize.F
+# sizemgn_SOURCES += @srcp2prog@/update_label.F
+# sizemgn_SOURCES += @srcp2prog@/snoin.F
+# sizemgn_SOURCES += @srcp2prog@/sintrp.F
+# sizemgn_SOURCES += @srcp2prog@/sread.F
+# sizemgn_SOURCES += @srcp2prog@/magnify.F
+# sizemgn_SOURCES += @srcp2prog@/compress.F
+# sizemgn_SOURCES += @srcp2prog@/mgnsize.F
+# sizemgn_SOURCES += @srcp2prog@/lookup.F
+# sizemgn_SOURCES += @srcp2prog@/slookup.inc
+
+# Program skew
+p2prog_PROGRAMS += skew
+p2prog_DATA += @srcp2prog@/skew.pdf
+skew_SOURCES = 
+skew_LDADD = $(VICAR_RTL_LIBS)
+skew_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+skew_SOURCES += @srcp2prog@/skew.F
+
+# Program sky
+# p2prog_PROGRAMS += sky
+# p2prog_DATA += @srcp2prog@/sky.pdf
+# sky_SOURCES = 
+# sky_LDADD = $(VICAR_RTL_LIBS)
+# sky_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# sky_SOURCES += @srcp2prog@/sky.c
+# sky_SOURCES += @srcp2prog@/newgetxy.c
+# sky_SOURCES += @srcp2prog@/qread.c
+# sky_SOURCES += @srcp2prog@/xypos.c
+# sky_SOURCES += @srcp2prog@/readhdr.c
+# sky_SOURCES += @srcp2prog@/utility.c
+# sky_SOURCES += @srcp2prog@/transteq.c
+# sky_SOURCES += @srcp2prog@/hsmooth.c
+# sky_SOURCES += @srcp2prog@/dodecode.c
+# sky_SOURCES += @srcp2prog@/qtreedec.c
+# sky_SOURCES += @srcp2prog@/bitinput.c
+# sky_SOURCES += @srcp2prog@/condmsrd.c
+# sky_SOURCES += @srcp2prog@/fillhdr.c
+# sky_SOURCES += @srcp2prog@/fillpos.c
+# sky_SOURCES += @srcp2prog@/conrddms.c
+# sky_SOURCES += @srcp2prog@/hdcmprss.c
+# sky_SOURCES += @srcp2prog@/position.c
+# sky_SOURCES += @srcp2prog@/ppoinv.c
+# sky_SOURCES += @srcp2prog@/amdinv.c
+# sky_SOURCES += @srcp2prog@/traneqst.c
+# sky_SOURCES += @srcp2prog@/decode.c
+# sky_SOURCES += @srcp2prog@/undigitz.c
+# sky_SOURCES += @srcp2prog@/ppopos.c
+# sky_SOURCES += @srcp2prog@/amdpos.c
+# sky_SOURCES += @srcp2prog@/hinv.c
+# sky_SOURCES += @srcp2prog@/pltmodel.c
+# sky_SOURCES += @srcp2prog@/precess.c
+# sky_SOURCES += @srcp2prog@/b195j200.c
+# sky_SOURCES += @srcp2prog@/header.h
+# sky_SOURCES += @srcp2prog@/qfile.h
+
+# Program skycat
+# p2prog_PROGRAMS += skycat
+# p2prog_DATA += @srcp2prog@/skycat.pdf
+# skycat_SOURCES = 
+# skycat_LDADD = $(VICAR_RTL_LIBS)
+# skycat_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# skycat_SOURCES += @srcp2prog@/skycat.c
+# skycat_SOURCES += @srcp2prog@/newgetxy.c
+# skycat_SOURCES += @srcp2prog@/qread.c
+# skycat_SOURCES += @srcp2prog@/xypos.c
+# skycat_SOURCES += @srcp2prog@/readhdr.c
+# skycat_SOURCES += @srcp2prog@/utility.c
+# skycat_SOURCES += @srcp2prog@/transteq.c
+# skycat_SOURCES += @srcp2prog@/hsmooth.c
+# skycat_SOURCES += @srcp2prog@/dodecode.c
+# skycat_SOURCES += @srcp2prog@/qtreedec.c
+# skycat_SOURCES += @srcp2prog@/bitinput.c
+# skycat_SOURCES += @srcp2prog@/condmsrd.c
+# skycat_SOURCES += @srcp2prog@/fillhdr.c
+# skycat_SOURCES += @srcp2prog@/fillpos.c
+# skycat_SOURCES += @srcp2prog@/conrddms.c
+# skycat_SOURCES += @srcp2prog@/hdcmprss.c
+# skycat_SOURCES += @srcp2prog@/position.c
+# skycat_SOURCES += @srcp2prog@/ppoinv.c
+# skycat_SOURCES += @srcp2prog@/amdinv.c
+# skycat_SOURCES += @srcp2prog@/traneqst.c
+# skycat_SOURCES += @srcp2prog@/decode.c
+# skycat_SOURCES += @srcp2prog@/undigitz.c
+# skycat_SOURCES += @srcp2prog@/ppopos.c
+# skycat_SOURCES += @srcp2prog@/amdpos.c
+# skycat_SOURCES += @srcp2prog@/hinv.c
+# skycat_SOURCES += @srcp2prog@/pltmodel.c
+# skycat_SOURCES += @srcp2prog@/precess.c
+# skycat_SOURCES += @srcp2prog@/b195j200.c
+# skycat_SOURCES += @srcp2prog@/header.h
+# skycat_SOURCES += @srcp2prog@/qfile.h
+
+# Program skymap
+p2prog_PROGRAMS += skymap
+p2prog_DATA += @srcp2prog@/skymap.pdf
+skymap_SOURCES = 
+skymap_LDADD = $(VICAR_RTL_LIBS)
+skymap_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+skymap_SOURCES += @srcp2prog@/skymap.c
+skymap_SOURCES += @srcp2prog@/newgetxy.c
+skymap_SOURCES += @srcp2prog@/qread.c
+skymap_SOURCES += @srcp2prog@/xypos.c
+skymap_SOURCES += @srcp2prog@/readhdr.c
+skymap_SOURCES += @srcp2prog@/utility.c
+skymap_SOURCES += @srcp2prog@/transteq.c
+skymap_SOURCES += @srcp2prog@/hsmooth.c
+skymap_SOURCES += @srcp2prog@/dodecode.c
+skymap_SOURCES += @srcp2prog@/qtreedec.c
+skymap_SOURCES += @srcp2prog@/bitinput.c
+skymap_SOURCES += @srcp2prog@/condmsrd.c
+skymap_SOURCES += @srcp2prog@/fillhdr.c
+skymap_SOURCES += @srcp2prog@/fillpos.c
+skymap_SOURCES += @srcp2prog@/conrddms.c
+skymap_SOURCES += @srcp2prog@/hdcmprss.c
+skymap_SOURCES += @srcp2prog@/position.c
+skymap_SOURCES += @srcp2prog@/ppoinv.c
+skymap_SOURCES += @srcp2prog@/amdinv.c
+skymap_SOURCES += @srcp2prog@/traneqst.c
+skymap_SOURCES += @srcp2prog@/decode.c
+skymap_SOURCES += @srcp2prog@/undigitz.c
+skymap_SOURCES += @srcp2prog@/ppopos.c
+skymap_SOURCES += @srcp2prog@/amdpos.c
+skymap_SOURCES += @srcp2prog@/hinv.c
+skymap_SOURCES += @srcp2prog@/pltmodel.c
+skymap_SOURCES += @srcp2prog@/precess.c
+skymap_SOURCES += @srcp2prog@/b195j200.c
+skymap_SOURCES += @srcp2prog@/header.h
+skymap_SOURCES += @srcp2prog@/qfile.h
+
+# Program snyder
+p2prog_PROGRAMS += snyder
+p2prog_DATA += @srcp2prog@/snyder.pdf
+snyder_SOURCES = 
+snyder_LDADD = $(VICAR_RTL_LIBS)
+snyder_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+snyder_SOURCES += @srcp2prog@/snyder.F
+
+# Program sort
+############  Now in afids/vdev
+# p2prog_PROGRAMS += sort
+# p2prog_DATA += @srcp2prog@/sort.pdf
+# sort_SOURCES = 
+# sort_LDADD = $(VICAR_RTL_LIBS)
+# sort_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# sort_SOURCES += @srcp2prog@/sort.F
+# sort_SOURCES += @srcp2prog@/sort.Fin
+
+# Program sos
+# p2prog_PROGRAMS += sos
+# p2prog_DATA += @srcp2prog@/sos.pdf
+# sos_SOURCES = 
+# sos_LDADD = $(VICAR_RTL_LIBS)
+# sos_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# sos_SOURCES += @srcp2prog@/sos.F
+
+# Program sparse
+p2prog_PROGRAMS += sparse
+p2prog_DATA += @srcp2prog@/sparse.pdf
+sparse_SOURCES = 
+sparse_LDADD = $(VICAR_RTL_LIBS)
+sparse_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+sparse_SOURCES += @srcp2prog@/sparse.F
+
+# Program spectoxyy
+p2prog_PROGRAMS += spectoxyy
+p2prog_DATA += @srcp2prog@/spectoxyy.pdf
+spectoxyy_SOURCES = 
+spectoxyy_LDADD = $(VICAR_RTL_LIBS)
+spectoxyy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+spectoxyy_SOURCES += @srcp2prog@/spectoxyy.F
+
+# Program spice
+# p2prog_PROGRAMS += spice
+# p2prog_DATA += @srcp2prog@/spice.pdf
+# spice_SOURCES = 
+# spice_LDADD = $(VICAR_RTL_LIBS)
+# spice_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# spice_SOURCES += @srcp2prog@/spice.F
+
+# Program spot - Removed 2013-08-24
+############  Now in afids/vdev
+# p2prog_PROGRAMS += spot
+# p2prog_DATA += @srcp2prog@/spot.pdf
+# spot_SOURCES = 
+# spot_LDADD = $(VICAR_RTL_LIBS)
+# spot_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# spot_SOURCES += @srcp2prog@/spot.F
+
+# Program srchedge
+p2prog_PROGRAMS += srchedge
+p2prog_DATA += @srcp2prog@/srchedge.pdf
+srchedge_SOURCES = 
+srchedge_LDADD = $(VICAR_RTL_LIBS)
+srchedge_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+srchedge_SOURCES += @srcp2prog@/srchedge.c
+
+# Program starcat3
+############  Now in afids/vdev
+# p2prog_PROGRAMS += starcat3
+# p2prog_DATA += @srcp2prog@/starcat3.pdf
+# starcat3_SOURCES = 
+# starcat3_LDADD = $(VICAR_RTL_LIBS)
+# starcat3_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# starcat3_SOURCES += @srcp2prog@/starcat3.F
+
+# Program statplt
+# generates gnuplot code
+# # p2prog_PROGRAMS += statplt
+# p2prog_DATA += @srcp2prog@/statplt.pdf
+# statplt_SOURCES = 
+# statplt_LDADD = $(VICAR_RTL_LIBS)
+# statplt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# statplt_SOURCES += @srcp2prog@/statplt.F
+
+# Program stats
+############  Now in afids/vdev
+#p2prog_PROGRAMS += stats
+#p2prog_DATA += @srcp2prog@/stats.pdf
+#stats_SOURCES = 
+#stats_LDADD = $(VICAR_RTL_LIBS)
+#stats_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#stats_SOURCES += @srcp2prog@/stats.F
+
+# Program stereocam
+p2prog_PROGRAMS += stereocam
+p2prog_DATA += @srcp2prog@/stereocam.pdf
+stereocam_SOURCES = 
+stereocam_LDADD = $(VICAR_RTL_LIBS)
+stereocam_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+stereocam_SOURCES += @srcp2prog@/stereocam.F
+
+# Program stretch. 
+############  Now in afids/vdev
+#p2prog_PROGRAMS += stretch
+#p2prog_DATA += @srcp2prog@/stretch.pdf
+#stretch_SOURCES = 
+#stretch_LDADD = $(VICAR_RTL_LIBS)
+#stretch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#stretch_SOURCES += @srcp2prog@/stretch.F
+#stretch_SOURCES += @srcp2prog@/manual_stretch.F
+#stretch_SOURCES += @srcp2prog@/hist_params.F
+#stretch_SOURCES += @srcp2prog@/get_histogram.F
+#stretch_SOURCES += @srcp2prog@/exclude_histogram.F
+#stretch_SOURCES += @srcp2prog@/histogram_stretch.F
+#stretch_SOURCES += @srcp2prog@/bimodal.F
+#stretch_SOURCES += @srcp2prog@/hpeak.F
+#stretch_SOURCES += @srcp2prog@/astretch.F
+#stretch_SOURCES += @srcp2prog@/post_stretch.F
+#stretch_SOURCES += @srcp2prog@/print_histogram.F
+#stretch_SOURCES += @srcp2prog@/stati.F
+
+# Program stretvar
+p2prog_PROGRAMS += stretvar
+p2prog_DATA += @srcp2prog@/stretvar.pdf
+stretvar_SOURCES = 
+stretvar_LDADD = $(VICAR_RTL_LIBS)
+stretvar_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+stretvar_SOURCES += @srcp2prog@/stretvar.F
+
+# Program superres
+p2prog_PROGRAMS += superres
+p2prog_DATA += @srcp2prog@/superres.pdf
+superres_SOURCES = 
+superres_LDADD = $(VICAR_RTL_LIBS)
+superres_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+superres_SOURCES += @srcp2prog@/superres.F
+
+# Program swap
+p2prog_PROGRAMS += swap
+p2prog_DATA += @srcp2prog@/swap.pdf
+swap_SOURCES = 
+swap_LDADD = $(VICAR_RTL_LIBS)
+swap_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+swap_SOURCES += @srcp2prog@/swap.F
+
+# Program tablesearch
+# p2prog_PROGRAMS += tablesearch
+# p2prog_DATA += @srcp2prog@/tablesearch.pdf
+# tablesearch_SOURCES = 
+# tablesearch_LDADD = $(VICAR_RTL_LIBS)
+# tablesearch_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program tabulate
+p2prog_PROGRAMS += tabulate
+p2prog_DATA += @srcp2prog@/tabulate.pdf
+tabulate_SOURCES = 
+tabulate_LDADD = $(VICAR_RTL_LIBS)
+tabulate_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tabulate_SOURCES += @srcp2prog@/tabulate.c
+
+# Program target
+p2prog_PROGRAMS += target
+p2prog_DATA += @srcp2prog@/target.pdf
+target_SOURCES = 
+target_LDADD = $(VICAR_RTL_LIBS)
+target_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+target_SOURCES += @srcp2prog@/target.F
+
+# Program tempname
+# p2prog_PROGRAMS += tempname
+# p2prog_DATA += @srcp2prog@/tempname.pdf
+# tempname_SOURCES = 
+# tempname_LDADD = $(VICAR_RTL_LIBS)
+# tempname_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+
+# Program tfilt - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += tfilt
+#p2prog_DATA += @srcp2prog@/tfilt.pdf
+#tfilt_SOURCES = 
+#tfilt_LDADD = $(VICAR_RTL_LIBS)
+#tfilt_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#tfilt_SOURCES += @srcp2prog@/tfilt.F
+
+# Program tieconm
+p2prog_PROGRAMS += tieconm
+p2prog_DATA += @srcp2prog@/tieconm.pdf
+tieconm_SOURCES = 
+tieconm_LDADD = $(VICAR_RTL_LIBS)
+tieconm_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tieconm_SOURCES += @srcp2prog@/tieconm.F
+
+# Program tieconv
+############  Now in afids/vdev
+# p2prog_PROGRAMS += tieconv
+# p2prog_DATA += @srcp2prog@/tieconv.pdf
+# tieconv_SOURCES = 
+# tieconv_LDADD = $(VICAR_RTL_LIBS)
+# tieconv_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# tieconv_SOURCES += @srcp2prog@/tieconv.c
+
+# Program tieparm
+p2prog_PROGRAMS += tieparm
+p2prog_DATA += @srcp2prog@/tieparm.pdf
+tieparm_SOURCES = 
+tieparm_LDADD = $(VICAR_RTL_LIBS)
+tieparm_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tieparm_SOURCES += @srcp2prog@/tieparm.F
+
+# Program tieplot
+# generates gnuplot code
+############  Now in afids/vdev
+# p2prog_PROGRAMS += tieplot
+# p2prog_DATA += @srcp2prog@/tieplot.pdf
+# tieplot_SOURCES = 
+# tieplot_LDADD = $(VICAR_RTL_LIBS)
+# tieplot_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# tieplot_SOURCES += @srcp2prog@/tieplot.F
+
+# Program toibis
+#p2prog_PROGRAMS += toibis
+#p2prog_DATA += @srcp2prog@/toibis.pdf
+#toibis_SOURCES = 
+#toibis_LDADD = $(VICAR_RTL_LIBS)
+#toibis_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#toibis_SOURCES += @srcp2prog@/toibis.F
+
+# Program topomap
+p2prog_PROGRAMS += topomap
+p2prog_DATA += @srcp2prog@/topomap.pdf
+topomap_SOURCES = 
+topomap_LDADD = $(VICAR_RTL_LIBS)
+topomap_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+topomap_SOURCES += @srcp2prog@/topomap.F
+
+# Program totopo
+# p2prog_PROGRAMS += totopo
+# p2prog_DATA += @srcp2prog@/totopo.pdf
+# totopo_SOURCES = 
+# totopo_LDADD = $(VICAR_RTL_LIBS)
+# totopo_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# totopo_SOURCES += @srcp2prog@/totopo.F
+
+# Program tp
+# p2prog_PROGRAMS += tp
+# p2prog_DATA += @srcp2prog@/tp.pdf
+# tp_SOURCES = 
+# tp_LDADD = $(VICAR_RTL_LIBS)
+# tp_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# tp_SOURCES += @srcp2prog@/TpApp.cc
+
+# Program tptedt2
+p2prog_PROGRAMS += tptedt2
+p2prog_DATA += @srcp2prog@/tptedt2.pdf
+tptedt2_SOURCES = 
+tptedt2_LDADD = $(VICAR_RTL_LIBS)
+tptedt2_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tptedt2_SOURCES += @srcp2prog@/tptedt2.F
+
+# Program tracker3
+p2prog_PROGRAMS += tracker3
+p2prog_DATA += @srcp2prog@/tracker3.pdf
+tracker3_SOURCES = 
+tracker3_LDADD = $(VICAR_RTL_LIBS)
+tracker3_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tracker3_SOURCES += @srcp2prog@/tracker3.c
+tracker3_SOURCES += @srcp2prog@/call_kqkkor.c
+
+# Program tran
+p2prog_PROGRAMS += tran
+p2prog_DATA += @srcp2prog@/tran.pdf
+tran_SOURCES = 
+tran_LDADD = $(VICAR_RTL_LIBS)
+tran_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tran_SOURCES += @srcp2prog@/tran.F
+
+# Program transcol
+p2prog_PROGRAMS += transcol
+p2prog_DATA += @srcp2prog@/transcol.pdf
+transcol_SOURCES = 
+transcol_LDADD = $(VICAR_RTL_LIBS)
+transcol_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+transcol_SOURCES += @srcp2prog@/transcol.F
+
+# Program translog
+p2prog_PROGRAMS += translog
+p2prog_DATA += @srcp2prog@/translog.pdf
+translog_SOURCES = 
+translog_LDADD = $(VICAR_RTL_LIBS)
+translog_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+translog_SOURCES += @srcp2prog@/translog.c
+
+# Program tricoef
+# p2prog_PROGRAMS += tricoef
+# p2prog_DATA += @srcp2prog@/tricoef.pdf
+# tricoef_SOURCES = 
+# tricoef_LDADD = $(VICAR_RTL_LIBS)
+# tricoef_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# tricoef_SOURCES += @srcp2prog@/tricoef.F
+# tricoef_SOURCES += @srcp2prog@/tztriaxtran.c
+# tricoef_SOURCES += @srcp2prog@/ztriaxtran.c
+
+# Program tristim
+p2prog_PROGRAMS += tristim
+p2prog_DATA += @srcp2prog@/tristim.pdf
+tristim_SOURCES = 
+tristim_LDADD = $(VICAR_RTL_LIBS)
+tristim_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tristim_SOURCES += @srcp2prog@/tristim.F
+
+# Program trucolor
+p2prog_PROGRAMS += trucolor
+p2prog_DATA += @srcp2prog@/trucolor.pdf
+trucolor_SOURCES = 
+trucolor_LDADD = $(VICAR_RTL_LIBS)
+trucolor_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+trucolor_SOURCES += @srcp2prog@/trucolor.F
+
+# Program tvreg
+p2prog_PROGRAMS += tvreg
+p2prog_DATA += @srcp2prog@/tvreg.pdf
+tvreg_SOURCES = 
+tvreg_LDADD = $(VICAR_RTL_LIBS)
+tvreg_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+tvreg_SOURCES += @srcp2prog@/tvreg.cc
+
+# Program typetext
+p2prog_PROGRAMS += typetext
+p2prog_DATA += @srcp2prog@/typetext.pdf
+typetext_SOURCES = 
+typetext_LDADD = $(VICAR_RTL_LIBS)
+typetext_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+typetext_SOURCES += @srcp2prog@/typetext.c
+
+# Program username
+p2prog_PROGRAMS += username
+p2prog_DATA += @srcp2prog@/username.pdf
+username_SOURCES = 
+username_LDADD = $(VICAR_RTL_LIBS)
+username_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+username_SOURCES += @srcp2prog@/username_unix.c
+
+# Program ustats - Removed 2016-08-17 - rjb
+# # link with stacka_big in p2sub
+# ############  Now in afids/vdev
+#p2prog_PROGRAMS += ustats
+#p2prog_DATA += @srcp2prog@/ustats.pdf
+#ustats_SOURCES = 
+#ustats_LDADD = $(VICAR_RTL_LIBS)
+#ustats_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#ustats_SOURCES += @srcp2prog@/ustats.F
+
+# Program vgrcdcopy
+p2prog_PROGRAMS += vgrcdcopy
+p2prog_DATA += @srcp2prog@/vgrcdcopy.pdf
+vgrcdcopy_SOURCES = 
+vgrcdcopy_LDADD = $(VICAR_RTL_LIBS)
+vgrcdcopy_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+vgrcdcopy_SOURCES += @srcp2prog@/vgrcdcopy.c
+vgrcdcopy_SOURCES += @srcp2prog@/decomp.c
+vgrcdcopy_SOURCES += @srcp2prog@/vgrcdlabgen.c
+vgrcdcopy_SOURCES += @srcp2prog@/trans_eng_hdr.c
+vgrcdcopy_SOURCES += @srcp2prog@/engrhdr.h
+vgrcdcopy_SOURCES += @srcp2prog@/gcfdata.h
+vgrcdcopy_SOURCES += @srcp2prog@/linesfx.h
+vgrcdcopy_SOURCES += @srcp2prog@/vgrsubcom.h
+vgrcdcopy_SOURCES += @srcp2prog@/uengrhdr.h
+vgrcdcopy_SOURCES += @srcp2prog@/ugcfdata.h
+vgrcdcopy_SOURCES += @srcp2prog@/uvgrsubcom.h
+
+# Program vgrfillin
+p2prog_PROGRAMS += vgrfillin
+p2prog_DATA += @srcp2prog@/vgrfillin.pdf
+vgrfillin_SOURCES = 
+vgrfillin_LDADD = $(VICAR_RTL_LIBS)
+vgrfillin_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+vgrfillin_SOURCES += @srcp2prog@/vgrfillin.F
+
+# Program vic2pic
+p2prog_PROGRAMS += vic2pic
+p2prog_DATA += @srcp2prog@/vic2pic.pdf
+vic2pic_SOURCES = 
+vic2pic_LDADD = $(VICAR_RTL_LIBS)
+vic2pic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+vic2pic_SOURCES += @srcp2prog@/vic2pic.c
+vic2pic_SOURCES += @srcp2prog@/pic_write.c
+
+# Program viccub
+p2prog_PROGRAMS += viccub
+p2prog_DATA += @srcp2prog@/viccub.pdf
+viccub_SOURCES = 
+viccub_LDADD = $(VICAR_RTL_LIBS)
+viccub_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+viccub_SOURCES += @srcp2prog@/viccub.c
+
+# Program visisx
+# p2prog_PROGRAMS += visisx
+# p2prog_DATA += @srcp2prog@/visisx.pdf
+# visisx_SOURCES = 
+# visisx_LDADD = $(VICAR_RTL_LIBS)
+# visisx_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# visisx_SOURCES += @srcp2prog@/visisx.c
+
+# Program vlookup
+p2prog_PROGRAMS += vlookup
+p2prog_DATA += @srcp2prog@/vlookup.pdf
+vlookup_SOURCES = 
+vlookup_LDADD = $(VICAR_RTL_LIBS)
+vlookup_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+vlookup_SOURCES += @srcp2prog@/vlookup.F
+vlookup_SOURCES += @srcp2prog@/vlookuploop.c
+
+# Program vquic
+p2prog_PROGRAMS += vquic
+p2prog_DATA += @srcp2prog@/vquic.pdf
+vquic_SOURCES = 
+vquic_LDADD = $(VICAR_RTL_LIBS)
+vquic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+vquic_SOURCES += @srcp2prog@/vquic.F
+
+# Program vtiff
+# p2prog_PROGRAMS += vtiff
+# p2prog_DATA += @srcp2prog@/vtiff.pdf
+# vtiff_SOURCES = 
+# vtiff_LDADD = $(VICAR_RTL_LIBS)
+# vtiff_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# vtiff_SOURCES += @srcp2prog@/tiff.h
+# vtiff_SOURCES += @srcp2prog@/tiffio.h
+# vtiff_SOURCES += @srcp2prog@/prototypes.h
+# vtiff_SOURCES += @srcp2prog@/tiffcompat.h
+# vtiff_SOURCES += @srcp2prog@/tiffiop.h
+# vtiff_SOURCES += @srcp2prog@/vtiff.c
+# vtiff_SOURCES += @srcp2prog@/optimal_color.c
+# vtiff_SOURCES += @srcp2prog@/t_aux.c
+# vtiff_SOURCES += @srcp2prog@/t_cmpat.c
+# vtiff_SOURCES += @srcp2prog@/t_cmpr.c
+# vtiff_SOURCES += @srcp2prog@/t_dirr.c
+# vtiff_SOURCES += @srcp2prog@/t_dirw.c
+# vtiff_SOURCES += @srcp2prog@/t_diri.c
+# vtiff_SOURCES += @srcp2prog@/t_dump.c
+# vtiff_SOURCES += @srcp2prog@/t_err.c
+# vtiff_SOURCES += @srcp2prog@/t_file.c
+# vtiff_SOURCES += @srcp2prog@/t_lzw.c
+# vtiff_SOURCES += @srcp2prog@/t_mach.c
+# vtiff_SOURCES += @srcp2prog@/t_pack.c
+# vtiff_SOURCES += @srcp2prog@/t_prnt.c
+# vtiff_SOURCES += @srcp2prog@/t_strp.c
+# vtiff_SOURCES += @srcp2prog@/t_swab.c
+# vtiff_SOURCES += @srcp2prog@/t_tile.c
+# vtiff_SOURCES += @srcp2prog@/t_vers.c
+
+# Program wiener
+p2prog_PROGRAMS += wiener
+p2prog_DATA += @srcp2prog@/wiener.pdf
+wiener_SOURCES = 
+wiener_LDADD = $(VICAR_RTL_LIBS)
+wiener_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+wiener_SOURCES += @srcp2prog@/wiener.F
+
+# Program wildcard
+p2prog_PROGRAMS += wildcard
+p2prog_DATA += @srcp2prog@/wildcard.pdf
+wildcard_SOURCES = 
+wildcard_LDADD = $(VICAR_RTL_LIBS)
+wildcard_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+wildcard_SOURCES += @srcp2prog@/wildcard_unix.c
+
+# Program xform - Removed 2016-08-17 - rjb
+# link with stacka_big in p2sub
+############  Now in afids/vdev
+#p2prog_PROGRAMS += xform
+#p2prog_DATA += @srcp2prog@/xform.pdf
+#xform_SOURCES = 
+#xform_LDADD = $(VICAR_RTL_LIBS)
+#xform_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#xform_SOURCES += @srcp2prog@/xform.F
+
+# Program xlocus
+p2prog_PROGRAMS += xlocus
+p2prog_DATA += @srcp2prog@/xlocus.pdf
+xlocus_SOURCES = 
+xlocus_LDADD = $(VICAR_RTL_LIBS)
+xlocus_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+xlocus_SOURCES += @srcp2prog@/xlocus.F
+
+# Program xyy2hdtv
+p2prog_PROGRAMS += xyy2hdtv
+p2prog_DATA += @srcp2prog@/xyy2hdtv.pdf
+xyy2hdtv_SOURCES = 
+xyy2hdtv_LDADD = $(VICAR_RTL_LIBS)
+xyy2hdtv_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+xyy2hdtv_SOURCES += @srcp2prog@/xyy2hdtv.F
+
+# Program xyytospec
+p2prog_PROGRAMS += xyytospec
+p2prog_DATA += @srcp2prog@/xyytospec.pdf
+xyytospec_SOURCES = 
+xyytospec_LDADD = $(VICAR_RTL_LIBS)
+xyytospec_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+xyytospec_SOURCES += @srcp2prog@/xyytospec.F
+
+# Program xyzpic
+p2prog_PROGRAMS += xyzpic
+p2prog_DATA += @srcp2prog@/xyzpic.pdf
+xyzpic_SOURCES = 
+xyzpic_LDADD = $(VICAR_RTL_LIBS)
+xyzpic_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+xyzpic_SOURCES += @srcp2prog@/xyzpic.F
+
+# Program xyzsun
+# p2prog_PROGRAMS += xyzsun
+# p2prog_DATA += @srcp2prog@/xyzsun.pdf
+# xyzsun_SOURCES = 
+# xyzsun_LDADD = $(VICAR_RTL_LIBS)
+# xyzsun_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# xyzsun_SOURCES += @srcp2prog@/xyzsun.F
+
+# Program yfit
+p2prog_PROGRAMS += yfit
+p2prog_DATA += @srcp2prog@/yfit.pdf
+yfit_SOURCES = 
+yfit_LDADD = $(VICAR_RTL_LIBS)
+yfit_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+yfit_SOURCES += @srcp2prog@/yfit.F
+
+# Program zcircle - Removed 2016-08-17 - rjb
+# link with stacka_big in p2sub
+#############  Now in afids/vdev
+#p2prog_PROGRAMS += zcircle
+#p2prog_DATA += @srcp2prog@/zcircle.pdf
+#zcircle_SOURCES = 
+#zcircle_LDADD = $(VICAR_RTL_LIBS)
+#zcircle_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#zcircle_SOURCES += @srcp2prog@/zcircle.F
+
+# Program zfill - Removed 2016-08-17 - rjb
+# link with stacka_big in p2sub
+############  Now in afids/vdev
+#p2prog_PROGRAMS += zfill
+#p2prog_DATA += @srcp2prog@/zfill.pdf
+#zfill_SOURCES = 
+#zfill_LDADD = $(VICAR_RTL_LIBS)
+#zfill_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+#zfill_SOURCES += @srcp2prog@/zfill.F
+
+# Program zinterp
+p2prog_PROGRAMS += zinterp
+p2prog_DATA += @srcp2prog@/zinterp.pdf
+zinterp_SOURCES = 
+zinterp_LDADD = $(VICAR_RTL_LIBS)
+zinterp_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+zinterp_SOURCES += @srcp2prog@/zinterp.F
+
+# Program zipcol
+# p2prog_PROGRAMS += zipcol
+# p2prog_DATA += @srcp2prog@/zipcol.pdf
+# zipcol_SOURCES = 
+# zipcol_LDADD = $(VICAR_RTL_LIBS)
+# zipcol_CPPFLAGS = $(AM_CPPFLAGS) $(VICAR_RTL_CFLAGS)
+# zipcol_SOURCES += @srcp2prog@/zipcol.F
+
+p2prog_PROGRAMS += vpack vunpack
+vpack_SOURCES = @srcp2prog@/vpack.c
+vunpack_SOURCES = @srcp2prog@/vunpack.c
+EXTRA_DIST+= @srcp2prog@/pack.h
+
+EXTRA_DIST+= $(p2prog_DATA)

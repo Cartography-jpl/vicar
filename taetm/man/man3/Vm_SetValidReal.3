@@ -1,0 +1,72 @@
+.TH Vm_SetValidReal 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetValidReal - set real valids
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetValidReal (vmid, name, count, rlow, rhigh)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: the valids were successfully placed in the parameter object.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BMINMAX: an invalid range is specified (rlow > rhigh).
+.IP o
+P_BADTYPE: the variable has a type other than real.
+.IP o
+P_ERROR: the current value is incompatible with the valids.  This
+status code is only a warning and the valids are placed in the parameter
+object.  The current value may be corrected by calling Vm_SetReal with a valid
+value.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input/output, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+Otherwise, this object must have been initialized with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the real variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+
+.IP \n+L.
+count: input, FUNINT   count;
+
+Multiplicity of the valids i.e., the number of ranges.
+
+.IP \n+L.
+rlow: input, TAEFLOAT   rlow[ ];
+
+An array of real values (a real value vector) for the low values
+of the ranges.
+
+.IP \n+L.
+rhigh: input, TAEFLOAT   rhigh[ ];
+
+An array of real values (a real value vector) for the high values
+of the ranges.
+
+.LP
+Vm_SetValidReal sets the ranges of valid values for a real variable.
+
+If count is one, note that rhigh and rlow
+must nonetheless be arrays of dimension one.
+If count is 
+less than one, then the rhigh and rlow arguments are ignored. 
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

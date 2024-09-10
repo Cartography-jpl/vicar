@@ -1,0 +1,45 @@
+!	edited 20-may-83...dm
+.TITLE
+LET
+.HELP
+			Function and Format
+	
+	Function:
+
+	    LET assigns the specified value to the
+	    specified variable.
+
+
+	Format:
+
+	    LET  variable-name=value
+
+.PAGE
+			Usage Notes
+
+
+	o  Allowable values for integer and real numbers follow
+	   the rules for correct values described in tutor mode
+	   help.
+
+	o  If the value is a string, it must be quoted.
+
+	   To include a quote character in the string, use two quotes.
+
+	o  If a variable is set to the value of another variable,
+	   both variables must be of the same type.
+	
+.PAGE
+			Examples
+
+
+	1.  TAE>LET $ECHO = "YES"
+
+	      Set the global variable, $ECHO to "YES" (thereby
+	      enabling the echo of procedure lines).
+	
+	2.  TAE>LET x = y
+
+	      Set the value of the variable "x" to the value
+	      of the variable "y".
+.END

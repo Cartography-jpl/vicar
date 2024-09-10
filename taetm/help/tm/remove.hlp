@@ -1,0 +1,48 @@
+!	27-mar-84	Created for V1.2...peb
+.TITLE
+REMOVE
+.HELP
+			Function and Format
+	
+	Function:
+
+
+	    REMOVE deletes completed, asynchronous job(s) from
+	    TAE's asynchronous job list.
+
+	    If JOB is the special name "ALL", then all completed
+	    jobs are removed from the list.
+
+	Format:
+
+	    REMOVE  JOB = job-name-list
+.PAGE
+			Usage Note
+
+
+	    Active jobs may not be removed from the job list.
+.PAGE
+			Examples
+
+
+	1.  TAE>REMOVE  ALL
+
+	    Removes all completed jobs from the asynchronous job
+	    list.
+
+
+	2.  TAE>REMOVE  (COPYJOB, MYJOB)
+
+	    Removes the jobs COPYJOB and MYJOB.
+.level1
+.variable JOB
+Names of job(s) to remove.
+.level2
+.variable JOB
+
+
+		JOB provides the names of the jobs to remove from
+		TAE's asynchronous job list.  If the special job
+		name "ALL" is used, then all completed jobs are
+		removed from the list.
+.END

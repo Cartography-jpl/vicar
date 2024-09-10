@@ -1,0 +1,73 @@
+!	edited  21-jan-84...dm
+!	updated 22-may-84...dm
+.TITLE
+USH
+.HELP
+			Function and Format
+
+	Function:
+
+	    The USH command executes the  UNIX/shell as an
+	    application process under TAE. All characters after 
+	    "USH" are taken as the command to be executed by 
+	    the UNIX/shell. 'shell' is the command interpreter
+	    'sh' or 'csh' as  defined by the symbol 'SHELL'
+	    at your login time.
+	    
+	    You may redefine the value of SHELL from 'sh' to
+	    'csh' or vice versa before invoking TAE.
+
+.PAGE
+
+	Format:
+	   
+	    USH any-UNIX/shell-command
+
+
+			 Usage notes
+
+	    To continue a USH command, the TAE continuation 
+	    line convention ("+") applies , but not the UNIX/shell
+	    continuation convention ("\"). 
+
+	    If the command consists of "USH" only, then 
+	    "interactive" shell is made available.  You will be 
+	    prompted with the shell "$".  When you are finished 
+	    with interactive shell, use the CONTROL/D key to 
+	    return to TAE. 
+
+.PAGE
+			Usage Notes (continued)
+
+
+	WARNING: There are several things you can do with the
+	USH command that will cause TAE to malfunction:
+
+	o Changing the default device/directory via 
+	  the shell command "cd".
+
+	o Terminating a USH command with a backslash (\)
+	  character.
+
+.PAGE
+			Examples
+
+
+	1.  TAE>USH cp  file1.tmp file2.tmp
+
+	2.  TAE>USH cp +		!continue a USH command		
+	    TAE>+ file1.tmp file2.tmp
+
+	3.  TAE>USH			!go to interactive shell
+	    $				!response from shell
+
+.PAGE
+			Examples (continued)
+
+
+	    If you are going to use the USH command often, 
+	    you may define "$" to be the "USH" command: 
+
+	5.   TAE>DEFCMD $,USH		!define "$" to be "USH"
+	     TAE>$ ls			!note: space after "$" required
+.END

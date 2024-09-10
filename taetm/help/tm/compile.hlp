@@ -1,0 +1,136 @@
+.TITLE
+COMPILE
+.HELP
+			Function and Format
+
+	Function:
+
+	    COMPILE may be used to improve the execution speed of procs.
+
+	    When TAE executes a source proc, each declaration
+	    statement in the pre-body portion of the PDF
+	    (i.e., all of the statements after the PROCEDURE or
+	    PROCESS statement, and before the BODY or END-PROC
+	    statements) is interpreted.
+
+	    When a proc is compiled, TAE performs all of the syntax
+	    scanning of the declaration statements at the time of
+	    the compile, eliminating the need for scanning at execution
+	    time.
+.page
+			Function and Format (continued)
+
+
+	    The execution time for procs with several parameters
+	    is significantly reduced by compiling the proc.
+
+
+	Format:
+
+	    COMPILE    INPROC = The name of the source PDF to be compiled. If
+				no file type is specified, "PDF" is assumed.
+
+	    	      OUTPROC = The name of the file to contain the compiled
+	    			PDF. If no file type is specified, "CPD"
+	    			is used. OUTPROC may be omitted, in which
+	    			case the file name from INPROC is used, with
+	    			CPD file type.
+
+.PAGE
+			Usage Notes
+
+
+	o  The default file type for compiled PDFs is "CPD".
+
+	   Note that the SETLIB command allows you to set
+	   the default PDF file type at execution time to "CPD".
+
+	o  Execution of a compiled PDF is specified identically to
+	   execution of uncompiled PDFs (see general command mode help).
+
+	o  If the PDF being compiled is a procedure, then all of the
+	   statements following the BODY statement are transferred
+	   intact to the output file.
+
+.PAGE
+			Usage Notes - Restrictions
+
+
+	o  The following restrictions apply to PDFs submitted for
+	   compilation:
+
+
+		1. No internal procs are allowed in the pre-body.
+	
+		2. Parameter qualifiers are not allowed.
+
+		3. The only fields of PROCESS and PROCEDURE statements
+		   recognized are EXECUTE and HELP, all other fields
+		   will be ignored.
+
+		4. The de-referencing ("@") symbol may not be used to
+		   reference global variables in the pre-body of the
+		   PDF, except in the DEFAULT field of a PARM statement.
+.PAGE
+			Usage Notes - Restrictions (continued)
+
+
+		5. DEFGBL statements are not allowed.
+
+		6. All variables declared outside subcommand brackets
+		   must be declared before all subcommand brackets
+		   or after all subcommand brackets.
+
+		7. De-referencing is limited to variables already declared
+		   outside of SUBCMD statement blocks, with one exception:
+		   Within a SUBCMD statement block, de-referencing is
+		   allowed to variables already declared within the same
+		   SUBCMD statement block.
+
+		8. If a FILE type parameter is declared with ACCESS set
+ 		   to IN or INOUT, and a default file is specified, then
+		   the file must exist at compile time.
+.PAGE
+			Usage Notes (continued)
+
+
+	o  Symbol replacement for DEFCMD symbols in the pre-body are
+	   resolved at compile time.
+
+	o  Substitution in the pre-body--using "&"--is performed at
+	   compile time.
+
+	o  If the help data for the PDF is in a separate file, the help is
+	   appended to the end of the new PDF at compile time.
+.PAGE
+		Usage Notes (continued)
+
+
+			Examples
+
+
+	1. COMPILE WINDOW.PDF WINDOW.CPD
+
+	2. COMPILE WINDOW WINDOW.FST
+
+	3. COMPILE WINDOW
+.level1
+.VARIABLE INPROC
+The name of the file containing the PDF to compile.
+.VARIABLE OUTPROC
+The name of the file containing the compiled PDF.
+.level2
+.VARIABLE INPROC
+
+		The name of the file containing the source
+		PDF to be compiled. If the file type is
+		omitted, "PDF" is assumed.
+
+.VARIABLE OUTPROC
+
+	    	The name of the file to contain the compiled
+	    	PDF. If no file type is specified, "CPD"
+	    	is used. OUTPROC may be omitted, in which
+	    	case the file name from INPROC is used, with
+	    	CPD file type.
+.END

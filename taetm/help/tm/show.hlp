@@ -1,0 +1,207 @@
+!	28-mar-84  Add SHOW-WAITING, SHOW-ASYNC...peb
+!	06-jun-84  Delete null subcommand string...lim
+!	23-jan-85  Included help in TAE$SYSLIB:SHOW.PDF...lia
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+!	21-jan-87  PR 1109: Conditionalize SHOW-BATCH text...palm
+!	23-may-90  Remove RCJM stuff...ljn
+.HELP
+
+	SHOW shows various kinds of status relevant to the TAE 
+	environment.  The following forms are available:
+
+
+	    SHOW-LIB		!display application library names
+				(-LIB is the default subcommand for SHOW)
+	    SHOW-ASYNC		!display asynchronous job status
+	    SHOW-WAITING	!asynchronous jobs waiting for dynamic parms
+	    SHOW-BATCH		!display batch queue status
+
+	If you are in command mode, type "HELP SHOW-sub" for 
+	help on a particular subcommand of SHOW.  If you are
+	tutoring for parameters, type "HELP -" for help on your
+	particular subcommand of SHOW.
+.level1
+.subcmd LIBRARY
+Show library search order.
+.subcmd ASYNC
+Display asynchronous job status.
+.subcmd WAITING
+Display list of asynchronous
+jobs waiting for dynamic
+parameters.
+.subcmd BATCH
+.if VAX_VMS
+Display batch queue status.
+.elseif UNIX
+Execute a UNIX ps command.
+.ifend
+.variable QUEUE
+.if UNIX
+(This parm is not
+supported under UNIX.)
+.elseif VAX_VMS
+Batch queue name.
+.ifend
+.variable JOB
+Asynchronous jobs desired
+in status report.
+.variable FORM
+Format for report.
+.level2
+.subcmd LIBRARY
+			     SHOW-LIB
+
+			Function and Format
+	
+	Function:
+
+	    SHOW-LIB displays the current library search order.
+	    Note that the application libraries in the search
+	    order are set via the SETLIB command.
+
+
+	Format:
+
+	    SHOW
+	    SHOW-LIBRARY 
+
+	    The two forms are equivalent.
+.subcmd ASYNC
+			    SHOW-ASYNC
+
+			Function and Format
+
+	Function:
+
+	    SHOW-ASYNC displays the status of asynchronous jobs.
+
+	    The job list identifies the name(s) of the asynchronous
+	    job(s) to be included in the report.  If JOB is omitted,
+	    the default is "ALL", a special job name that causes
+	    the status of all asynchronous jobs to appear in the
+	    report.
+
+	Format:
+
+	    SHOW-ASYNC  JOB = job-name-list  FORM = list-format
+.page
+			    SHOW-ASYNC
+
+
+			    Usage Notes
+
+
+	    The report lists, for each asynchronous job, the 
+	    following items:
+
+		o  Job name
+
+		o  Associated proc name
+
+.page
+		     SHOW-ASYNC Usage Notes (continued)
+
+
+		o  Whether the job is active, complete, or waiting
+		   for parameters
+
+		o  The values of the termination status globals,
+		   $SFI and $SKEY
+
+
+	    The "Brief" form has a heading with one line per job
+	    format, while "Full" form gives multiple lines of
+	    status per job.
+
+	    If the asynchronous job status report is too long,
+	    you may remove old job entries from the job list
+	    with the REMOVE command.
+.page
+		     SHOW-ASYNC Usage Notes (continued)
+
+
+	    SHOW-ASYNC sets the global $SKEY to "TAE-NONE" if
+	    the report has no jobs listed.
+.subcmd WAITING
+			    SHOW-WAITING
+
+
+			Function and Format
+
+	Function:
+
+	    SHOW-WAITING displays the list of asynchronous jobs
+	    waiting for dynamic parameters.  If only selected
+	    jobs are of interest, use the JOB parameter to identify
+	    the name(s) of the asynchronous job(s).
+
+
+	Format:
+
+	    SHOW-WAITING  JOB = job-name-list  FORM = list-format
+.page
+			    SHOW-WAITING
+
+
+			    Usage Notes (continued)
+
+
+	    The "Brief" form has a heading with one line per job
+	    format, while "Full" form gives multiple lines of
+	    status per job.
+
+	    A job in the waiting list may be resumed for execution
+	    with the REPLY command.
+
+	    SHOW-WAITING sets the global $SKEY to "TAE-NONE" if
+	    the report has no jobs listed.
+.subcmd BATCH
+			    SHOW-BATCH
+
+			Function and Format
+
+	Function:
+
+.if VAX_VMS
+	    SHOW-BATCH displays the status of jobs in a batch queue.
+	    It is the same as BATCH-STATUS.
+
+	    The queue name identifies the system batch queue.
+	    If QUEUE is omitted, the default is "SYS$BATCH", a
+	    standard batch queue name.  The user may specify
+	    a queue name at the time the batch job is submitted.
+
+	Format:
+
+	    SHOW-BATCH  QUEUE = queue-name
+.elseif UNIX
+	    SHOW-BATCH executes a UNIX 'ps' command to show
+	    the status of your current processes.  (In UNIX/TAE,
+	    there is no real implementation of BATCH.)
+.ifend
+.variable JOB
+
+
+	    The JOB parameter identifies the name(s) of the asynchronous
+	    job(s) to be included in the report.  If JOB is omitted,
+	    the default is "ALL", a special job name that causes
+	    all asynchronous jobs or all jobs in waiting to be report.
+.variable QUEUE
+
+.if UNIX
+	    (This parm is not supported under UNIX.)
+.elseif VAX_VMS
+	    The name of the VMS batch queue.  The queue name "ALL" is 
+	    a special queue name that causes the status of all jobs in
+	    all batch queues to be displayed.  If QUEUE is omitted,
+	    the default is "SYS$BATCH".
+.ifend
+.variable FORM
+
+	    The FORM parameter specifies the format desired for
+	    the report.
+
+	    The "Brief" gives a report with a heading and one line per
+	    job format, while the "Full" gives multiple lines of status 
+	    per job format.
+.END

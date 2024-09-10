@@ -1,0 +1,107 @@
+PROCESS    HELP=*
+PARM INP      TYPE=(STRING,72) COUNT=2
+PARM COLS     TYPE=INTEGER COUNT=3 DEFAULT=(1,2,3)
+PARM WINDOW   TYPE=INTEGER DEFAULT=10
+PARM INCREM   TYPE=REAL COUNT=(1:2) DEFAULT=0.
+PARM REJECT   TYPE=INTEGER DEFAULT=100
+PARM NOIN     TYPE=KEYWORD COUNT=(0:1) VALID=NOIN DEFAULT=--
+END-PROC
+.TITLE
+VICAR/IBIS Program  getzval
+.HELP     
+PURPOSE
+
+     getzval looks up brightness values in an image at a set 
+     of  points  specified in an IBIS interface  file.   The 
+     brightness   average   of  a  surrounding   window   is 
+     calculated  for each point and placed back in the  IBIS 
+     interface   file.    Interpolation  is  performed   for 
+     fractional point locations.
+.PAGE
+TAE COMMAND LINE FORMAT
+
+     getzval INP=(PIC,INT) SIZE PARAMS
+
+     where
+
+     PIC                 is an image.
+     INT                 is    an   IBIS   interface    file 
+                         containing columns which give point 
+                         locations in the image PIC.
+                         No  output  file is  used  but  the 
+                         second input file is modified.
+     SIZE                is the standard VICAR size field.
+     PARAMS              is  the  standard  VICAR  parameter 
+                         field.
+.PAGE
+OPERATION
+     The  point  locations in the IBIS file are in  floating 
+     point, hence they may be fractional.  The grey value is 
+     calculated for a WxW interpolated grid about the  point 
+     location.  Bilinear interpolation is used.  The average 
+     grey  value  is  stored in the selected column  of  the 
+     interface file.   In two cases,  the flag -999.0  is 
+     stored:   first,  if the window touches the boundary of 
+     the  image,  or  second,  if the  REJECT  threshold  is 
+     achieved in the window.   Point locations of (0,0) are
+     skipped over.
+
+
+WRITTEN BY:                   H. Wilczynski      01Dec77
+COGNIZANT PROGRAMMER:         K. F. Evans
+REVISION:                     3                  May 1986
+Made Portable for UNIX        CRI                02 JAN 95
+
+.PAGE
+.LEVEL1
+.VARIABLE INP
+Input image and interface file
+.VARIABLE COLS
+Column numbers for L,S and DN
+.VARIABLE REJECT
+Rejection threshold
+.VARIABLE WINDOW
+Box size
+.VARIABLE INCREM
+Increment for the window
+.VARIABLE NOIN
+No interpolation
+.LEVEL2
+.VARIABLE INP
+     INP=(PIC,INT)       PIC is an image.
+                         INT   is  an  IBIS  interface  file 
+                         containing columns which give point 
+                         locations in the image PIC.
+                         No  output  file is  used  but  the 
+                         second input file is modified.
+.VARIABLE GET
+     COLS=(L,S,T)   The   integers  L,S  specify  the   file 
+                    columns   which  contain  the  line  and 
+                    sample  coordinates  to  be  looked  up.  
+                    Column T is used to store the  resultant 
+                    grey values.
+.VARIABLE REJECT
+     REJECT=N       The  integer  N specifies that if  N  or 
+                    more  grey  values  in a  rectangle  are 
+                    zero,  then a "no information" marker is 
+                    stored  instead of a  grey  value.   The 
+                    marker  is  the value -999.0 .
+.VARIABLE WINDOW
+     WINDOW=W       specifies that a window of size W points 
+                    square  is  used to obtain  the  average 
+                    brightness  value.   The window will  be 
+                    centered on the line,  sample coordinate 
+                    even  if  it  is fractional.   W  is  an 
+                    integer (default value 10).
+.VARIABLE INCREM
+     INCREM=(H,V)   The  floating numbers H and V specify  a 
+                    horizontal  and vertical  increment  for 
+                    the   WxW  window.    Thus  W=10  H=V=2. 
+                    specifies  that a 20 pixel by  20  pixel 
+                    area will be sampled by a 10x10 grid.
+.VARIABLE NOIN
+     NOIN           specifies no-interpolation option.   The 
+                    DN-value  at the location nearest to the 
+                    one  specified by line-sample  from  the 
+                    columns L, S  will be read and stored in 
+                    the column T.

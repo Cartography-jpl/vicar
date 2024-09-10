@@ -1,0 +1,55 @@
+.TITLE
+SENDVAR 
+.HELP
+			Function and Format
+	
+	Function:
+
+           SENDVAR packages a collection of TCL variables into a 
+            message and sends the message to another job.
+
+
+	Format:
+
+            SENDVAR  VARIABLE =(v1, v2, v3, ...) JOB =jobname
+
+	    Subscripted variables may not appear in the variable
+	    list.  If more than one variable is specified, the
+	    names must be enclosed within parentheses.
+.PAGE
+			Usage Notes
+
+
+        o  SENDVAR is non-blocking, i.e., the message
+           is placed in the target job's queue and execution proceeds
+           with the command following SENDVAR.
+
+        o  Every message transmitted by SENDVAR automatically contains 
+           a string variable named _JOB that identifies the transmitting job.
+
+        o  Constants are  not allowed in the variable list.   
+           For example, the following is invalid:
+
+
+               SENDVAR (A, B, "input string")  JOB=XYZ
+.PAGE
+			Examples
+
+
+	1.  TAE>SENDVAR (name1, name2) JOB=XYZ
+
+	      Sends name1 and name2 to job XYZ.
+.level1
+.variable VARIABLE
+List of TCL variables to be placed in the message.
+.variable JOB 
+The name of the JOB to receive the message.
+.level2
+.variable VARIABLE
+
+
+List of TCL variables to be placed in the message.
+.variable JOB 
+
+
+The name of the JOB to receive the message.

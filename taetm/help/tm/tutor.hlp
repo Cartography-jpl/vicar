@@ -1,0 +1,103 @@
+! TNHE CHECKOUT FILE_TIME=30-JAN-1985 16:04 DUA1:[TAEV1.HELP]TUTOR.HLP;5
+!	edited	23-jun-83...dm
+!	edited  12-mar-84...palm
+!	edited	26-mar-84...peb
+!		27-jan-85 - qualifier -> command qualifier...jtm
+!		29-jan-85 - General V1.3 cleanup...lia
+.TITLE
+TUTOR
+.HELP
+
+
+	You may type TUTOR alone or you may request for tutor mode
+	using one of the following  subcommands:
+
+	    TUTOR			! Enter tutor in display mode
+					  indicated by global $TUTOR
+	    TUTOR-SCREEN		! Enter tutor in SCREEN mode
+	    TUTOR-NOSCREEN		! Enter tutor in NOSCREEN mode
+
+.PAGE
+			Function and Format
+
+	Function:
+
+	    Puts TAE in TUTOR mode.
+
+
+	Formats:
+
+	    1. TUTOR  procname	proc-parameters
+
+	    2. TUTOR  procname-subcommand  proc-parameters
+
+	    3. TUTOR  procname-    		!force subcommand display
+.PAGE
+			Usage Notes
+
+
+	    When you specify "TUTOR proc", proc is the name of
+	    the proc for which TUTOR data will be displayed.
+
+	    If you specify "TUTOR" without a proc name, data
+	    will be displayed on the proc of the most recent
+	    tutor RUN command which was unsuccessful due to
+	    parameter specification error. This is called
+	    "TUTOR latching".
+
+	    The proc name field may include command qualifiers;  these
+	    qualifiers apply to the execution of the proc when
+	    the RUN command is subsequently used.
+.PAGE
+			Usage Notes (continued)
+
+
+	    The "proc parameters" field is optional and may contain
+	    a standard TCL parameter list.  Parameters supplied
+	    on the TUTOR command line become initial (default)
+	    values for the tutor session.
+
+	    There are two display formats available for tutoring.
+	    SCREEN mode provides a formatted screen display.
+	    NOSCREEN mode is similar in style to TAE command mode,
+	    but provides a different prompt and allows a set of
+	    commands appropriate to a tutor session.
+
+	    Tutor is entered in SCREEN mode if the -SCREEN subcommand
+	    is used, or if the TCL global $TUTOR is "SCREEN" and
+	    the subcommand is not -NOSCREEN.
+
+	    Tutor is entered in NOSCREEN mode if the -NOSCREEN
+	    subcommand is used, or if the TCL global is "NOSCREEN"
+	    and the subcommand is not -SCREEN.
+
+	    If tutor is initiated for a proc with subcommands but
+	    without a default subcommand, the tutor session begins
+	    by requesting the subcommand specification with the
+	    tutor subcommand display.
+.LEVEL1
+.subcmd $TUTOR
+Enter tutor mode using $TUTOR.
+.subcmd SCREEN
+Enter tutor SCREEN mode.
+.subcmd NOSCREEN
+Enter tutor NOSCREEN mode.
+.LEVEL2
+.subcmd $TUTOR
+
+
+	The -$TUTOR subcommand indicates that the screen format
+	for tutor will follow the value of the TCL global $TUTOR.
+
+	$TUTOR is the default subcommand.
+.subcmd SCREEN
+
+
+	The -SCREEN subcommand forces tutor to start in "full screen"
+	mode, ignoring the value of $TUTOR.
+.subcmd NOSCREEN
+
+
+	The -NOSCREEN subcommand forces tutor to start in "no screen"
+	mode, ignoring the value of $TUTOR.
+.END

@@ -1,0 +1,7 @@
+procedure
+parm spec
+body
+    process exe=@spec name=aproc
+    end-proc
+aproc
+end-proc

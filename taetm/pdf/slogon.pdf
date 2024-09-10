@@ -1,0 +1,147 @@
+PROCEDURE HELP=*
+!
+refgbl ($MESSAGE, $SYSCHAR)
+refgbl ($ECHO, $BECHO, $AECHO)
+refgbl ($PROMPT, $DYNTUT)
+!
+local vic2log type=string initial=""
+local gblfile type=string initial=""
+!
+BODY
+!
+let _onfail = "continue"
+let $echo = "NO"
+let $becho = "NO"
+let $aecho = "NO"
+let $prompt = "VICAR"
+let $dyntut = "SCREEN"
+let $message = "BELL"
+!
+! Force command names to lower case so old mixed-case PDFs will work
+!
+! Turned off, we'll see if this causes any problems
+!enable-force_lower
+! Instead, try just making the final PDF file lower case
+enable-pdf_lower
+!
+if ($syschar(1) = "UNIX")
+  defcmd cat  "ush cat"		!define shell command equivalents
+  defcmd more "ush more"
+  defcmd pr   "ush pr"
+  defcmd ls   "ush ls"
+  flag-add NOMESSAGE
+  tae_path
+  flag-delete NOMESSAGE
+  defcmd use*disp "ush $VRDILIB/usedisp a"
+  defcmd free*disp "ush $VRDILIB/usedisp d"
+else-if ($syschar(1) = "VAX_VMS")
+  dcl $tae == "write sys$output ""Use VICAR or EXIT to exit."""
+  dcl $vic*ar :== exit
+  defcmd ty*pe "dcl $type"
+  defcmd pr*int "dcl $print"
+  defcmd dir*ect "dcl $directory"
+  setlib (liblst:-cpd, liblst:-pdf, r3lib:-cpd, r3lib:-pdf)
+end-if
+!
+defcmd showdisp "showdisp-s"
+defcmd helpdisp "showdisp-h"
+!
+! Deassign VRDI device logical so that users can't use device if it's
+! not allocated.  User mode to allow running USEDISP from outside of VICAR.
+!
+if ($syschar(1) = "VAX_VMS")
+  if ($RUNTYPE = "INTERACTIVE")		! So ASYNC doesn't do the deassign
+    dcl if (f$trnlnm("XDDEVICE","LNM$JOB",0,"USER",,"ACCESS_MODE").eqs."USER") +
+		then deassign/user/job XDDEVICE
+  end-if
+end-if
+!
+! Restore global variables from last run
+!
+if ($syschar(1) = "VAX_VMS")
+  if ($runtype = "BATCH") dcl @v2$lib:getpid	! Get v2$pidcode
+  flag-set nomess			! turn off message for translog
+  translog vic2$globalsav vic2log
+  if (vic2log = "") goto NOREST		! Don't restore globals if new login
+  translog v2$pidcode vic2log
+  let gblfile = "sys$login:vicar2globals.z" // "&vic2log"
+  restore &gblfile
+end-if
+!
+if ($RUNTYPE = "BATCH")
+  let $tapes = --
+  let $tfile = --
+  let $trec = --
+end-if
+!
+NOREST>
+!
+! Initialize global variables for VIDS
+!
+vidsglob
+!
+! print VICAR version number
+!
+v2version
+!
+write "      ***********************************************************"
+write "      *                                                         *"
+write "      *                  Welcome to VICAR                       *"
+write "      *                                                         *"
+write "      *          VICAR Supervisor version 5C, TAE V5.3          *"
+write "      *                 Distribution 29.0                       *"
+write "      *                                                         *"
+write "      *          #    #  #####   ###     ##    #####            *"
+write "      *          #    #    #    #   #   #  #   #    #           *"
+write "      *          #    #    #   #       #    #  #    #           *"
+write "      *          #    #    #   #       ######  #####            *"
+write "      *           #  #     #    #   #  #    #  #   #            *"
+write "      *            ##    #####   ###   #    #  #    #           *"
+write "      *                                                         *"
+write "      *         Video Image Communication and Retrieval         *"
+write "      *        and Image Based Information System (IBIS)        *"
+write "      *            ** AFIDS Package Distribution **             *"
+write "      *                                                         *"
+write "      ***********************************************************"
+write ""
+write "  --- Type NUT for the New User Tutorial ---"
+write ""
+write "  --- Type MENU for a menu of available applications ---"
+write ""
+
+flag-set logging		! full logging for async
+
+let $becho = ("YES","NO")
+let $aecho = ("YES","NO")
+
+local afidsroot type=(string,128)
+translog AFIDS_ROOT afidsroot
+write "Disabling interrupts ..."
+write ""
+DISABLE-INTERRUPT
+
+!ulogon
+END-PROC
+
+.TITLE
+
+		TAE SYSTEM-WIDE LOGON PROCEDURE
+.HELP
+
+.if UNIX
+	    This proc is automatically invoked upon user 
+	    logon, unless an overriding slogon proc 
+	    exists in the proc search hierarchy (i.e. either 
+	    in the user library or in one of the application
+	    libraries).
+.elseif VAX_VMS
+This procedure is executed upon activating TAE unless the user
+has:
+
+	a.) a version of SLOGON.PDF in the VMS default directory
+	    upon TAE activation, or
+
+	b.) a logical name SLOGON equating SLOGON to a file other
+	    than this one.
+
+.ifend

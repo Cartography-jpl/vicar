@@ -1,0 +1,30 @@
+procedure help=*
+local next_path type=(string,250)
+local i type=int
+body
+let i=0
+loop
+  tae_path_helper index=&i value=next_path
+  if (next_path = "---") goto loopdone
+  setlib (*, "-&next_path")
+  let i=&i+1
+end-loop
+loopdone>
+END-PROC
+.TITLE
+VICAR Program "tae_path"
+.HELP
+PURPOSE
+
+   This script lets the search path for the TAE vicar program to be
+set by the environment variable TAE_PATH. This is a normal unix path,
+with directories separated by ":". Like normal, the paths are set to
+search in left to right order.
+
+   This is not normally called directly, but rather used by the 
+slogon.pdf program.
+
+WRITTEN BY:            Mike Smyth	Feb 2016
+
+COGNIZANT PROGRAMMER:  Mike Smyth
+.END

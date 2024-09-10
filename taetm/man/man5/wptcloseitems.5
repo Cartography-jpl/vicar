@@ -1,0 +1,40 @@
+.\" DO NOT DELETE THIS FILE.
+.\" IT IS INCLUDED INTO SEVERAL MAN PAGES.
+.\" @(#)wptcloseitems.5	33.1 8/26/94
+
+Both the Multi-Line Edit and the \fImultiple\fP Selection List
+presentation types have to be "closed" before the text entered or
+selected by the user is returned to the application.  
+Either presentation type will be closed when the user presses the <Escape> key, 
+or when the application calls \fIWpt_CloseItems\fP.
+If the user terminates the input, the application retrieves text from the value
+vector passed to the event handler.
+If the application closes the item, 
+the application retrieves text using the SVAL macro.
+
+The following example closes all the items on a panel, 
+uses \fIVm_GetAttribute\fP to obtain the current number of values of an item,
+uses \fIVm_Find\fP to get a target variable, and prints each of the values.
+Assume that the panelname is "panelname" and the item name is "itemname".
+
+.nf
+    Id panelnameTarget;            /* panel target Vm Object */
+     ....
+    struct VARIABLE *v;            /* returned by Vm_Find */
+    TAEINT i;                      /* loop control */
+    COUNT newcount;                /* # of strings currently in item */
+    CODE dummy_type, dummy_access; /* irrelevant return values */
+    BOOL dummy_default;            /* irrelevant return values */
+
+    Wpt_CloseItems (panelnameId);  /* terminate input prior to <Escape> */
+    Vm_GetAttribute (panelnameTarget, "itemname", &dummy_type,
+                    &newcount, &dummy_default, &dummy_access);
+
+    /* access the target TAE Variable */
+    v = Vm_Find (panelnameTarget, "itemname");
+
+    /* retrieve the string vector */
+    for ( i = 0; i < newcount; i++ )
+        printf ("line[%d] = %s\\n", i, SVAL (*v, i) );
+.fi
+

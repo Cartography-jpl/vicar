@@ -1,0 +1,415 @@
+process help=*
+ 
+PARM INP      TYPE=STRING  COUNT=(0:1)                DEFAULT=--
+PARM OUT      TYPE=STRING  COUNT=(0:1)                DEFAULT=--
+PARM SIZE     TYPE=INTEGER COUNT=(0:4)                DEFAULT=(1,1,0,0)
+PARM DIAG     TYPE=KEYWORD COUNT=(0:1) VALID=DIAG     DEFAULT=--
+PARM SINCTST  TYPE=KEYWORD COUNT=(0:1) VALID=SINCTST  DEFAULT=--
+PARM NOISE    TYPE=INTEGER COUNT=(0:1)                DEFAULT=3
+PARM PLOT     TYPE=STRING  COUNT=(0:1)                DEFAULT=--
+PARM REFLECT  TYPE=KEYWORD COUNT=(0:1) VALID=REFLECT  DEFAULT=--
+PARM MEAN     TYPE=KEYWORD COUNT=(0:1) VALID=MEAN     DEFAULT=--
+PARM NONORMAL TYPE=KEYWORD COUNT=(0:1) VALID=NONORMAL DEFAULT=--
+PARM NOPRINT  TYPE=KEYWORD COUNT=(0:1) VALID=NOPRINT  DEFAULT=--
+PARM INTERVAL TYPE=REAL    COUNT=(0:1) VALID=(0:9999.99)  DEFAULT=1.0
+PARM DATA     TYPE=REAL    COUNT=(0:512)              DEFAULT=--
+PARM LSF      TYPE=REAL    COUNT=(0:512)              DEFAULT=--
+PARM PZOOM    TYPE=REAL    COUNT=(0:1) VALID=(0:9999.99)  DEFAULT=--
+PARM TABLE    TYPES=STRING  COUNT=(0:1)                DEFAULT=--
+PARM COLUMNS  TYPE=KEYWORD COUNT=(0:1) VALID=(COLHDR,NOCOLHDR) DEFAULT=COLHDR
+PARM PHASE    TYPE=KEYWORD COUNT=(0:1) VALID=(PHASE,NOPHASE) DEFAULT=PHASE
+PARM NODISP   TYPE=KEYWORD COUNT=(0:1) VALID=NODISP   DEFAULT=--
+END-PROC
+.TITLE
+VICAR program OTF1 -- perform 1-D FFT to obtain the
+Optical Transfer Function and the MTF.
+.HELP
+ 
+PURPOSE:
+ 
+   OTF1 is a VICAR applications program which performs one-dimensional
+Fast Fourier Transformations in order to compute Optical Transfer
+Functions (OTF) from degraded edges in images or from either a tabulated
+real function, or a line spread function using parameter inputs. OTF1 is
+able to compute the entire optical transfer function (not just the MTF)
+from digital picture data with greater accuracy and ease than other methods
+available. This technique for computing imaging system MTF's is preferable
+to previously used techniques which invloved the imaging of sine wave targets.
+ 
+   The input to OTF1 may be either image data or data specified by parameters.
+OTF1 allows OTF's to be computed from such operational image data as planet
+limbs or other step functions. OTF1 will accept a real string of values (DATA)
+for which the Fourier transform is desired, or a line spread function (LSF)
+for which the OTF is desired. A self test routine is invoked by SINCTST which
+creates a SINC function and branches to the LSF processor.
+ 
+   To aid in the preparation of filter weights for MTF enhancement, a provision
+has been added to output the Real and Imaginary Fourier Transform components.
+The output is 124 triplets of Real*4 numbers organized as [Frequency,Real,
+Imaginary], [Frequency,Real,Imaginary], from 1.0 cycles/sample to 0.484
+cycles/sample. The output does not extend beyond 0.484 cycles/sample due to
+limitations of the Sampling Theorem used for LSF resampling (see last para-
+graph of Method below).
+.page
+ EXECUTION:
+ 
+   OTF1 INP  OUT  PLOT  PARAMS
+ 
+ where: INP is an optional input image.
+ 
+        OUT is an optional output file with fourier transform data.
+ 
+        PLOT is an optional plot of the output.
+ 
+        PARMS are optional parameter, which are described below and
+             under Tutor.
+.page
+METHOD:
+ 
+   The data are normally in an input image and are processed line by line.
+Each line is left adjusted into an array of dimension equal to the smallest
+power of two which contain an entire input line. The data is then different-
+iated to produce a Line Spread Function (LSF). For direct input of a Line
+Spread Function, the parameters LSF is followed by the LSF values (Real*4).
+Processing will commence with the LSF ready for fillin to the nearest power
+of two using the MEAN, REFLECT, or FILLIN parameters. For direct input of
+a theortical "real" edge or mathematical function, the parameter DATA is
+followed by a string of values (Real*4) and will be processed as thought it
+was a real one-line image input. SINCTST will cause a SINC function to be
+formed and processed as though it were the LSF of an edge.
+ 
+  The Maximum point in the LSF is located and the LSF truncated to 30 points
+on either side of the LSF Maximum. If there are less than 30 points to either
+side the option exists to fill in extra points by replecating the LSF mean,
+by reflection, or with zeros. This LSF is then left justified and the Sampling
+Theorem applied to produce a 256 point power spectrum. In addition the
+resampled LSF is folded about the maximum, with points from the maximum to the
+upper end placed from i=1 to the midpoint, and points from the maximum to the
+lower end placed from near the midpoint to 1=256. This array is then in the
+proper form upon which the subroutine FFTT can be used to perform an inverse
+transform. The real and imaginary components of the transform for each line
+are accumulated element by element, and these operations continued until all
+the image lines have been processed. From the accumulated real and imaginary
+transform components the following are computed and printed.
+.page
+   Given a complex FT element "a+ib" the output will consist of:
+ 
+(1) The spatial frequency in cycles/sample.
+(2) The actual frequency in cycles/unit of time (INTERVAL).
+(3) a=Real part of FT.
+(4) b=Imaginary part of FT.
+(5) SQRT(a**2+b**2)=The amplitude of the FT. This is also the MTF if the
+    input data is an LSF.
+(6) (a**2+b**2)=The power spectrum or intensity of the FT.
+(7) The Normalized amplitude of the MTF which will be plotted.
+(8) ACRTAN(b/a)=The phase angle Omega of the FT measured in radians
+    which will also be plotted
+(9) W=Omega/2*pi*F=The displacement in the same units as INTERVAL
+    (the default of which is samples) of each sine wave component in
+    the image from its true position in the object being imaged. F is
+    in units of 1/INTERVAL. This quantity is meaningful if the input
+    data is an LSF and if OTF has been specified.
+.page
+If PLOT was specified the Normalized MTF Amplitude and Phase are processed
+into an output data set with Fortran I/O which can be printed to produce a
+Printronix like plot. In this case the line printer plot is disabled.
+ 
+The default is to generate on the line printer a display of the pertinent
+components of the OTF in a crude but rapidly analyzable format. Each
+curve's data points are represented by a letter with the following code:
+ 
+   A   Amplitude of the FT
+   R   Real portion of the FT
+   I   Imaginary portion of the FT
+   W   Wavelength shift of the FT.
+.page
+The FT is computed from
+ 
+           N-1
+    FT =SUM    [DATA *Exp(-2*PI*inm/N)]                   (1)
+           n=0      n
+ 
+where N is the data string length and  0<m<(N-1).
+ 
+   The OTF section of the program is designed to generate an LSF positioned
+in such a way as to eliminate both the effects of sampling and the bias
+introduced into the phase OMEGA due to the arbitrary positioning of the LSF
+data in the input array. Users of FFTT have been forced to obtain clean
+OTF's by using symmetrical LSF's positoned half at the beginning of the
+data string and half at the end. This was inconvenient and impossible if
+the LSF was asymmetrical. In the latter event all they could do was settle
+for the MTF, never knowing what the OTF was like. In a situation where the
+OTF has gone negative, the MTF is dangerous to use as a restoration function
+because it will boost the negative amplitudes the wrong way. The OTF allows
+the user to visualize the scrambling of spatial frequencies which occur when
+the LSF is asymmetrical, and also to see the sign of the OTF (given by the
+real part of the FT).
+ 
+   There are two problems associated with generating unbiased OTF's. They
+can be solved simultaneously by use of the Sampling Theorem. If the LSF is
+computed from a degraded edge composed of digital data, it is clear that
+(particularly for narrow LSF's) the position of the sampled points is going
+to influence the symmetry of the LSF. Clearly, trying to dissect several
+LSF's into two halves (each different) and store them at opposite ends of
+the data string before the FT operation, is going to produce different OTF's
+each time. Because the data is band limited, at least at the Nyquist Frequency,
+the MTF's generated in the above case will all be about the same. The problem
+is to eliminate the effects of sampling. The Sampling Theorem is used by OTF1
+to resample the acquired LSF about its center of weight. At this point, if the
+LSF is asymmetrical, the effect is real.
+.page
+   In computing the weight center of the LSF a first moments algorithm is
+used:
+ 
+              n=N                  n=N
+    CENTER=SUM   [(n-1)*DATA ]/ SUM   [DATA ]               (2)
+              n=1           n      n=1     n
+ 
+The Data are then resampled about the CENTER position using
+ 
+            n=+INF
+    INT =SUM      [DATA *((SIN(x-n)*PI)/((x-n)*PI))]          (3)
+       x    n=-INF     n
+ 
+where x is some integer distance away from CENTER. The data can then be
+split about the located center and positioned properly in the array to be
+transformed.
+ 
+   The use of many LSF's to produce one OTF is done by averaging the
+transform components. Averaging MTF's (if that's what you want) can be
+erroneous because even OTF's, which are in reality positive, can be
+caused to go negative if one of the LSF's is afflicted with noise. Since
+the MTF is the modulus of the OTF, the MTF is always positive. Great care
+should be taken in inspecting the LSF's computed from pictures before the
+resampling step to be sure they look decent. Averaged runs of 50 or more
+LSF's should yield OTF's which are accurate to within a few percent. This
+is an order of magnitude better than the sine wave methods used in the past.
+ 
+   Because the Sampling Theorem summation limits must be finite (in this
+case +-128) the theorem is blind to the spatial frequencies above 0.484
+cycles per sample. The OTF values above this frequency are best obtained
+by extrapolating from values below 0.484 to the Nyquest limit.
+.page
+ RESTRICTIONS:
+ 
+  1. Input picture record size <= 2048 samples.
+ 
+  2. LSF or DATA input elements <= 256.
+.page
+ PROGRAM HISTORY:
+
+ 05  AUG   1997...T.Huang.......Ported from VAX/VMS to UNIX and ALPHA/VMS.
+                                Combined the changes made by C. Avis with
+                                the existing MIPS version of OTF1. 
+                                Fixed problems caused by subroutine FFTT, by
+                                reducing the precision in calculation with 
+                                imaginary part of a complex number for PHASE.
+                                (REF: fr90520) 
+ 28  SEP   1995...C.C.AVIS......Added option for no Phase to table
+ 28  JUN   1995...C.C.AVIS......Added header to ASCII table output
+ 27  JUN   1995...C.C.AVIS......Modified test file to use perfect ramp case
+ 23  FEB   1994...C.C.Avis......1.Add tabular output, property label support,
+                                2.Improved test and help files.
+              ?...J.J.Lorre.....1.Scaling of phase plots.
+ 11  AUG   1988...F.M.MOSS......1.Add warning message for the line without edge.
+                                2.Fourier Transform will not apply to the line
+                                  without edge.
+                                3.Print out the total number of lines processed.
+                                4.Fix the bug to avoid calling XVWRIT if there
+                                  is no output required. (FR 35605)
+  7  MAY   1987...F.M.MOSS......1.modify the code to handle size field correctly
+                                2.modify output's XVOPEN and XVWRIT calling
+                                  parameters
+                                3.put "NONORMAL" keyword in the source if
+                                  the input is a line spread function
+  15 NOV   1985...F.M.MOSS......1.modify the plot for phase angle...
+                                (the axis range from -1 to 1
+                                 instead of from -3 to 3)
+                                2.add a new param "PZOOM" so the
+                                  user can either zoom up (PZOOM >1.)
+                                  or zoom down (PZOOM <1.) the phase
+                                  angle
+  06 MAY   1985...M.E.MORRILL...ADD OUTPUT FOR F.T. COMP.
+  02 MAY   1985...M.E.MORRILL...REMOVE VAX/FFT FACTOR OF 2
+                                & CLEAN UP NORMALIZATIONS
+  30 APR   1985...M.E.MORRILL...SAMPLING THEOREM "BUGS"
+  17 APR   1985...M.E.MORRILL...MINOR FIXES TO ADD QUANTITAVE
+                                ESTIMATE OF OTF CURVE.
+  06 DEC   1984...M.E.MORRILL...CODE MODIFIED TO CONFORM TO
+                                THEORY FROM R.NATHAN AND TO
+                                REMOVE FILTER OPERATIONS.
+  06 NOV   1984...M.E.MORRILL...CONVERTED TO VAX-VICAR*2.
+  02 FEB   1983...E.P.KORMSO....REVISION TO PRINTRONIX PLOTING.
+  10 DEC   1982...E.P.KORSMO....PRINTRONIX PLOT PACKAGE ADDED.
+  27 JUN   1975...D.A.HASS......CONVERSION TO 360/OS.
+  10 MAR   1975...J.J.LORRE.....RE-RELEASE.
+  16 MAY   1974...J.J.LORRE.....ORIGINAL RELEASE.
+ 
+CURRENT COGNIZANT PROGRAMMER:  J J Lorre
+ 
+.LEVEL1
+.VARIABLE INP
+ An input image.
+.VARIABLE OUT
+ Output of Real and
+ Imaginary Fourier
+ Transform components.
+.VARIABLE SIZE
+ INTEGER-OPTIONAL
+ SL,SS,NL,NS
+.VARIABLE DIAG
+ KEYWORD-OPTIONAL
+ diaganostic printout.
+.VARIABLE SINCTST
+ KEYWORD-OPTIONAL
+ Creates SINC function
+ and branches to LSF processing.
+.VARIABLE NOISE
+ INTEGER-OPTIONAL
+ Allowable noise level in LSF.
+.VARIABLE PLOT
+ STRING-OPTIONAL
+ Turns on PLOT.
+.VARIABLE REFLECT
+ KEYWORD-OPTIONAL
+ Reflects data about last
+ input point.
+.VARIABLE MEAN
+ KEYWORD-OPTIONAL
+ Causes missing data to be set
+ to mean of input data.
+.VARIABLE NONORMAL
+ KEYWORD-OPTIONAL
+ Do not normalize data.
+.VARIABLE NOPRINT
+ KEYWORD-OPTIONAL
+ Do not print full tabular
+ output.
+.VARIABLE INTERVAL
+ INTEGER-OPTIONAL
+ Time interval between
+ data points.
+.VARIABLE LSF
+ REAL-OPTIONAL
+ Up to 256 elements from which
+ the OTF will be determined.
+.VARIABLE DATA
+ REAL-OPTIONAL
+ Real numbers of which the FT
+ will be taken.
+.VARIABLE PZOOM
+ REAL-OPTIONAL
+ Scaling factor for phase
+ in plots.
+.VARIABLE TABLE
+ STRING-OPTIONAL
+ File to receive tabular output.
+.VARIABLE COLUMNS
+ keyword - OPTIONAL
+ Specifies whether to write
+ column headers in the
+ ASCII table.
+.VARIABLE PHASE
+ keyword - optional
+ Specifies whether to print
+ the Phase to the Ascii table
+ or not.
+.VARIABLE NODISP
+ If present, no display
+ is shown
+ 
+.LEVEL2
+.VARIABLE INP
+ An input image  which the user wishes to Fourier Transform.
+ The FT will be taken of each line and the components then averaged.
+ Restriction on input record length is that it not exceed 2048 samples.
+ 
+ If no input image is specified, data may be specified through the
+ DATA or LSF parameters.  If no data are specified, OFT1 will run an
+ internal sinc-function test case.
+.VARIABLE OUT
+ Optional output of Real and Imaginary Fourier Transform components.
+ Output is 124 triplets of Real*4 numbers organized as:
+   [Frequency,Real,Imaginary],
+ from 1.0 cycles/sample to 0.484 cycles/sample.
+.VARIABLE SIZE
+ INTEGER-OPTIONAL
+ Specifies the SL,SS,NL,NS of the image for which the FT will be taken
+ of each line separately and then the transforms will be averaged.
+.VARIABLE DIAG
+ KEYWORD-OPTIONAL
+ Turns on diaganostic printout.
+.VARIABLE SINCTST
+ KEYWORD-OPTIONAL
+ Creates SINC function and branches to LSF processing.
+.VARIABLE NOISE
+ INTEGER-OPTIONAL
+ Specifies allowable noise level in LSF for finding end points.
+.VARIABLE PLOT
+ STRING-OPTIONAL
+ Specifies the filename to receive the output plot data.
+ This must be printed out with the VMS/DCL command:
+ 
+   PRINT/NOFEED filename
+ 
+.VARIABLE REFLECT
+ KEYWORD-OPTIONAL
+ Cauese the input data to be reflected about the last input data
+ point in order to fill in unspecified locations. The program must
+ eventually have a data string which is a power of 2 in length. The
+ default is to fill with zeros.
+.VARIABLE MEAN
+ KEYWORD-OPTIONAL
+ Causes missing data to be set equal to the mean of input data.
+ Default is to fill with zeros.
+.VARIABLE NONORMAL
+ KEYWORD-OPTIONAL
+ Causes the data to not be normalized so that its sum is unity.
+ Default is to normalize the input LSF.
+.VARIABLE NOPRINT
+ KEYWORD-OPTIONAL
+ Suppresses the printout of the full tabular listing.  This listing
+ normally includes FOR EACH POINT IN FREQUENCY:
+ CYCLES/SAMPLE, FREQUENCY, REAL, IMAGINARY, INTENSITY, AMPLITUDE,
+ PHASE and WAVELENGTH SHIFT.
+ The default is to print the table.
+.VARIABLE INTERVAL
+ INTEGER-OPTIONAL
+ Defines the time interval between data points. Default is 1.0 and defines
+ the frequency in cycles per sample.
+.VARIABLE LSF
+ REAL-OPTIONAL
+ Input string of real Line Spread Function values for which an OTF is
+ desired. This is limited to 256 element.
+.VARIABLE DATA
+ REAL-OPTIONAL
+ Inputs a string of real arguments which one desires to take the FT of.
+ This is limited to 256 elements.
+.VARIABLE PZOOM
+ REAL-OPTIONAL
+ Specifies the scale factor used to plot the phase values so that the
+ values are easier to read on the plot.
+ The scale factor will be printed on the plot
+ (e.g., PHASE (RAD) MULTIPLY *   2.00  if PZOOM =2.0)
+.VARIABLE TABLE
+ STRING-OPTIONAL
+ Specifies the name of a file to receive tabular output.  This file
+ contains ASCII text in tab-delimited form.  The columns of the table
+ contain Frequency, Amplitude and Phase.
+.VARIABLE COLUMNS
+ keyword - OPTIONAL
+ Specifies whether to include column headers in the ASCII table.
+ COLHDR specifies to include the headers.  NOCOLHDR specifies no headers.
+ The headers are "FREQUENCY", "AMPLITUDE" and "PHASE".
+ Default is to put headers in the table.
+.VARIABLE PHASE
+ keyword - OPTIONAL - Valid=(phase,nophase)
+ Specifies whether to include a column for Phase in the ASCII table.
+ Frequency and Amplitude are always included.  Default is to include it.
+.VARIABLE NODISP
+ Keyword--Optional
+ If present, no display is shown in interactive mode and output plot files
+ are automatically saved.  When not present, plot is displayed and files are
+ save is an option.
+.end
+

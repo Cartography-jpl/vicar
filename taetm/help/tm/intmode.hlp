@@ -1,0 +1,47 @@
+!		20-may-83	...dm
+!		29-NOV-83	General V1.1 cleanup...jtm
+!		06-feb-84	Indicate that all commands are ok...ne
+!		26-mar-84	General V1.2 Cleanup...peb
+!		31-oct-84	Fix abbreviation for continue...lia
+!		30-jan-85	async procs allowed...nhe
+!		07-jul-85	Conditional text for UNIX...dm
+.TITLE
+INTERRUPT MODE INFORMATION
+.HELP
+
+	All intrinsic commands available in normal command mode are 
+.if1 VAX_VMS
+	available in interrupt mode, except DCL, EXIT and LOGOFF.  
+.if1 UNIX
+	available in interrupt mode, except USH, EXIT and LOGOFF.  
+	In addition, the following commands are unique to interrupt 
+	mode or have a different meaning:
+
+	    Command	Description
+	    ----------	-------------------------------------
+	    A*BORT 	Abort the proc currently executing
+.if1 VAX_VMS
+	    CONT*INUE 	Continue the proc currently executing
+.if1 BSD
+	    CONT*INUE 	Continue the proc currently executing
+	    H*ELP 	Display this help information
+
+.page
+
+
+	After executing ABORT, the user re-enters command mode or
+	menu mode, depending on the mode that was operational
+	when the proc was initially activated.
+.if VAX_VMS
+
+	If the user has executed the DCL command, both ABORT and
+	CONTINUE return the user from interrupt mode to the
+	"$_" DCL prompt.  The user can return from the DCL prompt
+	to TAE by typing EXIT.
+.ifend
+
+	Invocation of a synchronous proc in addition to the proc 
+	interrupted is not allowed.  You can, however, invoke
+	an asynchronous proc.
+
+.END

@@ -1,0 +1,87 @@
+.TH Vm_DynTutor 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_DynTutor - initiate dynamic tutor; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_DynTutor (vmid, pdfname, pdfset)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS:  successfully initiated dynamic tutor.
+.IP o
+A host-dependent error code if tutor could not
+be initiated for a host-dependent reason.
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object 
+containing the values that have been built by 
+the application and are to be sent to the Terminal Monitor.  Any parameters or 
+variables whose values are specified in the parameter object 
+must be defined in the PDF.
+
+.IP \n+L.
+pdfname: input, TEXT   pdfname[ ];
+
+PDF file specification to be used by the Terminal Monitor.  This PDF
+should define all variables in the Vm object. If pdfname
+is a simple alphanumeric string, TAE performs a standard "proc
+hierarchy search" to locate the PDF.  If the pdfname string
+contains a library name, then TM uses the name as is and no
+hierarchy search is performed. 
+
+The pdfname may be the empty string (or NULL), in which case the
+PDF of the current process is used. 
+
+The pdfname may include a subcommand, in which case the parameters 
+participating in the dynamic tutor session are the parameters associated 
+with the specified subcommand.  A subcommand must be specified if
+the PDF has subcommands but no default subcommand.
+
+.IP \n+L.
+pdfset: input, FUNINT   pdfset;
+
+pdfset is the mode: M_SUBPDF or M_FULLPDF.
+.nr L 0 1
+.IP o
+M_SUBPDF:  tells the Terminal Monitor to display
+parameter values only for those parameters specified in the parameter
+object (i.e., 
+that the application process desires only a subset of all parameters in the 
+PDF to be presented to the user).  
+.IP o
+M_FULLPDF:  the Terminal Monitor is to display values 
+for all parameters defined in the PDF, whether or not specified in the 
+parameter object.
+.LP
+
+The Vm_DynTutor function sends data to the Terminal Monitor as a set
+of initial values for a dynamic tutor session.  After the Terminal
+Monitor has received the initial parameter values sent by the call to
+Vm_DynTutor, it brings up a tutor screen and requests input from the
+user.  The user enters new parameter values, and enters the RUN
+command.  At this point the Terminal Monitor sends a Vm object
+containing the new parameter values back to the application program.
+The application program must call Vm_ReadFromTM to receive the new
+parameter values.  Normally a call to Vm_DynTutor is immediately
+followed by a call to Vm_ReadFromTM.
+
+The Vm object must be constructed before calling Vm_DynTutor.
+Vm_ReadFromTM, Vm_ReadFromDisk, Vm_New, Vm_SetIntg, Vm_SetReal, and
+Vm_SetString are functions that may be used to construct a Vm object.
+Vm_DynTutor is not acceptable in a batch job or an ASYNC-PROCESS job.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

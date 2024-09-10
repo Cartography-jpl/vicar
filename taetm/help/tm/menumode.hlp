@@ -1,0 +1,181 @@
+! KWOLF CHECKOUT FILE_TIME=22-SEP-1986 16:43 $DISK2:[TAE.V14.HELP]MENUMODE.HLP;21
+!       20-may-83       ...dm
+!       19-sep-83       fixed first page wording...palm
+!       29-nov-83       General V1.1 cleanup...jtm
+!       27-mar-84       General V1.2 cleanup...peb
+!	19-sep-86	Update for MENU-CLOSED
+!       31-dec-86       TAE_FACELIFT...krw
+!       29-sep-87       Add use of up/down arrow keys...rww
+!	12-feb-88	PR784:"HELP command" description changed...ljn
+!	08-nov-90	Remove Facelift stuff...ljn
+!
+.TITLE
+MENU MODE INFORMATION
+.HELP
+                        General and Specific HELP
+
+            This is general help information for operating a menu
+            display.  You can access more specific help with the
+            following menu display commands:
+
+                HELP n         -- Help on menu entry number n
+                HELP *         -- Help on the current menu
+                HELP command   -- Help on the TCL command
+                HELP proc      -- Help on the proc
+
+            For more specific help, EXIT this display and use one
+            of the above menu commands.  To continue with general
+            information on menu displays, hit RETURN.
+.page
+                        Summary of Menu Mode Commands
+
+            The menu mode commands (described in detail below) are:
+
+                Command         Description
+                --------------  ----------------------------------------
+
+                n               Activates entry n on current menu
+                Up Arrow        Selects current entry -1 on current menu
+                Down Arrow	Selects current entry +1 on current menu
+                B*ACK           Returns to previous menu
+                M*ENU           Re-displays current menu
+                M*ENU menu-name Displays menu "menu-name"
+                T*OP            Returns to root menu
+                R*EPLY          Supply parameters to an executing
+                                asynchronous job
+
+                                                        (continued...)
+.page
+                        Summary of Menu Mode Commands (continued)
+
+
+                H*ELP           Displays general MENU mode help
+                H*ELP *         Displays help on current menu
+                H*ELP proc      Displays help on proc
+                H*ELP n         Displays help on entry n of current menu
+                ?               Displays most recent message
+                C*OMMAND        Enters TAE command mode
+                L*OGOFF         Logs you off the host system
+.PAGE
+                        General Comments
+
+
+            Each entry on a menu is:
+
+                o   another menu, or
+        
+                o   a TAE command to be executed
+
+            Selecting a menu entry displays that menu.  Selecting
+            a command causes TAE to execute that command.  If the
+            command is a proc execution, TAE normally enters
+            tutor to allow you to supply parameters.  (The
+            programmer who sets up the menu may request that the
+            proc be executed directly without stopping in tutor
+            mode.)
+.page
+                        General Comments (continued)
+
+
+            Because each menu may reference other menus, you may
+            "traverse" through many levels in the "menu tree". TAE
+            remembers the path from the root menu to the currently
+            active menu so that you may, at each level, back up to
+            the previous menu (using the BACK command).
+.PAGE
+                        Responses in Menu Mode
+
+
+            a number            Specifies entry selection.
+
+            Up Arrow Key        Move from the currently selected entry
+                                to the one with the next lower number if
+				one exists. Hitting the GOLD key (PF1) 
+                                and then the Up Arrow Key moves to the 
+                                first entry in the menu.
+
+            Down Arrow Key      Move from the currently selected entry
+                                to the one with the next higher number if
+				one exists. Hitting the GOLD key (PF1) 
+                                and then the Down Arrow Key moves to the 
+                                last entry in the menu.
+
+                                        (continued...)
+.PAGE
+                        Responses in Menu Mode (continued)
+
+            BACK                Returns to the previous menu.
+
+	    MENU		Re-paints the current menu.  MENU
+				is not available if menu mode was 
+				entered via the MENU-CLOSED TCL command.
+
+            MENU menu-name      Directly activates the named menu.
+                                The "menu-name" is displayed  at the
+                                top of the menu screen.  If the menu
+                                name contains punctuation, the name
+                                must be quoted.
+
+                                        (continued...)
+.PAGE
+                        Responses in Menu Mode (continued)
+
+
+            TOP                 Returns to the original menu (the
+                                root).
+
+            REPLY               Enters dynamic tutor to allow you to
+                                supply parameters to an executing
+                                asynchronous proc
+
+            HELP                Displays help information on menu
+                                mode.
+
+            HELP *              Displays  help information on the
+                                current menu.
+
+                                        (continued...)
+.PAGE
+                        Responses in Menu Mode (continued)
+
+
+            HELP proc           Displays information on the
+                                operation of the named proc.
+
+            HELP number         Displays help information on entry
+                                "number" of the current menu. If
+                                "number" is an asterisk ("*"),  help
+                                information on the current menu is
+                                displayed.
+
+            ?                   Displays help information on the last
+                                message displayed.
+
+                                        (continued...)
+.PAGE
+                        Responses in Menu Mode (continued)
+
+	    COMMAND		Causes TAE to exit the menu and 
+				enter command mode.  If  the menu 
+				mode is subsequently re-entered, the 
+				active menu at the time of the escape
+				to command mode becomes the active 
+				menu.  COMMAND is not available if
+				menu mode was entered via the 
+				MENU-CLOSED TCL command.
+
+            LOGOFF              Logs you off the host system.
+.PAGE
+                        Conventions
+
+            You can abbreviate menu commands as long as
+            uniqueness is maintained.
+
+                e.g.:   C     for COMMAND
+        
+                        T     for TOP
+
+                        H n   for HELP n
+
+            Lower case may be used.
+.END

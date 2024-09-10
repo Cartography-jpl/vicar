@@ -1,0 +1,97 @@
+procedure help=*
+
+    parm file (string, 48) 
+    parm type valid=("Resource file", "Parameter file") +
+	 default="Parameter file"
+
+refgbl $syschar
+body
+if ($syschar(1) = "UNIX")
+  if (type = "Parameter file")
+    ush parconvert &file
+  else
+    ush resconvert &file
+  end-if
+else
+  if (type = "Parameter file")
+    dcl parconvert &file
+  else
+    dcl resconvert &file
+  end-if
+end-if
+end-proc
+.title
+Parameter and Resource File Conversion Utility
+.help
+
+This utility converts parameter files and
+resource files to be compatible with the
+current version of TAE. 
+
+The "file" parameter names the file to be 
+converted, and wild cards are allowed.  
+The type of the file--parameter or resource--
+is indicated by the "type" parameter.
+The output of this utility goes to the
+current default directory, even if the
+specified file is in another directory.
+
+.if UNIX
+Beware: if the existing file is in the
+current default directory, it will be 
+overwritten by this utility.  You may 
+want to make backup copies of the files 
+before running against files that exist 
+in the current default directory.
+.ifend
+
+You may run this utility directly under
+the host operating system.  Under UNIX,
+for example, the commands are:
+
+	% resconvert *.res
+	% parconvert *.par
+
+.level1
+.var file
+File to be converted.  Wildcards
+are allowed, e.g. "*.par".  The
+output of this utility always 
+goes to the current default 
+directory.
+.var type
+Type of file:
+
+    Resource 
+       or
+    Parameter
+
+.level2
+.var file
+This parameter names the file to be 
+converted, and wild cards are allowed.  
+The type of the file--parameter or resource--
+is indicated by the "type" parameter.
+The output of this utility goes to the
+current default directory, even if the
+specified file is in another directory.
+
+.if UNIX
+Beware: if the existing files are in the
+current directory, they will be overwritten
+by this utility.  You may want to make
+backup copies of the files before running.
+.ifend
+
+
+.var type
+This parameter determines whether you
+are converting TAE Parameter files or
+TAE Resource files.   The possible
+values are:
+
+	Parameter file
+	Resource file
+
+As usual, you may abbreviate to "P"
+or "R" when setting the type.

@@ -1,0 +1,51 @@
+.TH Co_Add 3 "20 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_Add - add a member to a collection
+
+.SH DESCRIPTION
+.IP
+
+.LP
+VOID Co_Add (aCollection, anObject, memName, type)
+
+Function return:
+
+.nr L 0 1
+.IP o
+None.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id aCollection;
+
+Id of the collection to which the object is to be added.  The
+collection must have been created via Co_New. 
+
+.IP \n+L.
+anObject: input, Id anObject;
+
+Id of the object to be added to the collection.
+
+.IP \n+L.
+memName: input, TEXT memName[ ];
+
+Text name of the member object.  The name string
+may be of any length.  Currently, there is no check for duplicate
+names.
+
+.IP \n+L.
+type: input, CODE type;
+
+Type of the object.  Currently this argument is not interpreted by the
+Co_package but is stored in the collection's  data structure along
+with the object's id.  The type is passed to the Co_ForEach callback
+function. 
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

@@ -1,0 +1,35 @@
+.TH Co_New 3 "20 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_New - create a collection
+
+.SH DESCRIPTION
+.IP
+.LP
+Id Co_New(flags)
+
+Function return:
+
+.nr L 0 1
+.IP o
+Id of the newly-created collection.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+flags: input, CODE flags;
+
+This argument is currently ignored.  In the future, the flags
+will determine characteristics like alphabetical ordering,
+duplicate name control, etc.
+.LP
+
+Co_New creates a new collection.  After calling Co_New, the 
+collection is empty. 
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

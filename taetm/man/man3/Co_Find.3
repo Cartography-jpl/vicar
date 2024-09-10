@@ -1,0 +1,39 @@
+.TH Co_Find 3 "29 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Co_Find - find a member in a collection
+
+.SH DESCRIPTION
+.IP
+.LP
+Id Co_Find (aCollection, memName)
+
+Function return:
+
+.nr L 0 1
+.IP o
+non-NULL: the Id of the member.  
+
+.IP o
+NULL: the member does not exist.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+aCollection:  input, Id aCollection;
+
+Id of the collection to be searched.  The collection must have been
+created via Co_New. 
+
+.IP \n+L.
+memName: input, TEXT memName[ ];
+
+Name of the object to be located.  The object must have been added to
+the collection via Co_Add.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

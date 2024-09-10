@@ -1,0 +1,148 @@
+.TH Vm_ForEach 3 "29 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_ForEach - execute callback function for each TAE Variable in a Vm Object
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_ForEach (vmid, aFunction, contextArg)
+
+Function return:
+
+.nr L 0 1
+.IP \n+L.
+The last value returned to Vm_ForEach by aFunction.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid:  input, Id vmid;
+
+Id of a Vm Object;
+may be target or view Vm Object returned by Co_Find.  
+Otherwise, this object must have  been  allocated  with a call to Vm_New.
+
+
+.IP \n+L.
+aFunction:  input, CODE (*aFunction) ();
+
+Pointer to a function to be called for each member of the 
+Vm Object.  The calling sequence for aFunction is described below. 
+
+.IP \n+L.
+contextArg: input, GENPTR contextArg;
+
+Context variable to be passed to aFunction.
+.LP
+
+.IP
+.LP
+The aFunction argument is a callback function that is called for
+each TAE Variable in the Vm Object.  The last function value code from
+aFunction is returned as the Vm_ForEach function value.  
+
+The "order" of the TAE Variables is the same as the order in which
+they were added to the Vm Object. 
+
+.SH CALLBACK DESCRIPTION
+.IP
+.LP
+The calling sequence for the aFunction callback is:
+
+CODE aFunction (v, contextArg)
+
+Function return:
+
+.nr L 0 1
+.IP o
+non-zero: do not call aFunction for the remaining TAE Variables
+and return to the Vm_ForEach caller.
+
+.IP o
+zero: continue to call aFunction for the remaining TAE Variables
+in the Vm Object.
+.LP
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+v: input, struct VARIABLE *v;
+
+Pointer to a VARIABLE structure in the Vm Object.
+
+.IP \n+L.
+contextArg: input, GENPTR contextArg;
+
+The "context" variable that was originally passed to Vm_ForEach.   
+An example follows.
+.LP
+
+
+.SH CODE EXAMPLE 
+.IP
+.LP
+The following code fragment uses Vm_ForEach to list all the
+TAE Variables in the view Vm Object (vmid) of a panel.
+
+
+.nf
+ ....
+    CODE        List_TAE_Variables (); /* defined below */
+    COUNT       varCount;          /* # of TAE Variables in Vm Object */
+    Id          view, target;      /* Vm Objects (vmids) */
+ ....
+    varCount = 0;          
+ ....
+
+    /* For each TAE variable in the view Vm Object, 
+     * execute the function List_TAE_Variables() passing it 
+     * a counter as (optional) context information.
+     */
+    printf ("view Vm Object consists of these TAE Variables:\\n");
+    Vm_ForEach (view, List_TAE_Variables, &varCount);
+    printf ("\t%d variables in this Vm Object\\n", varCount);
+    return (NULL);
+    }
+
+
+/* Function to display one TAE Variable */
+FUNCTION CODE List_TAE_Variables (v, varCount)
+struct VARIABLE *v;         /* pointer to current TAE Variable */
+COUNT *varCount;            /* context info */
+    {
+    (*varCount)++;
+    printf ("%-15s (title = \\"%s\\")\\n", (*v).v_name, SVAL (*v, 0) );
+    return (NULL);
+    }
+
+.fi
+
+If we added the above code to an application containing a single panel
+with two items named "echoparm" and "quit" (minwpt.res), the output
+would be as follows. Note the order of the print statements.
+
+.nf
+        view Vm Object consists of these TAE Variables:
+_panel          (title = "MINWPT")
+_helpvu         (title = "")
+echoparm        (title = "Values")
+quit            (title = "Press to Quit")
+        4 variables in this Vm Object
+.fi
+
+Although not shown, one could use of Co_ForEach with Vm_ForEach to
+list all Vm Objects in a collection, and for each, list all the TAE
+Variables in the Vm Object.
+
+.SH SEE ALSO
+.IP
+.LP
+Vm_Find, Co_ForEach
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

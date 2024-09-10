@@ -1,0 +1,24 @@
+!	edited 	20-may-83...dm
+.TITLE
+EXIT HELP
+.HELP
+			Function and Format
+	
+	Function:
+
+	    The EXIT command, when entered in command mode,
+	    causes the TAE session to terminate with the
+	    user still logged on to the host system.
+
+
+	Format:
+
+	    EXIT
+
+.page
+		        Usage Notes
+
+
+	  As part of EXIT processing, the system and user logoff
+	  procedures (SLOGOFF and ULOGOFF) are executed.
+.END

@@ -1,0 +1,27 @@
+!	edited 19-may-83...dm
+.TITLE
+BODY
+.HELP
+			Function and Format
+	
+	Function:
+
+	    BODY signals the start of executable commands
+	    in a procedure.
+
+
+	Format:
+
+	    BODY
+.PAGE
+			Usage Notes
+
+
+	o  BODY terminates the declaration section of the
+	   procedure;  declarations (e.g. LOCAL or PARM) are
+	   not permitted after BODY.
+
+	o  BODY is permitted only in a procedure. It must be
+	   present even if the procedure has no parameters.
+
+.END

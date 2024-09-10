@@ -1,0 +1,414 @@
+PROCESS HELP=*
+ PARM INP      STATUS=STRING  COUNT=(1:4)
+ PARM OUT      STATUS=STRING  COUNT=(0:1) DEFAULT=--
+ PARM PLOTOUT  STATUS=STRING  COUNT=(0:1) DEFAULT="mosplot.psf"
+ PARM PROJECT  STATUS=(STRING,5) COUNT=(0:1) DEFAULT=-- +
+     VALID=("VGR-1","VGR-2","MAR10","MAR-9","GLL  ","VIKOR")
+ PARM EXAG     STATUS=REAL    DEFAULT=10.
+ PARM INCR     STATUS=INTEGER DEFAULT=133
+ PARM NL       STATUS=INTEGER DEFAULT=800
+ PARM NS       STATUS=INTEGER DEFAULT=800
+ PARM NEW      STATUS=KEYWORD VALID=(NEW,OLD) DEFAULT=OLD
+ PARM OBJECT   STATUS=KEYWORD VALID=(OBJECT,IMAGE) DEFAULT=IMAGE
+ PARM PRINT    STATUS=KEYWORD VALID=(PRINT,NOPRINT) DEFAULT=NOPRINT
+ PARM LATLON   STATUS=REAL COUNT=(0,2) DEFAULT=--
+ PARM AREA     STATUS=REAL    COUNT=(0,4) DEFAULT=--
+ PARM NODISP   STATUS=KEYWORD COUNT=(0,1) VALID=NODISP DEFAULT=--
+END-PROC
+
+.TITLE
+VICAR/IBIS Program MOSPLOT
+
+.HELP
+PURPOSE:
+  MOSPLOT is a program which performs three functions to assist
+  the user in the generation of a mosaic. These functions are:
+1. To plot the footprints of all the frames in a mosaic.
+2. To create an overlap file which contains all of the 
+   overlapping frame pairs in the mosaic.
+   This file is needed by MANMATCH to acquire tiepoints.
+3. To plot the residuals of tiepoints before or after the
+   global SEDR has been corrected using program OMCOR.
+   Also to plot ground control points.
+
+.page
+
+   A graphic image is displayed automatically.  To suppress the automatic
+   graphics image display, the keyword 'NODISP must appear on the VICAR
+   command line. When the 'NODISP keyword is included in the VICAR command
+   line, the output graphics image is automatically output in PostScript
+   format to a file specified by PLOTOUT. If an output PostScript filename
+   is not specified via PLOTOUT, the filename will default to 'MOSPLOT.PSF'.
+   To print the PostScript file; enter 'qpr mosplot.psf' on the system
+   command line.
+
+
+.page
+EXECUTION
+
+To produce a footprint plot showing entire planet:
+Image space:
+      MOSPLOT INP=(SEDR.INT,GEOM.IMG) 
+Object space:
+      MOSPLOT INP=SEDR.INT 'OBJECT 
+
+To produce a footprint plot showing only area of interest:
+(Oblique stereographic projection )
+Image space:
+      MOSPLOT INP=(SEDR.INT,GEOM.IMG) LATLON=(45.2,167.0)
+Object space:
+      MOSPLOT INP=SEDR.INT 'OBJECT LATLON=(45.2,167.0)
+
+To generate an overlap file:
+Image space:
+      MOSPLOT INP=(SEDR.INT,GEOM.IMG) OUT=OVER.INT 
+Object space:
+      MOSPLOT INP=SEDR.INT OUT=OVER.INT 'OBJECT 
+NOTE: You may prefer to use the Stereographic projection mode
+to create the overlap file because it does not suffer from
+ambiguities when the poles or the prime meridian is contained
+within the mosaic. ie:
+      MOSPLOT INP=(SEDR.INT,GEOM.IMG) OUT=OVER.INT LATLON=(45.2,167.0) 
+
+To produce a tiepoint residuals plot:
+Image space:
+      MOSPLOT INP=(SEDR.INT,MATCH.INT,GEOM.IMG) 
+Object space:
+      MOSPLOT INP=(SEDR.INT,MATCH.INT) 'OBJECT
+
+To produce a residuals plot including ground control:
+Image space:
+      MOSPLOT INP=(SEDR.INT,MATCH.INT,GROUND.INT,GEOM.IMG) 
+Object space:
+      MOSPLOT INP=(SEDR.INT,MATCH.INT,GROUND.INT) 'OBJECT
+
+Note: All the files are IBIS tabular files.
+
+.page
+EXAMPLE: 
+  The following example creates an updated SEDR which can then 
+be used by MAP2 to create an accurate mosaic. The mosaic 
+consists of 4 Ganymede frames from voyager.          
+
+(create the ibis sedr file)
+  vgribis out=sedr.int fds=(2063559,2063602,2063611,2063614) +
+         camera=5 enc=JUPITER
+
+(make first footprint plot to get center of projection)
+  mosplot inp=sedr.int 'object nl=1000 ns=1000
+
+(make stereographic plot and create overlap file)
+  mosplot inp=sedr.int out=over.int 'object +
+         nl=1000 ns=1000 latlon=(-18.,184.)
+
+(generate tiepoints file interactively)
+  manmatch inp=(sedr.int,over.int) out=match.int +
+         dir=ud3:[cca314] 'sedr 'object
+
+(create ground control points)
+  getgcp out=ground.int linc=250 sinc=250 +
+         enc=JUPITER fds=2063559 camera=5 id=1 +
+         sedr=sedr
+
+(plot tiepoints & ground control using old sedr)
+  mosplot inp=(sedr.int,match.int,ground.int) 'object +
+         nl=1000 ns=1000 exag=10. latlon=(-18.,184.)
+
+(iteratively correct the ibis sedr file)
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.99 +
+         omcol=8 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.8 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.7 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.6 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.5 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.4 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.3 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.2 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.1 +
+         omcol=21 outomcol=21
+  omcor inp=(sedr.int,match.int,ground.int) planet=JUPITER +
+         mission=VOYAGER maxiter=(4,3) weight=0 gcpfac=0.0 +
+         omcol=21 outomcol=21
+
+(plot the tiepoints & ground control using the corrected sedr)
+  mosplot inp=(sedr.int,match.int,ground.int) 'new 'object +
+         nl=1000 ns=1000 exag=100. latlon=(-18.,184.)
+
+(correct the archival sedr from the ibis sedr)
+  omupdate inp=sedr.int 'update encountr=jupiter camera=5
+
+  *** place the MAP2 and mosaic operations here ***
+
+
+.PAGE
+ON THE PLOT FORMATS:
+  The footprint plots are closed polygons from points
+taken around the border of each frame. A number is printed
+at the line=1, sample=1 corner of each frame. This is the
+frame number, numbered from 1 to n in the same order of
+the FDS times input to VGRIBIS.
+  If the user specifies the LATLON keyword then the plot will
+be an oblique stereographic projection. If LATLON is not
+specified then the plot will show the entire planet.
+The line and samples in the stereographic projection are
+arbitrarily based upon a scale of one degree/pixel.
+The stereographic projection does not suffer from problems
+if the poles or prime meridian is in the mosaic.
+  The residuals plots are superimposed on the footprint plots.
+They represent tiepoint vectors drawn from the left image lat,lon
+to the right image lat,lon and are exaggerated by EXAG in
+the direction of the right image point. By left & right I mean
+the order of the frames input to MANMATCH in pairs.
+A CIRCLE symbol is printed at the base of each vector
+along with the number of the point.
+(left image position).
+  If ground control file is present then the ground control
+points are added to the above as vectors starting at the
+computed lat,lon and extending to the given lat,lon.
+They are also exaggerated. A TRIANGLE symbol is placed at the
+base of each vector (computed lat,lon position)
+along with the number of the point.
+
+.PAGE
+FILE STRUCTURE:
+  The files are IBIS format tabular files. They consist
+of 512 byte records where each column of data is written as
+sequential records until exhausted. The next column begins at the
+start of the next record etc. Record #1 contains the number of points
+per column. All data is real*4 binary.
+
+.page
+COGNIZANT PROGRAMMER:  J J Lorre
+
+REVISION HISTORY:
+WHO  WHEN      WHAT
+--- ---------  ----------------------------------------------------------------
+GMY 22 Dec 02  Made portable to Linux
+SMC 10 Oct 96  Added Summation mode capability, FR89818
+JCT  7 Jul 95  (CRI) Made portable for UNIX and added XRT/graph interface
+RGD 10 may 91  Removed r3lib in link
+JJL 24 sep 90  Axes reversed, Display device selectble
+JJL 26 may 90  Conversion to GLL, test file update
+JJL  7 mar 90  Corrected date & time in plot
+JJL  6 sep 89  Added area keyword.
+
+.LEVEL1
+.VARIABLE INP
+All inputs are IBIS tabular files.
+
+First input= SEDR.INT made
+ by program VGRIBIS
+Second input= MATCH.INT made
+ by program MANMATCH
+( optional )
+Third input= GROUND.INT made
+ by program GETGCP
+( optional )
+Fourth input=GEOM.IMG made
+for program GEOMA.
+( optional )
+
+.VARIABLE OUT
+The overlap ibis file. 
+(optional) two columns
+output: col1=first frame
+number of a pair
+col2=second frame number
+of a pair
+
+.VARIABLE PROJECT
+Specifies the project as
+GLL, VIKOR, MAR10, VGR-1,
+VGR-2, or MAR-9. Only used
+if the input images are in
+image space and project is
+GLL.
+
+.VARIABLE EXAG
+The exaggeration factor
+used in plotting tiepoint
+residuals.
+
+.VARIABLE PLOTOUT
+to specify the output
+PostScript filename
+for plot images
+
+.VARIABLE NEW
+To select the new SEDR
+OMmatrix. Default is to
+select the  OLD SEDR
+OMmatrix
+
+.VARIABLE PRINT
+To print the contents of
+all files read and written
+
+.VARIABLE INCR
+The spacing in pixels
+between  border points for
+plots.
+
+.VARIABLE NL
+the number of lines 
+in each image
+
+.VARIABLE NS
+the number of samples 
+in each image
+
+.VARIABLE OBJECT
+the images going into 
+the mosaic are
+geometrically corrected 
+
+.VARIABLE LATLON
+Center of projection
+for stereographic
+plot.
+
+.VARIABLE AREA
+Specifies a portion of 
+the stereographic 
+projection to plot. AREA
+is followed by 4  numbers
+indicating: upper line,
+lower line,  left sample,
+right sample.
+
+.VARIABLE NODISP
+Keyword used to state that
+plots are not to be 
+displayed. However plots
+will be saved in the
+output PostScript 
+file.
+
+.LEVEL2
+
+.VARIABLE INP
+All inputs are IBIS tabular files.
+
+SEDR.INT made by program VGRIBIS
+This is an IBIS file containing the SEDR for
+each frame in the mosaic.
+( required as first input )
+
+MATCH.INT made by program MANMATCH
+This is an IBIS file containing the tiepoints
+connecting the frames in the mosaic.
+( optional )
+
+GROUND.INT made by program GETGCP
+This is an IBIS file containing the locations and
+lat,lon coordinates of ground control points.
+NOTE: if ground.int is provided it must follow
+match.int.
+( optional )
+
+GEOM.IMG made for program GEOMA.
+This is a geometric correction file. It is
+required if the input files are IMAGE space
+(un-geometric-corrected) images.
+( optional )
+
+NOTE on the order of the inputs:
+   All the inputs but SEDR.INT are optional. They may 
+occur in any order provided that:
+1. SEDR.INT is first.
+2. If GROUND.INT is provided it must follow MATCH.INT.
+
+.VARIABLE OUT
+The overlap ibis file.( optional )
+two columns output:
+col1=first frame number of a pair
+col2=second frame number of a pair
+The frame numbers run from 1 to N beginning with the
+first entry in the SEDR.INT file created by program
+VGRIBIS and ending with the Nth entry.
+
+.VARIABLE PLOTOUT
+This variable is used to specify the name of the output PostScript filename.
+If a filename is not specufued, the the filename will default to 'mosplot.psf'.
+
+.VARIABLE PROJECT
+Specifies the project as GLL,VIKOR,MAR10,VGR-1,VGR-2,MAR-9
+Only used if the input images are
+in image space and the project is GLL.
+
+.VARIABLE EXAG
+The exaggeration factor used in plotting tiepoint 
+residuals. The default is to exaggerate the length
+of the tiepoint residuals by a factor of 10, 
+ie: exag=10.0
+
+.VARIABLE NEW
+To select the new SEDR OMmatrix which was created by program
+OMCOR and stored in columns 21-23 in the SEDR.INT file.
+Default is to select the OLD SEDR OMmatrix stored in 
+columns 8-10 of SEDR.INT.
+
+.VARIABLE PRINT
+To print the contents of all files read and written
+except for the geom file.
+
+.VARIABLE INCR
+Specifies the spacing in pixels between points selected
+at equal intervals around the border of the pictures
+for generaton of the footprint plots. NOTE: the routine
+INSIDE has a limit of 25 such points.  Default is 133 , 
+and should the user not change any of INCR, NL nor NS while 
+processing GLL summation mode, then INCR will be defaulted 
+to 66.
+
+.VARIABLE NL
+Specifies the number of lines in each image going into
+the mosaic. Default is 800, and should the user not change
+any of INCR, NL nor NS while processing GLL summation mode, 
+then NL will be defaulted to 400.
+
+.VARIABLE NS
+Specifies the number of samples in each image going into
+the mosaic. Default is 800, and should the user not change
+any of INCR, NL nor NS while processing GLL summation mode,
+then NS will be assigned to 400.
+
+.VARIABLE OBJECT
+Specifies that the images going into the mosaic are
+geometrically corrected (object space). The default is
+IMAGE or un-corrected.
+
+.VARIABLE LATLON
+Specifies the center of projection for an oblique
+stereographic projection plot of only the area contained
+within the mosaic. If LATLON is not specified the plot
+will be in latitude/longitude and contain the whole planet.
+Use of latlon will avoid problems at the poles and
+around the prime meridian. see the EXAMPLE
+
+.VARIABLE AREA
+Specifies a portion of the stereographic projection to plot.
+The default is to plot all the area containing the images.
+AREA is followed by 4 numbers indicating:
+upper line, lower line, left sample, right sample.
+
+.VARIABLE NODISP
+Keyword used to state that plots are not to be displayed. However plots
+will be saved in the output PostScript file.
+.END

@@ -1,0 +1,325 @@
+!	23-jun-83  ...dm
+!	28-jan-85  Added parameter qualifiers...jtm
+!	21-sep-86  Add help on -PAGE ...peb
+.TITLE
+PARM 
+.HELP
+			Function and Format
+	
+
+	Function:
+
+	    PARM declares a proc parameter, a global 
+	    variable, or a parameter qualifier.
+
+.PAGE
+			Function and Format (continued)
+
+
+	Format:
+
+	    PARM   NAME = parameter or variable name or name list
+		   TYPE = INTEGER or
+		 	  REAL or
+			  (STRING, max size of string) or
+			  NAME or
+		 	  FILE or
+			  KEYWORD
+		   COUNT = integer:integer
+		   DEFAULT = default value
+		   VALID = list-of-valid-values		   
+		   ACCESS = IN or OUT or INOUT or NOCHECK
+		   QUALS = Name of file containing parameter qualifiers
+.PAGE
+			Usage Notes
+
+
+	o  A PARM variable may be declared only once for a given proc.
+
+	o  PARM is not permitted in the body of a procedure.
+
+	o  TYPE defaults to STRING.
+
+	o  The maximum size of the string defaults to 132.
+
+	o  COUNT gives the minimum and maximum number of values
+	   in a list of values for the variable.  The default is (1:1).
+	   If the variable is to be nullable, the minimum count must
+	   be zero.
+
+	o  VALID specifies a list of valid values for this parameter.
+	   A range may be specified as "low:high".
+.PAGE
+			Usage Notes (continued)
+
+
+	o  DEFAULT is optional; if no default is specified, then
+	   the parameter must be specified by the user when the
+	   proc is invoked.
+	
+	o  ACCESS is required only if the parameter is a file.
+	   If ACCESS is IN or INOUT, the file must exist.
+
+	o  A VALID list is required if TYPE is KEYWORD.
+
+	o  The -PAGE subcommand of PARM may be used to indicate that the
+	   parameter is to appear at the top of the next tutor screen.
+	   This feature facilitates the grouping of parameters on tutor
+	   screens.
+.PAGE
+			Usage Notes (continued)
+
+
+	o  Parameters may have qualifiers. The QUALS parameter identifies 
+	   the file that defines qualifiers to the parameter. The 
+	   declarations for the parameters in the referenced file 
+	   become the definitions for the qualifiers to the parameter.
+	   The file referenced may be any proc (i.e., process, procedure,
+	   parmset, or internal proc).
+
+	   In proc invocation, the values of qualifiers to a parameter
+	   are specified between vertical bars.
+
+	o  Parameter qualifiers are referenced by following the parameter
+	   name immediately with "." followed by the qualifier name.
+.PAGE
+		Usage Notes - Restrictions on Qualifiers 
+
+
+	o  The following restrictions apply to the use of parameter 
+	   qualifiers:
+
+		1. Parameter qualifiers may not be nested.
+
+		2. The following syntax ambiguity exists. Consider a 
+		   proc invocation in which the first parameter is 
+		   specified positionally, defaulted, and qualified:
+
+			procname |hello|
+
+		   TAE assumes this qualifier is a command qualifier, 
+		   and that "hello" is the name of a parameter file 
+		   to be restored. If the intent is to qualify the 
+		   first parameter, then the parameter must be specified.
+.PAGE
+		Usage Notes - Restrictions on Qualifiers (continued)
+
+
+		3. No compilation of procs with parameter qualifiers is 
+		   allowed.
+
+		4. If a parameter has more than one value, then the parameter
+		   qualifiers apply to all values of the parameter.
+.PAGE
+			Examples
+
+
+	   1.  PARM WINDOW TYPE=INTEGER VALID=(1:100, 200:300, 400)
+
+	   2.  PARM A TYPE=REAL COUNT=1:2  DEFAULT = (1.1, 2.3E-3)
+
+	   3.  PARM S DEFAULT = "first message"
+
+	   4.  PARM FLAG TYPE=KEYWORD DEFAULT=NOPRINT VALID=(PRINT,NOPRINT)
+
+	   5.  PARM IMAGE TYPE=FILE QUALS=IMGTYPE.PDF
+
+	   6.  PARM-PAGE I INTEGER	! I appears at top of tutor page
+.level1
+.variable NAME
+Name of the parameter
+or variable.
+.variable TYPE
+Parameter or variable type.
+.variable COUNT
+Value vector count.
+.variable DEFAULT
+Default value of the
+parameter or variable.
+.variable VALID
+Valid values of the 
+parameter or variable.
+.variable ACCESS
+File access mode.
+.variable QUALS
+File containing parameter 
+qualifiers.
+!
+.level2
+.subcmd PAGE
+				PARM-PAGE
+
+
+
+	   The PAGE subcommand of PARM may be used to indicate that the
+	   parameter is to appear at the top of the next tutor screen.
+	   This feature facilitates the grouping of parameters on tutor
+	   screens.
+
+.variable NAME
+
+
+
+	    "NAME" is the parameter/variable name or a list of
+	    parameter/variable names.  This is the name that you
+	    must specify when giving the parameter by name.
+	    The name must follow the rules for TCL standard 
+	    names.
+!
+.variable TYPE
+
+
+
+ 	    "TYPE" is the type of the parameter/variable. 
+	    Permitted types are INTEGER, REAL, STRING, FILE,
+	    NAME, and KEYWORD.  If the type is STRING, then "TYPE"
+	    may have two elements: the first element is "STRING", the
+	    optional second element is the maximum string length.
+	    The default maximum string length is 132 characters.
+.PAGE
+
+
+
+	    If the parameter has the type NAME, then the value passed
+	    to the proc is the value of the variable whose name is
+	    specified on the proc invocation line.  (The TAE Monitor
+	    finds the the referenced variable and passes the value of 
+	    that variable.)  Pass-by-name or REFGBL is required to 
+	    provide an output from a proc.
+
+	    If the parameter has the type KEYWORD, then a VALID list
+	    is required.
+
+	    If you omit "TYPE", STRING is assumed as default.
+!
+.variable COUNT
+
+
+
+	    "COUNT" specifies the minimum and maximum number of
+	    values that the parameter may assume.  It has the form
+	    "m:n" where "m" is the minimum and "n" is the maximum.
+	    No spaces are permitted before or after the separator
+	    ":".  If the minimum and the maximum values are the 
+	    same, then COUNT is single-valued, with the form
+	    "COUNT = m".
+
+	    If you omit "COUNT", a count of 1 is assumed.
+
+	    If the variable is to be nullable, the minimum count must
+	    be zero.
+!
+.variable DEFAULT
+
+
+
+	    "DEFAULT" specifies the value that the parameter will
+	    assume if the proc is invoked with no value for the 
+	    named parameter.  If "DEFAULT" is not specified, the
+	    parameter is a mandatory one, so you must specify its
+	    value on the proc invocation line or via TUTOR.
+	
+	    The default value(s) must be of the type and count
+	    allowed by the TYPE and COUNT attributes specified
+	    for this parameter.  If a default is specified for a 
+	    multi-valued parameter all elements must be specified.
+.PAGE
+
+
+
+	    The default for a parameter of type NAME must be the 
+	    name of a variable in the invoker's environment.
+
+	    If the parameter is nullable, the default may be the
+	    null value.  This is specified using the default
+	    value of "--".
+
+	    "DEFAULT" is an optional parameter.
+!
+.variable VALID
+
+
+
+	    "VALID" lists the restricted set of values that the 
+	    parameter/ variable may assume.  For integer and real 
+	    variables the "VALID" list consists of a list of
+	    inclusive ranges.  If the parameter is a string, then
+	    the list is a list of acceptable values.
+
+	    A range is specified as "m:n" meaning "m through n
+	    inclusive".  No space is permitted before or after the
+	    separator ":".
+.PAGE
+
+
+
+	    A valid string may consists of eight or fewer 
+	    characters.
+	
+	    "VALID" is an optional parameter.
+.PAGE
+
+
+			Examples
+
+	
+	1.  PARM  A TYPE=REAL COUNT=1 VALID=(1.5:3.5, 1.13E+3)
+
+	2.  PARM  STR TYPE=(STRING,6) VALID=(AA, BBBB, CCCCCC)
+!
+.variable ACCESS
+
+
+
+	    "ACCESS" is an optional parameter.  It has meaning
+	    only if the variable has the type "FILE".  Permitted 
+	    access modes are IN, OUT, INOUT, and NOCHECK.  If 
+	    the mode is IN or INOUT, the TAE Monitor opens the 
+	    file to assure that it exists.  If it is NOCHECK, 
+	    no check is made.
+!
+.variable QUALS
+
+
+	    "QUALS" is an optional parameter. It is used to specify
+	    a file containing the definitions of parameter qualifiers.
+	    Conceptually, qualifiers are like sub-parameters or
+	    parameters to parameters.
+
+	   The declarations for the parameters in the referenced file 
+	   become the definitions for the qualifiers to the parameter.
+	   The file referenced may be any proc (i.e., process, procedure,
+	   parmset, or internal proc).
+
+	   In proc invocation, the values of qualifiers to a parameter
+	   are specified between vertical bars.
+.page
+
+
+	o  Parameter qualifiers are referenced by following the parameter
+	   name immediately with "." followed by the qualifier name.
+
+	o  The following restrictions apply to the use of parameter 
+	   qualifiers:
+
+		1. Parameter qualifiers may not be nested.
+
+		2. The following syntax ambiguity exists. Consider a proc 
+		   invocation in which the first parameter is 
+		   specified positionally, defaulted, and qualified:
+
+			procname |hello|
+.page
+
+
+		   TAE assumes this qualifier is a command qualifier, and 
+		   that "hello" is the name of a parameter file to be 
+		   restored. If the intent is to qualify the first parameter,
+		   then the parameter must be specified.
+
+		3. No compilation of procs with parameter qualifiers is 
+		   allowed.
+
+		4. If a parameter has more than one value, then the parameter
+		   qualifiers apply to all values of the parameter.
+.END

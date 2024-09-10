@@ -1,0 +1,54 @@
+PROCESS EXECUTE=$TAEBIN/msgbld HELP=*
+PARM "FILE" TYPE=(STRING, 80) COUNT=1
+END-PROC
+.TITLE
+		MSGBLD - The Message Build Utility.
+.HELP
+
+	    MSGBLD is a utility program which converts a user 
+	    supplied help message file into an index file in the 
+	    proper format for TAE HELP-MESSAGE processing.
+ 
+	    The help message file is a text file, 
+	    consisting of message keys and the associated help 
+	    text in the following format:
+	
+	    	.key	key-x
+		textline-1
+ 	 	.
+ 		.			(for key x)
+ 		textline-n
+.PAGE
+	    The output message index file consists of a single record
+	    for each of the messages defined in the help message file. 
+	    These records contain the key and pointers to the record in 
+	    help message file containing the help text.
+
+	    Any time the message file is updated, 
+	    the MSGBLD utility must be invoked to create a new 
+	    index file.
+ 
+ 	    The file name of the help message file must end in the 
+	    characters "FAC". The file type must be ".MSG". The 
+	    file is located in the library specified 
+	    in  the input filespec. The message index file has 
+	    the same name as the text file with the type ".INX". 
+	    It is created in the same library where the message file exists.
+.level1
+.variable FILE
+Message text file name.
+.level2
+.variable FILE
+
+
+
+	    "FILE" specifies the name of the message text file
+	    containing detailed help information for TAE messages
+	    output by the application processes or procedures.
+
+	    The maximum length of the file name is 80 characters. The 
+	    last three characters of the file name must be "FAC".
+	    The file type must be ".MSG", and therefore may be
+	    omitted. If no library is specified, user's default
+	    library is assumed.
+.END

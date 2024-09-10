@@ -1,0 +1,16 @@
+#!/bin/sh
+#
+# sed script to change all .so references so that
+# the pattern:
+#       .so man?/filename.?
+# becomes
+#       .so manl/filename.l
+# where "l" (el) is the name man suffix.
+#
+# NOTE: This script is invoked by "link.man.sh".
+#
+# Change Log
+# 29-Oct-92    Initial version...kbs
+#
+s/\.so man[1-9]/\.so manl/
+s/\.[1-9]$/.l/

@@ -1,0 +1,42 @@
+.TH Vm_WriteToDisk 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_WriteToDisk - write the Vm object to a disk file
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_WriteToDisk (vmid, spec)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: successfully written to disk.
+.IP o
+P_FAIL: general failure indication.
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object.
+
+.IP \n+L.
+spec: input, TEXT   spec[ ];
+
+Host file specification of file to be created.
+.LP
+
+.IP
+.LP
+Vm_WriteToDisk writes a Vm object into a parameter file.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

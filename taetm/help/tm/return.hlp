@@ -1,0 +1,56 @@
+!	edited 	23-jun-83...dm
+.TITLE
+RETURN 
+.HELP
+			Function and Format
+	
+	Function:
+
+	    RETURN terminates procedure execution.
+
+
+	Format:
+
+	    RETURN  $SFI=integer  $SKEY=string
+.PAGE
+			Usage Notes
+
+
+	o  RETURN is permitted only in a procedure body.
+
+	o  The values of $SFI and $SKEY at the time of a RETURN
+	   determine the completion status of the procedure.
+	   See the "Application Programmer's Reference Manual
+	   for the Transportable Applications Executive".
+!
+.level1
+.variable $SFI
+Value for $SFI.
+.variable $SKEY
+Value for $SKEY.
+!
+.level2
+.variable $SFI
+
+
+
+	    The parameter "$SFI" specifies the integer value 
+	    that the global variable $SFI, the success/fail
+	    indicator, will be set to. A negative value implies
+	    failure, a positive value success. $SFI is implicitly
+	    set to a positive value upon proc activation so that
+	    if you do not specify "SFI", the proc is assumed to
+	    terminate successfully.
+!
+.variable $SKEY
+
+
+
+	    The optional parameter "$SKEY" specifies the key 
+	    value that the global variable $SKEY will be set to. 
+	    By convention, $SKEY contains descriptive status 
+	    information from the last command/proc executed. 
+	    It is implicitly set to null string upon proc 
+	    activation.
+.END
+

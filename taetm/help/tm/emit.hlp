@@ -1,0 +1,52 @@
+!	28-jan-85 Created for V1.3...lia
+!	20-sep-93 PR2011: ran spell check...dag
+.TITLE
+EMIT
+.HELP
+			Function and Format
+	
+
+	Function:
+
+	    EMIT sends the values for $SFI and $SKEY from
+	    an asynchronous job to the parent TM.  It is
+	    used so the status of the asynchronous job can
+	    be monitored (via SHOW-ASYNC) as it executes.
+
+
+	Format:
+
+	    EMIT    $SFI=integer  $SKEY=string
+.page
+			Usage Notes
+
+
+	EMIT is only available from an asynchronous job.
+.level1
+.variable $SFI
+Success/fail indicator.
+.variable $SKEY
+Status key.
+.level2
+.variable $SFI
+
+
+
+	    The parameter "$SFI" specifies the integer value
+	    for the global variable $SFI, the success/fail
+	    indicator, to be sent to the parent TM.  A negative
+	    value implies failure, a positive value success.
+	    If $SFI is not specified, the current value of the
+	    global variable $SFI will be used.
+!
+.variable $SKEY
+
+
+
+	    The parameter "$SKEY" specifies the key value for
+	    the global variable $SKEY to be sent to the parent
+	    TM.  By convention, $SKEY contains descriptive
+	    status information from the last command/proc executed.
+	    If $SKEY is not specified, the current value of the
+	    global variable $SKEY will be used.
+.END

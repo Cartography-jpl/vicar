@@ -1,0 +1,203 @@
+PROCESS HELP=*
+ PARM INP      TYPE=STRING  COUNT=(2:4)
+ PARM PROJECT  TYPE=(STRING,5) COUNT=1 +
+    VALID=("VGR-1","VGR-2","MAR10","MAR-9","VIKOR","GLL  ","CASSI")
+ PARM OBJECT   TYPE=KEYWORD VALID=(IMAGE,OBJECT) DEFAULT=IMAGE
+ PARM FIT2     TYPE=KEYWORD COUNT=0:1 VALID=FIT2 DEFAULT=--
+ PARM CAMERA   TYPE=INTEGER COUNT=(0:1) DEFAULT=--
+ PARM GROUND TYPE=INTEGER COUNT=(0:1) DEFAULT=-- +
+               VALID=(1:50)
+ PARM TOLERANC TYPE=REAL COUNT=1 VALID=(.00000001:.01) DEFAULT=.000001
+ PARM OLD TYPE=KEYWORD VALID=(OLD,NEW) DEFAULT=NEW
+ PARM ZONAL TYPE=KEYWORD VALID=(ZONAL,NOZONAL) DEFAULT=NOZONAL
+ PARM ZVP TYPE=STRING COUNT=(0:1) DEFAULT=jupiter.zvp
+END-PROC
+
+.TITLE
+VICAR/IBIS Program "omcor2"
+
+.HELP
+PURPOSE
+This program updates the first input IBIS SEDR file by changing 
+the OM Euler angles in columns 21,22,23 which define camera
+pointing via the OM matrix. "omcor2" performs a global function
+minimization of tiepoint residuals by determining the OM
+matrices which cause the tiepoints to disagree between image
+pairs by a minimum.
+ 
+The GLL flight projects permit very little error in north angle. We suggest
+that you use the 'FIT2 parameter to reflect this. Your solutions will improve.
+
+"omcor2" differs from omcor in two ways:
+1. Control images are not permitted to move (their OM matrices
+   are considered known).
+2. "omcor2" permits the use of a zonal velocity flow model to shift
+   tiepoints to the common time of the ground control image.
+   This permits a global solution for the navigation for non solid
+   objects like jupiter. See the ZONAL keyword.
+3. The FIT2 keyword permits the north angle to remain fixed for all images.
+
+EXECUTION
+omcor2 inp=(SEDR.INT,TIEPOINTS.INT,GEOM.COR)
+or-
+omcor2 inp=(SEDR.INT,TIEPOINTS.INT)
+
+EXAMPLE: (Galileo)
+See mosaicking procedure MANUAL4 in MANMATCH.PDF (Help file).
+
+omcor2 inp=(jupsedr.int,jupmatch.int) +
+    'zonal project=GLL camera=1 'fit2
+
+PRECISION
+The differences between the unported and ported VAX test logs and the 
+differences between the VAX and UNIX test logs are due to the image
+space mode being invoked with object space data.  The discrepency is
+probably due to two factors:
+1. There is no clear solution (bogus test case) so the solution is 
+probably very sensitive to precision.
+2. Many transformations are made from image to object space resulting in
+small errors which get fed into the minimization scheme.
+
+HISTORY
+27 AUG 96  ARV  (CIT)  Added FIT2 capability
+10 JUL 95  AMS  (CRI)  Made portable for UNIX
+
+.LEVEL1
+.VARIABLE INP
+First input= SEDR.INT produced
+ by program "ibisnav"
+Second input=TIEPOINTS.INT
+ by program "manmatch"
+Third input=
+A "geoma" distortion file.
+
+.VARIABLE PROJECT
+Specifies  the 
+project. 
+
+.VARIABLE OBJECT
+Causes images to be 
+considered geometrically
+corrected.
+
+.VARIABLE FIT2
+Causes kappa (north angle)
+to be kept fixed.
+
+.VARIABLE CAMERA
+The camera serial number.
+
+.VARIABLE GROUND
+Ground control frames
+
+.VARIABLE TOLERANC
+fractional convergence
+tolerance.
+
+.VARIABLE OLD
+Source of Euler
+angles in SEDR.
+
+.VARIABLE ZONAL
+Use zonal flow.
+
+.VARIABLE ZVP
+Name of zonal
+flow file.
+
+.LEVEL2
+.VARIABLE INP
+First input= SEDR.INT produced by program "ibisnav"
+On output columns 21-23 are recomputed to reflect the updated 
+OM matrix angles. Columns 21-23 will NOT be changed for
+ground control frames.
+NOTE: Place those frames which will become ground control frames
+at the END of the SEDR.INT file. See GROUND parameter.
+There can be up to 100 sedr file entries (frames).
+Note: The scet columns 32-37 must be filled for zonal correction.
+This can be assured by using a FILENAME file in "ibisnav".
+
+
+Second input= TIEPOINTS.INT produced by program "manmatch".
+This has 9 columns.
+There can be up to 768 tiepoints.
+
+A geom correction file can be entered as the third input
+if the images are in image space (un geometrically corrected).
+If the project is not GLL and no geom file is present then
+nominals will be generated using the PROJECT and CAMERA
+parameters.
+Not necessary if project is GLL.
+
+.VARIABLE PROJECT
+Specifies the project . 
+Valid values are: VGR-1 VGR-2 GLL MAR-9 MAR10 VIKOR
+Required.
+
+.VARIABLE OBJECT
+Causes images to be considered geometrically corrected.
+The geoma file will be ignored if present.
+
+.VARIABLE FIT2
+Fits two of the three angles, keeping kappa (north angle)
+fixed at the input value.
+
+.VARIABLE CAMERA
+The camera serial number. Only used in 'IMAGE mode.
+Defaults to the entry in the 4th ibis column of the sedr ibis file.
+Only one camera is permitted per execution of omcor2.
+
+Voyager:
+Used to assist in reading the GEOM parameters for geometric correction.
+
+Galileo:
+Used to determine the correct image space correction 
+depending upon if an image is summation mode or not.
+Normal images must have CAMERA=1.
+Summation mode images must have CAMERA=2.
+
+.VARIABLE GROUND
+Ground control frames. The number given defines those
+images in the SEDR input file which are defined
+as ground control frames. 
+GROUND specifies the first ground control frame.
+All frames after GROUND will ALSO be considered to be
+ground control frames.
+It is assumed that the
+navigation contained in the first input ibis file is
+rigorously correct for these frames and will not be altered.
+Numbering begins at 1 for the first input, 2 for the
+second input and so on. 
+If you default GROUND the last frame (last SEDR record) will
+become the ground control.
+Note: If ZONAL is specified then GROUND is ignored and defaults to
+      the last frame.
+
+.VARIABLE TOLERANC
+fractional convergence tolerance.
+Controls the precision and iteration length of the function
+minimization scheme. Is defined as the ratio:
+2*(max_error - min_error)/(max_error + min_error)
+Cannot be less than the machine real*8 precision.
+Defaults to 1.0e-6
+
+.VARIABLE OLD
+Source of Euler angles in input SEDR.INT file.
+If you specify 'OLD then the euler angles will come from 
+columns 8,9,10. The default is they come from columns 21,22,23.
+Columns 21,22,23 are initially copies of columns 8,9,10 but are updated
+in-place with the program solutions.
+
+.VARIABLE ZONAL
+Use the zonal flow profile to shift each tiepoint by the amount of
+differential rotation suffered over the interval between when that
+image was obtained and when the ground control frame was obtained.
+Only use for non solid planets like Jupiter. The images must be
+obtained over a small time difference ( minutes not hours ) or else
+the zonal drift will introduce large errors.
+
+.VARIABLE ZVP
+Name of the zonal flow file.
+Defaults to jupiter.zvp
+
+.END

@@ -1,0 +1,242 @@
+process help=*
+ PARM INP        TYPE=STRING   COUNT=(1:10)
+ PARM NCHAN      TYPE=INTEGER  COUNT=1         DEFAULT=1
+ PARM PROCESS    TYPE=INTEGER  COUNT=(0,5:50)  DEFAULT=--
+ PARM SPROCESS   TYPE=INTEGER  COUNT=(0,2:20)  DEFAULT=--
+ PARM TITLE      TYPE=STRING                   DEFAULT="IPL LINE PLOT"
+ PARM LOTITLE    TYPE=KEYWORD  VALID=(LOTITLE,HITITLE)  DEFAULT=HITITLE
+ PARM XTITLE     TYPE=STRING   DEFAULT="RELATIVE SAMPLE NUMBER"
+ PARM YTITLE     TYPE=STRING                   DEFAULT="DN VALUE"
+ PARM PLOTOUT    TYPE=STRING                   DEFAULT="QPLOT.PSF"
+ PARM LABELSIZ   TYPE=REAL                     DEFAULT=0.12
+ PARM LOLABEL    TYPE=KEYWORD  VALID=(LOLABEL,HILABEL)  DEFAULT=HILABEL
+ PARM TICS       TYPE=KEYWORD  VALID=(TICS,NOTICS)      DEFAULT=NOTICS
+ PARM NORM       TYPE=KEYWORD  VALID=(NORM,NONORM)      DEFAULT=NONORM
+ PARM RDS        TYPE=REAL                     DEFAULT=0.0
+ PARM DISPLACE   TYPE=REAL                     DEFAULT=0.0
+ PARM XLENGTH    TYPE=REAL     COUNT=1         DEFAULT=9.0
+ PARM YLENGTH    TYPE=REAL     COUNT=1         DEFAULT=7.0
+ PARM XSCALE     TYPE=REAL     COUNT=(0,2)     DEFAULT=--
+ PARM YSCALE     TYPE=REAL     COUNT=(0,2)     DEFAULT=--
+ PARM XVALUES    TYPE=REAL     COUNT=(0,2:20)  DEFAULT=--
+ PARM YVALUES    TYPE=REAL     COUNT=(0,2:20)  DEFAULT=--
+ parm nodisp keyword count=0:1 valid=nodisp default=--
+ 
+!# annot function="VICAR Pixel Listings and Plots"
+!# annot keywords=(plot,"DN values",spectral,"multi channel data",Regis,
+!#   Tektronix,VRDI,Printronix,PostScript)
+
+END-PROC
+.TITLE
+Line or spectral plots to VRDI, Tektronix, Regis, Printronix
+.HELP
+Purpose:  QPLOT2 plots the DN values along a specified straight line through
+  an image.  It also does spectral plots for multi-channel data. The common
+  plotting routines are used to send the plots either to a file for later
+  hardcopy, or to a plotting capable quicklook device such as a REGIS or
+  TEKTRONIX terminal or a VRDI image display device.  The PLOTTING command
+  is used to select the output device type. Possible devices are:
+
+        Quicklook:
+          IMAGE:      A VRDI image display device
+          TEKTRONIX:  A Tektronix compatible terminal.
+          REGIS:      A REGIS compatible terminal (VT240, VT241, VT125)
+        
+        Hardcopy: (Note: Files are not automatically printed)
+          PRINT:      A PRINTRONIX P-series printer
+                       (Output file PRINTRONX.PLT)
+          LASER:      A Talaris QUIC-based laser printer
+                      *** This is not currently supported ***
+                       (Output file LSRPLT01.Q)
+          CALCOMP:    *** See the cognizant engineer for the CALCOMP 
+                      *** for instructions.
+
+Parameters:  There are two types of parameters:
+
+      (1) Parameters with a single specification:
+		INP		NCHAN
+		TITLE		LOTITLE		XTITLE
+		YTITLE		LABELSIZ	LOLABEL
+		NORM		RDS		DISPLACE
+		XLENGTH		YLENGTH
+		XSCALE		YSCALE
+      (2) Parameters which have a specification for each line plotted:
+		PROCESS		SPROCESS
+                XVALUES         YVALUES
+
+Restrictions:
+  (1) Maximum number of lines plotted is 10.
+  (2) Maximum x axis length is 6 feet. (On PRINTRONIX)
+  (3) Maximum y axis length is 12 inches. (On PRINTRONIX)
+  (4) Spectral plots require a single input in mss format.
+
+Note:  This program makes use of multiple intermediate data sets which are
+  deleted when the program executes normally.  If this program is run under
+  a default directory which does not allow the creation of these files
+  (either because of disk quotas or protection) the program will die a
+  horrible death and the plot file will not be created.  Also if for some
+  reason other than this, the program dies a horrible death, there could
+  be a couple of miscellaneous files laying around.
+
+History:
+
+  Original Programmer:  John H. Reimer,  22 Aug. 1982
+  Converted to Vicar2 by:  John H. Reimer,  22 April 1985
+  Cognizant Programmer:  John H. Reimer
+  Ported to Unix (MSTP S/W Conversion) C. Randy Schenk (CRI) 10 JUly 1995
+.level1
+.variable inp
+STRING - Input data set
+.variable process
+INTEGER - DSN1,SL1,SS1,EL1,ES1, DSN2,SL2,SS2,EL2,ES2, ...
+.variable nchan
+INTEGER - Number of channels in mss formatted input data set
+.variable sprocess
+INTEGER - LINE1,SAMPLE1, LINE2,SAMPLE2, ...
+.variable title
+STRING - Title of plots.
+.variable lotitle
+KEYWORD - Lower position for title.
+.variable xtitle
+STRING - X axis title
+.variable ytitle
+STRING - Y axis title
+.variable labelsiz
+REAL - Height of label (inches).
+.variable lolabel
+KEYWORD - Lower position for label.
+.variable tics
+KEYWORD - Put 10 tic marks per inch.
+.variable norm
+KEYWORD - Normalizes data to 1.
+.variable rds
+REAL - DN scaling factor.
+.variable displace
+REAL - Displacement for subsequent lines.
+.variable xlength
+REAL - Length of X axis (inches).
+.variable ylength
+REAL - Length of Y axis (inches).
+.variable xscale
+REAL - Min & Max of X axis.
+.variable yscale
+REAL - MIN & Max of Y axis.
+.variable xvalues
+REAL - Rescaling factors.
+.variable yvalues
+REAL - Rescaling factors.
+.vari nodisp
+Option to suppress display and create
+postscript file instead.
+.vari plotout
+Name of the output postscript file.
+.level2
+.variable inp
+Input data set; maximum number of 10.
+.variable process
+Specifies one or more lines to be plotted. Following the keyword,
+each plot is specified by a set of five numbers. The first value in
+each set specifies the Input Data Set Number and the remaining four
+values specify the Starting Line, Starting Sample, Ending Line, and Ending
+Sample. (No Default).  NOTE:  The line plotted will cover
+SQRT((EL-SL)**2+(ES-SS)**2) "relative samples" along the horizontal axis
+and will start at "relative sample" 1.
+.variable nchan
+Specifies the number of spectral channels in an input data set in mss
+format. This keyword is used in conjunction with the SPROCESS keyword.
+(Default is 1)
+.variable sprocess
+Specifies one or more spectral plots. This keyword requires that the input
+be in mss format and that NCHAN is specified. Following the keyword,
+each spectral plot is specified by a set of two numbers. The first value
+in each set specifies the Line and the second value the Sample of the
+point within the first channel through which the spectral plot is to be
+done. (No Default)
+.variable title
+Used to specify the title of plots (Max length of 52 characters).
+(Default is 'IPL LINE PLOT', or for spectral plots, 'IPL SPECTRAL PLOT')
+.variable lotitle
+Specifies that the title will be written within the 8.5 x 11 area
+(if the y axis length is less than or equal to 7 inches). (Default
+is to place the title at the top of the page)
+.variable xtitle
+Specifies the title for the X axis (Max length of 52 characters). (Default is
+'Relative Sample Number')
+.variable ytitle
+Specifies the title for the Y axis (Max length of 52 characters). (Default is
+'DN Value')
+.variable labelsiz
+Specifies the height in inches of the label characters. For a value
+of 0.0, no labels are printed. (Default is 0.12)
+.variable lolabel
+Specifies that labels will be written within the 8.5 x 11 space.
+(Default is to place the labels at the top of the page.)
+.variable norm
+Causes DN values to be scaled linearly so that the largest value
+becomes 1.  The length of the y axis is set to 5 inches.
+(Default is that this is not done.)
+.variable rds
+Causes DN values to be scaled by the following equation:
+OUT=SQRT(IN**2-RDS**2). (Default is that this is not done)
+.variable displace
+Specifies that subsequent lines on the same plot will be displaced
+by the given amount.  This is specified in terms of the final plotted
+vertical values, rather than input DN, in the cases where the input
+values are scaled. (Default is 0.0)
+.variable xlength
+Specifies the length in inches of the X axis. (Default is 9.0; Max is 72.0)
+.variable ylength
+Specifies the length in inches of the Y axis. (Default is 7.0; max is 12.0)
+.variable xscale
+Specifies the scale used along the X axis.  The X axis will be drawn going
+from a minimum of the first value to a maximum of the second.  The defaults
+for these values are obtained by determining the minimum and maximum X
+values to be plotted on the axis and then passing these values to the
+subroutine SCALE.
+SCALE determines the scaling so that 1 inch along the axis will always be
+an interval of 1,2,3,4,5,6 or 8*(10**n) units.  This usually results in
+having the plotted lines occupy only a portion of the axis.  By using the
+XSCALE keyword the user can force plots to occupy a greater portion of the
+X axis.  Axis values are printed every inch, however, and if it is desired
+that these values be nice round numbers the quantity:
+                  (XSCALEMAX-XSCALEMIN)/XLENGTH
+should be a nice round number.
+.variable yscale
+Specifies the scale used along the Y axis.  The Y axis will be drawn going
+from a minimum of the first value to a maximum of the second.  The defaults
+for these values are obtained by determining the minimum and maximum Y
+values to be plotted on the axis and then passing these values to the
+subroutine SCALE.
+SCALE determines the scaling so that 1 inch along the axis will always be
+an interval of 1,2,3,4,5,6 or 8*(10**n) units.  This usually results in
+having the plotted lines occupy only a portion of the axis.  By using the
+YSCALE keyword the user can force plots to occupy a greater portion of the
+Y axis.  Axis values are printed every inch, however, and if it is desired
+that these values be nice round numbers the quantity:
+                  (YSCALEMAX-YSCALEMIN)/YLENGTH
+should be a nice round number.
+.variable xvalues
+Allows the user to rescale the actual x (sample) data values of the
+lines to be plotted. XVALUES is followed by two real values specifying the
+minimum and maximum x values. The first value (the minimum) is the point
+along the X axis where the first data point will be plotted.  The second
+value (the maximum) is the point along the X axis where the last data
+point will be plotted.
+(DEFAULTS: XMIN=1.0, XMAX=SQRT[(EL-SL)**2+(ES-SS)**2]+1
+.variable yvalues
+Allows the user to rescale the actual y (DN) data values of the lines
+to be plotted. YVALUES is followed by groups of two real values, one
+group for each line to be plotted. The two values in each group specify the
+minimum and maximum y values. The first value (the minimum) is the point
+along the Y axis where a DN of zero will be plotted.  The second value
+(the maximum) is the point along the Y axis where a DN of 255 (32767
+for halfword data) will be plotted.
+(DEFAULT: YMIN=0.0, YMAX=255 (byte) YMAX=32767 (halfword)   )
+
+.vari plotout
+The name of the output postscript file if NODISP specified.
+
+Note that this file will always be created, but it will be empty unless
+NODISP is specified.
+
+.end

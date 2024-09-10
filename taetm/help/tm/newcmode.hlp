@@ -1,0 +1,383 @@
+!	edited 19-may-83...dm
+!	       03-oct-83 - add enable/disable-tol...nhe
+!	       29-nov-83 - general v1.1 cleanup...jtm
+!	       21-jan-84 - conditional text for UNIX...dm
+!	       27-jan-85 - added "command" adjective to all references
+!			   to qualifiers to avoid confusion with
+!			   parameter qualifiers...jtm
+!	       28-jan-85 - added reference to TUTOR proc- to get
+!			   subcommand display in tutor...jtm
+.TITLE
+TAE COMMAND LANGUAGE
+.HELP
+			General and Specific HELP
+
+
+		This is general help information for using
+		TCL. You can access more specific help on a
+		given command by typing the following:
+
+			HELP  command-name
+	
+		From TCL you may activate procs or TCL commands (called
+		"intrinsics"). The TCL commands available are listed below.
+		An asterisk ("*") in the command name indicates that
+		a command may be abbreviated using at least all
+		the characters 	prior to the asterisk. The asterisk
+		is not part of the command.
+.PAGE
+			TCL Commands
+
+		ABORT-ASYNC JOB=job-name-list
+.if VAX_VMS
+
+		BATCH-DELETE JOBID=job-id QUEUE=queue-name
+		BATCH-STATUS QUEUE=queue-name
+		BATCH-SUSPEND QUEUE=queue-name
+		BATCH-RESUME QUEUE=queue-name
+		BATCH-UPDATE JOBID=job-id PRIORITY=new-priority QUEUE=queue
+
+.ifend
+		CONT*INUE 	
+.if1 VAX_VMS
+		DCL any-VMS/DCL-command
+		DEFC*MD COMMAND=command-name STRING=replacement-string
+		DELC*MD COMMAND=command-name
+
+
+
+					(continued...)
+.PAGE
+			TCL Commands (continued)
+
+
+		DELE*TE-LOCALS
+		DELE*TE-GLOBALS PROC=global-pdf-name
+		DELE*TE-VARIABLE NAME=name-of-global-or-local-variable
+
+		DISA*BLE-LOG
+		DISA*BLE-TOL
+
+		DISP*LAY VARIABLE=(variable1, variable2, ...)
+		DISP*LAY-ALL
+		DISP*LAY-GLOBALS
+		DISP*LAY-LOCALS
+		DISP*LAY-PARMS
+		DISP*LAY-PARFILE FILE=file-name VARIABLE=(var1, var2, ...)
+
+					(continued...)
+.PAGE
+			TCL Commands (continued)
+
+
+		ENA*BLE-LOG
+		ENA*BLE-SCRIPT FILE=script-file COUNT=integer
+		ENA*BLE-TOL FILE=logging-file
+
+        	EX*IT
+
+		H*ELP
+        	H*ELP-COMMAND COMMAND=command-name
+		H*ELP-GLOBAL VARIABLE=global-variable-name
+		H*ELP-MESSAGE KEY=message-key
+		H*ELP-PROC PROC=proc-name
+		H*ELP-PARM PARM=parm-name PROC=proc-name
+
+					(continued...)
+.PAGE
+			TCL Commands (continued)
+
+
+		LET variable-name = expression
+        	LO*GOFF
+        	M*ENU NAME=menu-name
+		REMO*VE JOB=job-name-list
+		REPL*Y JOB=job-name
+
+		REST*ORE FILE=save-file-name
+		REST*ORE-ALL FILE=save-file-name
+		REST*ORE-GLOBAL FILE=save-file-name
+		REST*ORE-LOCAL FILE=save-file-name
+		REST*ORE-PARM FILE=save-file-name
+
+					(continued...)
+.PAGE
+			TCL Commands (continued)
+
+		SAVE FILE=save-file-name
+		SAVE-ALL FILE=save-file-name
+		SAVE-GLOBAL FILE=save-file-name
+		SAVE-LOCAL FILE=save-file-name
+		SAVE-PARM FILE=save-file-name
+
+		SETL*IB LIBRARY=(library1, library2,...)
+		SETL*IB-ADD LIBRARY=(library1, library2, ...)
+		SETL*IB-DELETE LIBRARY=(library1, library2, ...)
+		SETL*IB-SET LIBRARY=(library1, library2,...)
+
+        	SH*OW
+		SH*OW-ASYNC JOB=job-name-list
+		SH*OW-LIBRARY
+		SH*OW-WAITING
+						(continued...)
+.PAGE
+			TCL Commands (continued)
+
+
+        	T*UTOR PROC=proc-name  proc-parameters
+		T*UTOR-SCREEN PROC=proc-name  proc-parameters
+		T*UTOR-NOSCREEN PROC=proc-name  proc-parameters
+
+.if1 UNIX
+		USH any-UNIX/shell-command
+		WAIT-ASYNC JOB=job-name-list
+		?	(same as HELP-MESSAGE for last message)
+.PAGE
+			General Notes on TCL Commands
+
+
+		The dash after some command names (e.g., ENABLE-LOG)
+		indicates that the following string is a "subcommand".
+		You may type the subcommand as shown or abbreviate it
+		by omitting any number of trailing characters so long
+		as the subcommand cannot be confused with another sub-
+		command of the same command. To obtain a list of the
+		valid subcommands for a command (or proc), type "TUTOR
+		command-" (or proc-").
+
+		A command (or proc) that has subcommands may be defined
+		to have a default subcommand. When that command (or proc)
+		is activated without an explicit subcommand, the default
+		is used.
+.PAGE
+			General Notes on TCL Commands (continued)
+
+
+		A command may be continued to another line with the "+"
+		character as the last non-comment character of a line.
+
+		A line may not be continued in the middle of a command
+		name, parameter name, or value. For multi-valued parameters,
+		continuation may occur between the component values.
+
+		You may TUTOR on any of the above commands.
+
+.PAGE
+			General Notes on Activating Procs
+
+
+		To execute a proc (a procedure or process), you enter
+		
+			Specifying Parameter Values by Position
+
+
+		Although the commands shown above show the parameter
+		names (e.g., "FILE" for ENABLE-SCRIPT), you may enter
+		any parameter by "position". For example, in ENABLE-SCRIPT,
+		you may omit "FILE=" so long as the name of the file is
+		the first character string following ENABLE-SCRIPT.
+
+
+.PAGE
+			Command Qualifiers
+
+
+		Command qualifiers are TAE-defined parameters that specify
+		the environment for command execution.
+
+		The rules for command qualifiers are:
+
+		     1.  All command qualifiers are optional and may appear
+		         on any TAE proc invocation (but not on an intrinsic
+		         command).
+
+		     2.  If command qualifiers are present, they must be
+		         listed between vertical bars ("|") and must be
+		         given in standard parameter list format.
+.PAGE
+			Command Qualifiers (continued)
+
+
+		     3.  As for any parameter list, command qualifier values
+		         may be specified by position.
+
+  		     4.  Command qualifier names may be abbreviated using
+		         the same rules as for parameters.
+
+                  Example:
+
+		        TAE> COPY|TEMP, RUNTYPE=BATCH| FILE1
+
+		        This command line submits the COPY proc for batch
+		        processing and restores its parameter values from
+		        the TEMP file.
+
+.PAGE
+			Command Qualifiers (continued)
+
+          The command qualifiers (listed in positional order) are:
+
+                  NAME		  ALLOWED VALUES       DEFAULT
+                  ____		  ______________       _______
+
+                  RESTORE         A file spec          none
+
+                  RUNTYPE         (BATCH,queuename),   INTERACTIVE
+				  (ASYNC,jobname),
+				  or INTERACTIVE
+
+                  SAVE            A file spec          none
+
+                  STDOUT          A file spec          user terminal
+
+	  Each command qualifier is described below in detail.
+.page
+			RESTORE Command Qualifier
+
+
+  		     "RESTORE=file-specification"
+
+           The RESTORE command qualifier specifies a file that
+           contains parameter values.
+
+           Values provided explicitly on the proc invocation
+           line override values provided from the restored
+           file.
+
+           An explicit value must be given for RESTORE; there
+           is no default.
+.page
+			RESTORE Command Qualifier (continued)
+
+
+           If the RESTORE file specification is the empty
+           string, then the name of the file used for the
+           restore is the proc name.
+
+	   For example,
+
+	   TAE> COPY|RESTORE=files.cop|
+
+	   The above command activates the COPY proc with
+	   the parameters previously saved in the file "files.cop".
+.PAGE
+			RUNTYPE Command Qualifier
+
+
+	       "RUNTYPE=(BATCH,queue-name) or INTERACTIVE or
+			(ASYNC, jobname)"
+
+           The RUNTYPE command qualifier specifies whether the proc is
+           to be run from the user's terminal (INTERACTIVE),
+.if VAX_VMS
+           submitted to the batch queue (BATCH), or submitted
+	   to be run asynchronously. The default is INTERACTIVE.
+.elseif UNIX
+	   or to be executed asynchronously in the background.
+	   The default is INTERACTIVE.
+.ifend
+
+	   If the RUNTYPE is BATCH, then the second value
+           is interpreted as the name of the batch queue;
+.if1 VAX_VMS
+           the default batch queue is SYS$BATCH.
+.if1 UNIX
+	   the default queue name is NOHUP.
+
+           If the RUNTYPE is ASYNC, then the second value
+           is interpreted as the name of the job.
+.if1 VAX_VMS
+           If the job name is omitted, TAE constructs one.
+.PAGE
+
+			RUNTYPE Command Qualifier (continued)
+
+           If the command qualifier is set to BATCH, the following TAE
+           message is displayed:
+
+.if VAX_VMS
+               Job (nnn) submitted to queue (que)
+
+           where "nnn" is the assigned job number and "que" is
+           the name of the queue the job was submitted to.
+
+.elseif UNIX
+	   	Batch job file "filename" submitted successfully.
+
+	   where "filename" is the batch job file name, defined
+	   as "proc".job.
+
+.ifend
+.page
+			RUNTYPE Command Qualifier (continued)
+
+
+	    If the command qualifier is set to ASYNC, the following TAE
+	    message is displayed:
+
+
+		[TAE-ASYNCJOB] Asynchronous job 'JOBNAME' initiated.
+
+
+	    The asynchronous job then begins asynchronous execution
+	    and can be monitored and manipulated with the commands
+	    ABORT-ASYNC, REMOVE, REPLY, SHOW-ASYNC, SHOW-WAITING,
+	    and WAIT-ASYNC.
+.PAGE
+			SAVE Command Qualifier
+
+
+                       "SAVE=file-specification"
+
+		 The SAVE command qualifier specifies a file in which to
+		 save the values of the parameters used on the
+		 current proc invocation. The values saved include
+		 the values of all the parameters (including
+		 defaults and those values set by RESTORE).
+
+		 A parameter set saved using SAVE may be restored
+		 using RESTORE.
+
+		 An explicit value must be given for SAVE; there is
+		 no default value.
+.PAGE
+			SAVE Command Qualifier (continued)
+
+
+		 If the specification of the SAVE file is the empty
+		 string then the name of the file used for the save
+		 is the proc's name.
+
+		 The file created by the SAVE command qualifier is compatible
+		 with the file created by the tutor mode SAVE command.
+.PAGE
+			STDOUT Command Qualifier
+
+                       "STDOUT=file-name"
+
+		 The STDOUT command qualifier specifies the file or device
+		 to be used to receive data sent to the "standard
+		 output". Standard output is the file or device
+		 that (a) receives messages from TAE commands; and
+		 (b) is the output destination for the DISPLAY,
+		 SHOW, and PUTMSG commands. The default is the
+		 user's terminal if RUNTYPE is INTERACTIVE and the
+		 name of the proc (implied file type, LOG) if
+		 RUNTYPE is BATCH.
+
+		 The STDOUT command qualifier affects the proc invoked
+		 and all procs nested under the invoked proc; when the
+		 proc terminates, STDOUT will revert to the value
+		 it had prior to proc invocation.
+.PAGE
+  			Proc Interrupt Mode
+
+
+		To abort a proc that is running you may type CNTRL/C (i.e.,
+		hold the CTRL key and type "C").  TAE will prompt you and
+		you may then type ABORT, CONTINUE or HELP.
+.if UNIX
+		Under non-Berkeley systems, the proc aborts even if you
+		type CONTINUE.
+.ifend
+.END

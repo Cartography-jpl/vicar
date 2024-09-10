@@ -1,0 +1,64 @@
+!------------------------------------------------------------------------
+!   SHOWDISP.PDF
+!
+!   Allocate/Deallocate a display device to a user
+!
+!   The program VRDI$LIB:USEDISP must be installed with WORLD and CMEXEC
+!   privileges in order to run on VMS.
+!
+!   This has been renamed from USEDISP.PDF to avoid conflicts with the
+!   TAE intrinsic commands USEDISP and FREEDISP on VMS.  The USE and FREE
+!   functionality is retained in this program for when it is used at
+!   the DCL level, or from Unix.  All USE/FREE commands inside VMS VICAR
+!   should go through the TAE intrinsics.
+!
+!------------------------------------------------------------------------
+procedure help=*
+refgbl $syschar
+SUBCMD SHOW
+END-SUBCMD
+SUBCMD HELP
+END-SUBCMD
+body
+if (_subcmd = "SHOW")
+  if ($syschar(1) = "UNIX")
+    ush $VRDILIB/usedisp s
+  else
+    dcl showdisp 
+  end-if
+else
+  if ($syschar(1) = "UNIX")
+    ush $VRDILIB/usedisp h
+  else
+    dcl helpdisp 
+  end-if
+end-if
+end-proc
+.title
+VICAR program SHOWDISP
+.help
+SHOWDISP is a program that displays information about the image
+display devices.
+
+Invocation:   SHOWDISP
+              HELPDISP
+
+where:        SHOWDISP    outputs device information
+              HELPDISP    outputs a brief summary of USEDISP,
+                          FREEDISP, and SHOWDISP.
+.level1
+.SUBCMD SHOW
+SHOWDISP outputs device
+information
+.SUBCMD HELP
+HELPDISP outputs a summary of
+USEDISP, FREEDISP, and SHOWDISP
+.level2
+.SUBCMD SHOW
+The SHOWDISP command outputs display device status information
+for the machine you are currectly using.
+.SUBCMD HELP
+The HELPDISP command outputs a brief summary of the display 
+allocation/deallocation programs USEDISP, FREEDISP, and
+SHOWDISP.
+.end

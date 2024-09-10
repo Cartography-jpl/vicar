@@ -1,0 +1,156 @@
+PROCESS      HELP=*
+! TIEPLOT PDF - VICAR/IBIS MOSAIC SOFTWARE
+! VICAR2/MIPL VERSION
+PARM INP     STATUS=(STRING,72)
+PARM NL      STATUS=INTEGER
+PARM NS      STATUS=INTEGER
+PARM NEWCOLS STATUS=INTEGER COUNT=2 DEFAULT=(1,2)
+PARM OLDCOLS STATUS=INTEGER COUNT=2 DEFAULT=(3,4)
+PARM NUMCOL  STATUS=INTEGER DEFAULT=1
+PARM CHARCOL STATUS=INTEGER DEFAULT=1
+PARM ICHAR   STATUS=INTEGER DEFAULT=0
+PARM SCALE   STATUS=REAL   DEFAULT=8
+PARM KEY     STATUS=INTEGER  COUNT=(1:20) DEFAULT=0
+PARM KEYCOL  STATUS=INTEGER DEFAULT=1
+PARM NODISP  STATUS=KEYWORD COUNT=(0,1) VALID=NODISP DEFAULT=--
+
+END-PROC
+.TITLE
+VICAR/IBIS Program TIEPLOT
+.HELP
+PURPOSE
+
+     TIEPLOT plots tiepoints in an IBIS interface file by
+     drawing vectors to indicate the direction and amount of
+     shift between the old (line,sample)  new (line,sample)
+     pairs.  The image area is outlined and labeled.  A number
+     or symbol from the interface file may be plotted at each 
+     tiepoint position.
+
+     
+TAE COMMAND LINE FORMAT
+
+     TIEPLOT INP=A PARAMS
+     A                   is an IBIS interface file.     
+     PARAMS              is a standard VICAR parameter field.
+
+OPERATION
+
+     For each tiepoint that has the correct entry in the
+     KEYCOL, a vector is drawn with a length proportional
+     to the distance between the old (line,sample) coordinates
+     and the new (line,sample) coordinates.
+     
+.PAGE
+EXAMPLES
+
+TIEPLOT TIEPOINTS.INT NL=1056 NS=1204  SCALE=10
+
+In this example, just one plot will be produced since the KEYCOL parameter
+has not been specified.  The default columns for the tiepoints (columns 
+1, 2, 3, and 4,  same as output by PICMATCH) will be assumed.  The length
+of the offset vectors will be magnified by a factor of 10, and no
+symbols or numbers will label the vectors. The plot output will be 
+displayed.
+
+
+
+IGENER OUT=I.DAT NCOL=7 LCOL=30
+MF INP=I.DAT FUNC=("C1=AINT(INDEX/16)+1","C2=100*INDEX", "C3=100*INDEX", +
+		"C4=C2+SIN(INDEX/5.)","C5=C3-2*COS(INDEX/5.)","C6=INDEX")
+
+TIEPLOT INP=I.DAT NL=3000 NS=3000 KEYCOL=1 KEY=(1,2)+
+  SCALE=20 NEWCOLS=(4,5) OLDCOLS=(2,3) NUMCOL=6 +
+  'NODISP
+
+In this example an IBIS file of 7 columns and 30 rows is created,
+it is divided into 2 subsets of 15 rows each (control column C1
+has 1 in the first 15 rows and 2 in the next 15 rows). Old coordinates
+are in columns 2 and 3, new coordinates are in columns 4 and 5.
+Number of each point is contained in column 6. Two plots, each con-
+taining vectors for 15 points will be generated. Keyword NODISP indicates
+that the plot output is not to be displayed, but sent directly to
+the output PostScript file.
+
+
+Original Programmer:  A. L. Zobrist       10 October 1980
+
+Cognizant Programmer:  K. F. Evans
+
+Revision:  2			March 1986
+
+         Made portable for UNIX and XRT/graph  J. Turner (CRI) 8 May 95
+
+.LEVEL1
+.VARIABLE INP
+Input IBIS interface file
+.VARIABLE KEYCOL
+Control column
+.VARIABLE KEY
+Keys in the control column
+.VARIABLE SCALE
+Magnification factor for shifts
+.VARIABLE NL
+Size of an area in lines
+.VARIABLE NS
+Size of an area in samples
+.VARIABLE NEWCOLS
+Columns of new (line,sample)
+.VARIABLE OLDCOLS
+Columns of old (line,sample)
+.VARIABLE NUMCOL
+Columns of identifying numbers
+.VARIABLE CHARCOL
+Column containing Calcomp
+special symbol numbers
+.VARIABLE ICHAR
+Calcomp special symbol number
+.LEVEL2
+.VARIABLE INP
+     INP=A               Input IBIS interface file
+.VARIABLE KEYCOL
+     KEYCOL=N            The  integer N specifies a  control 
+                         column  for selecting a  subset  of 
+                         the data for plotting.
+.VARIABLE KEY
+     KEY=(K1,...,KM)     The  integers  K1,...,KM  specifies 
+                         which  keys  in the control  column 
+                         are subsetted for plotting.
+.VARIABLE SCALE
+     SCALE=R             The floating decimal R specifies  a 
+                         magnification   factor  to   be 
+                         applied to the shifts when plotted.
+.VARIABLE NL
+     NL=P                The  integer P specify the size  of 
+                         the area being plotted in lines. 
+.VARIABLE NS
+     NL=Q                The  integer Q specify the size  of 
+                         the area being plotted in samples.
+.VARIABLE NEWCOLS
+     NEWCOLS=(A,B)       The  integers A and B  specify  the 
+                         columns  of  new coordinates.
+.VARIABLE OLDCOLS
+     OLDCOLS=(C,D)       The  integers C and D  specify  the 
+                         columns   of  old coordinates.
+.VARIABLE NUMCOL
+     NUMCOL=E            The  integer E specifies  a  column 
+                         that  contains identifying  numbers 
+                         to  be plotted beside each  vector.  
+                         If this keyword is omitted, then no 
+                         numbers are plotted.
+.VARIABLE CHARCOL
+     CHARCOL=F           The  integer  F specifies a  column 
+                         that contains the number of the 
+			 identifying symbol to be plotted as 
+			 the base of each vector.  The numbers
+			 should be in the range of 0 to 15.
+                         If this keyword is omitted, then no 
+                         symbols are plotted from a column.
+.VARIABLE ICHAR
+     ICHAR=N             The number N specifies the identifying
+			 symbol to be plotted as the base of 
+			 each vector.  The number should be in 
+			 the range of 0 to 15.  This can be
+                         used as an alternative  to  the 
+                         CHAR keyword.
+.END

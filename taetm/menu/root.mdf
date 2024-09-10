@@ -1,0 +1,23 @@
+.TITLE
+		TAE DELIVERY SKELETON ROOT MENU
+
+
+.HELP	
+This menu is delivered with each TAE delivery as a skeleton menu
+for demonstration purposes. The application specific root menu
+should replace this menu.
+
+
+.MENU util
+Menu of TAE Utilities [util]
+
+.MENU demo
+Menu of TAE Demonstration Programs [demo]
+
+.MENU tests
+Menu of TAE Test Programs [tests]
+
+.END
+
+
+

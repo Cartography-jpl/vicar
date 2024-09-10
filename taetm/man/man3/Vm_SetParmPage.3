@@ -1,0 +1,55 @@
+.TH Vm_SetParmPage 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_SetParmPage - set the page indicator of a variable; for Terminal Monitor
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_SetParmPage (vmid, name, flag)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: variable's page indicator successfully set.
+.IP o
+P_BADNAME: the variable does not exist.
+.LP
+Note that the status codes listed above are available only if the object was
+initialized in "continue" mode with a call to Vm_New.
+
+
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object.
+This object must have been initialized with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the variable.
+
+.IP \n+L.
+flag: input, BOOL   flag;
+.nr L 0 1
+.IP o
+TRUE: sets the page indicator to TRUE.
+.IP o
+FALSE: sets the page indicator to FALSE.
+.LP
+
+.IP
+.LP
+Vm_SetParmPage is to be used in conjunction with the dynamic PDF
+package (Dp_).  Vm_SetParmPage sets the page indicator of a
+variable. This causes the variable to appear at the top of a new
+page in a tutor session.  See Volume 1 for a description of the 
+Dp_ package.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR

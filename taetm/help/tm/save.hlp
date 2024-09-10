@@ -1,0 +1,201 @@
+!	27-mar-84  General V1.2 cleanup...peb
+!	06-jun-84  Add default subcommand...lim
+!	29-jun-84  Update parameter default to "ALL"...lia
+!	03-jul-84  Cleanup...palm
+!	21-sep-86  PR 979:  Make subcommand specific info non-redundant...peb
+!	11-aug-88  Mention saving qualifiers and make subs plural...nhe
+.TITLE
+SAVE
+.HELP
+	    SAVE saves variables for use later in the current 
+	    session or in subsequent sessions (see also RESTORE).  
+	    The following forms are available:
+
+
+	    SAVE-VARIABLE	!save specified variables
+				(-VARIABLE is the default subcommand) 
+	    SAVE-ALL		!save all variables
+	    SAVE-GLOBALS	!save globals
+	    SAVE-LOCALS		!save locals
+	    SAVE-PARMS		!save parameters
+
+	    If you are in command mode, type "HELP SAVE-sub" for 
+	    help on a particular subcommand of SAVE.  If you are
+	    tutoring for parameters, type "HELP -" for help on your
+	    particular subcommand of SAVE.
+.PAGE
+
+			General Usage Notes
+
+
+	    o When invoked from the primary level to save 
+	      global variables, the entire global table is
+	      saved.
+
+	    o When invoked from a proc to save global
+	      variables, only the referenced globals at
+	      the current level are saved.
+
+	    o All forms of SAVE require a save-file-name.
+	      If the file type is not present in the file name, a 
+	      default type of "PAR" is used.
+.PAGE
+
+			General Usage Notes (continued)
+
+	    o The following form saves the qualifiers of
+	      the variable, as if the qualifiers were a
+	      distinct variable:
+
+			SAVE mydata x.*
+
+	      All the qualifiers to x are saved in mydata.par,
+	      each as a distinct variable.
+.PAGE
+			General Examples
+
+
+	    1.  TAE> SAVE X
+
+		Used interactively, this saves all global and 
+		local variables into file X (with file type "PAR").
+
+
+	    2.  TAE> SAVE-LOCALS X
+
+		Save all local variables into X(with file 
+	    	type "PAR").
+
+
+	    3.	TAE> SAVE-VARIABLE X, (A,B,C)
+
+		The variables A, B, and C are saved.
+!
+.level1
+.subcmd VARIABLE
+Save specified variables
+.subcmd ALL
+Save all variables
+.subcmd GLOBALS
+Save globals only
+.subcmd LOCALS
+Save locals only
+.subcmd PARMS
+Save current parameters
+.variable FILE
+Name of the SAVE file
+.variable VARIABLE
+Variables to save
+!
+.level2
+.subcmd VARIABLE
+			     SAVE-VARIABLE
+
+
+			  Function and Format
+
+
+	Function:
+
+	    SAVE-VARIABLE saves the specified variables into 
+	    the save file.   The -VARIABLE subcommand is the
+	    default subcommand for SAVE, i.e., "SAVE" is
+	    equivalent to "SAVE-VARIABLE".
+
+.PAGE
+			     SAVE-VARIABLE
+
+
+		     Function and Format (continued)
+
+
+	Format:
+
+	    SAVE-VARIABLE  FILE = save-file-name
+	    SAVE-VARIABLE  FILE = save-file-name,  VARIABLE = variable-list
+	    SAVE  FILE = save-file-name
+	    SAVE  FILE = save-file-name,  VARIABLE = variable-list
+
+	The variable list is a list of the variables to be saved.
+        If the list is omitted, then all variables are saved.
+.subcmd ALL
+			SAVE-ALL
+
+	    	    Function and Format
+
+	Function:
+
+	    The -ALL subcommand is used to save all variables into 
+	    the SAVE file.  For interactive users, this means that 
+	    locals defined interactively and all globals are saved.
+
+	    SAVE-ALL is equivalent to SAVE-VARIABLE with
+	    the default for the VARIABLE parameter.
+
+	Format:
+
+	    SAVE-ALL  FILE = save-file-name
+.subcmd GLOBAL
+			SAVE-GLOBALS
+
+
+		     Function and Format
+
+
+	Function:
+
+	    The -GLOBALS subcommand is used to save only the
+	    global variables into the SAVE file.  When invoked 
+	    from the interactive level, all globals are saved.
+
+
+	Format:
+
+	    SAVE-GLOBALS  FILE = save-file-name
+.subcmd LOCALS
+			SAVE-LOCALS
+
+
+		    Function and Format
+
+
+	Function:
+
+	    The -LOCALS subcommand is used to save only the 
+	    local variables into the SAVE file.
+
+
+	Format:
+
+	    SAVE-LOCALS   FILE = save-file-name
+.subcmd PARMS
+			SAVE-PARMS
+
+
+		    Function and Format
+
+
+	Function:
+
+	    The -PARMS subcommand is used to save the current
+	    parameters into the save file.  The -PARMS subcommand
+	    is not meaningful when used interactively, because
+	    there are no parameters on the primary level.
+
+	Format:
+
+	    SAVE-PARMS   FILE = save-file-name
+.variable FILE
+
+
+
+	    This is the name of the file to save the variables
+	    into.  If the file type is omitted, "PAR" is used.
+.variable VARIABLE
+
+
+
+	    This is the list of variables to save.  If this
+	    parameter is omitted, it defaults to "ALL", hence
+	    all variables are saved.
+.END

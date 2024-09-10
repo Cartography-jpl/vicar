@@ -1,0 +1,82 @@
+!	edited	20-may-83...dm
+.TITLE
+IF/ELSE
+.HELP
+			Function and Format
+
+
+	Function:
+
+	    IF/ELSE provides conditional execution based
+	    on the evaluation of a logical expression.	
+
+	Format:
+
+	    1. IF (logical-expression)
+		   if-part
+	       ELSE
+		   else-part
+	       END-IF
+.PAGE
+			Format (continued)
+
+
+	    2. IF (logical-expression)
+		   if-part1
+	       ELSE-IF (logical-expression-2)
+		   if-part2
+	       ELSE-IF	
+		  .
+		  .
+		  .
+	       ELSE
+		   else-part
+	       END-IF
+.PAGE
+			Usage Notes
+
+
+	o  "if-part" and "else-part" are one or more TCL
+	    lines.
+
+	o  If the logical expression is true, the "if-part"
+	   is executed, otherwise the "else-part" is executed.
+
+	o  ELSE must appear alone on a line.
+
+	o  The ELSE and the corresponding "else-part" are
+	   optional.
+
+.PAGE
+			Usage Notes (continued)
+
+		
+	o  A one line IF is permissible. In this case the
+	   single command to be executed follows the logical
+	   expression. ELSE, ELSE-IF, and END-IF may not be
+	   used with a one-line IF.
+
+	o  Commands in a false "if-part" or "else-part" are
+	   not verified for proper syntax.
+
+	o  If the IF group contains ELSE-IFs, each of the
+	   logical expressions are evaluated in order, until
+	   one is found true.  The first part, and only the
+	   first part, for which an expression is found true
+	   is executed.
+.PAGE
+			Examples
+
+
+	1. IF (I = 1)
+		INITDISP DEVICE = IAT		!initialize display
+	   ELSE
+		DISPNEXT DEVICE = IAT		!display next
+	   END-IF
+
+	2. IF (DEVICE = "IAT")  WRITE "device is an IAT"
+
+	3. IF (WINDOW(4) > MAXWIN(4))
+		WRITE  "Window too big"
+	   END-IF
+.END

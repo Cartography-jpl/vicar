@@ -1,0 +1,212 @@
+process help=*
+PARM OUT TYPE=STRING COUNT=1
+PARM HEADERS    TYPE=(STRING,80) COUNT=(0:1) +
+   DEFAULT=/project/jukebox/poss/usa_aura_stsi_dss1_0102/headers
+PARM DATA    TYPE=(STRING,80) COUNT=(0:1) +
+   DEFAULT=/project/jukebox/poss
+PARM NAME  TYPE=STRING COUNT=(0:1) DEFAULT="ngc 1097"
+PARM USERID  TYPE=STRING COUNT=(0:1) DEFAULT="u2141ozs"
+PARM PASSWORD  TYPE=STRING COUNT=(0:1) DEFAULT="none"
+PARM RA    TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM DEC    TYPE=REAL COUNT=(0:3) DEFAULT=--
+PARM EPOCH TYPE=REAL COUNT=(0:1) DEFAULT=2000
+PARM NL TYPE=INTEGER COUNT=(0:1) VALID=(0:4000) DEFAULT=0
+PARM NS TYPE=INTEGER COUNT=(0:1) VALID=(0:4000) DEFAULT=0
+PARM FOV TYPE=REAL COUNT=(0:1) VALID=(.01:1000.) DEFAULT=15.0
+PARM GRID TYPE=REAL COUNT=(0:1) VALID=(0.0:21600.) DEFAULT=5.0
+PARM DN TYPE=INTEGER COUNT=(0:1) VALID=(0:32767) DEFAULT=15000
+PARM STATUS TYPE=(STRING,100) COUNT=(0:1) DEFAULT=""
+END-PROC
+
+.TITLE
+VICAR program SKY
+
+.HELP
+PURPOSE:
+To create a vicar picture containing an image of the night sky.
+The data is from the Space Telescope Institute digitized sky survey.
+There are three ways to run this program. See METHOD section.
+
+EXECUTION:
+sky out=picture.img ra=(14,22,33.854) dec=(0,-13,37.57) fov=15
+or
+sky out=picture.img name="ngc 1097" fov=15 password="   "
+or
+sky out=picture.img name="ngc 1097" fov=15
+
+.PAGE
+METHOD:
+There are three ways to run SKY:
+
+METHOD 1.
+If you provide RA & Dec coordinates you do not need a password.
+The execution looks like this:
+sky out=picture.img ra=(14,22,33.854) dec=(0,-13,37.57) fov=15
+
+METHOD 2.
+If you know the SIMBAD password which accompanies the defaulted userrid 
+(see USERID keyword) then execution looks like:
+sky out=picture.img name="ngc 1097" fov=15 password="   "
+ 
+METHOD 3.
+If you permit Kerberos to get the password for you from the password server
+then execution looks like:
+sky out=picture.img name="ngc 1097" fov=15
+In order to do this you'll need to first:
+selcat o
+kinit (which will ask you for your kerberos password).
+vicar
+
+
+Sky uses the mips jukebox to get at the Palomar Sky Survey digitized data set.
+Adapted from software written by the Space Telescope Institute.
+This software contains the following logo:
+Copyright (c) 1993, 1994, Association of Universities for Research in
+Astronomy, Inc.  All rights reserved.
+
+Obtains coordinates of objects by name from the SIMBAD data base.
+
+HISTORY:
+2-1-97  J Lorre. 
+COGNIZANT PROGRAMMER:  Jean Lorre
+
+.LEVEL1
+
+.VARI OUT
+Output image
+
+.VARI FOV
+Field of view
+in arc minutes.
+
+.VARI NL
+number lines in
+output images.
+Overrides FOV
+
+.VARI NS
+number samples in
+output images.
+Overrides FOV
+
+.VARI HEADERS
+Directory path for
+header files
+
+.VARI DATA
+Directory path for
+sky survey files
+
+.VARI RA
+The RA 
+of the output
+image center.
+
+.VARI DEC
+The DEC of the
+output image center.
+
+.VARI EPOCH
+Year of the RA & DEC
+Defaults to 2000
+
+.VARI NAME
+Object name
+
+.VARI USERID
+Simbad userid
+ 
+.VARI PASSWORD
+Simbad password
+
+.VARI GRID
+The grid interval
+in minutes of arc.
+(not time)
+
+.VARI DN
+The intensity of
+the grid lines.
+
+.VARI STATUS
+Directory to contain
+status file.
+Defaults to local.
+
+.LEVEL2
+
+.VARI OUT
+Output image name
+
+.VARI FOV
+Desired field of view in arc minutes.
+Defaults to 15
+This results in an image about 530 by 530 pixels. The upper limit is 14000
+by 14000.
+
+.VARI NL
+number of lines in the output image.
+Overrides the value computed from the FOV keyword.
+
+.VARI NS
+number of samples in the output image.
+Overrides the value computed from the FOV keyword.
+
+.VARI HEADERS
+Directory path for the sky survey header files
+
+.VARI DATA
+Directory path for the compressed sky survey files
+
+.VARI RA
+The RA of the output image center. 
+If 3 values are given they represent: hours minutes seconds (of time) 
+If 1 value  is given it represents: degrees
+Defaults to j2000 coordinates.
+(See the NAME keyword, only used if NAME not used)
+
+.VARI DEC
+The DEC of the output image center.
+If 3 values are given they represent: degrees minutes seconds (of arc)
+If 1 value  is given it represents: degrees
+Example: if the dec is 34 12 45.663 then dec=(34,12,45.663)
+Example: if the dec is -0 12 45.663 then dec=(0,-12,45.663)
+(-0,12,45.663 might work if the machine has a -0)
+Defaults to j2000 coordinates.
+(See the NAME keyword, only used if NAME not used)
+
+.VARI EPOCH
+The decimal year of the given RA & DEC.
+If epoch is other than 2000 the RA & DEC will be precessed to j2000.
+Defaults to 2000.
+
+.VARI NAME
+The name of the object about which the picture is to be generated.
+Example: name="ngc 1097"
+A query will be sent to SIMBAD to retrieve the object's coordinates.
+The image will be generated with this coordinate at the center.
+
+.VARI USERID
+Simbad userid. Only used if NAME is used.
+ 
+.VARI PASSWORD
+Simbad password. Only used if NAME is used.
+
+.VARI GRID
+The grid interval in minutes of arc.
+Default 2
+If GRID is 0 no grid is drawn.
+
+.VARI DN
+The intensity of the grid lines.
+Default 15000
+
+.VARI STATUS
+Directory to contain the status file.
+Defaults to the local directory.
+The status file is called "status_file.txt"
+If the program was successful it will contain the string "success".
+If the program began but failed to run it will contain the string "failure" on
+record 1 followed by optional records containing ascii messages describing
+the nature of the error.
+

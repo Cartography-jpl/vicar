@@ -1,0 +1,398 @@
+global help=*
+!
+!	the definitions here must match the definitions in TMINIT.C
+!
+!	28-mar-84	General V1.2 cleanup...peb
+!	24-jun-84	Enhance $defcmd0 description...palm
+!	25-jul-84	Nullable $userlib and $syslib...palm
+!	27-aug-84	Add second part to $message and $tutor...lia
+!       09-jan-85       Changed to conform to TMINIT...joh
+!	22-jan-85	Update help information...lia
+!	28-may-85	Correction in help text...lia
+!	28-mar-86	One year later: new $MENUOPT...palm
+!	10-aug-87	New $FILEVER...palm
+!	30-sep-87	Added help for $MENUOPT...rww
+!       24-jun-88       Added TUTOROPT and its help and updated MENUOPT
+!                       help...tpl
+!       26-jul-88       Added TUTSELE...tpl
+!	08-dec-88	New NO_SELFTUTOR valid for $TUTOPT...palm
+!
+PARM $AECHO	(STRING,5)	COUNT=1:10 +
+	VALID=(YES, NO, FULL, BODY, TRACE)
+PARM $APLIB	(STRING,80)	COUNT=0:15
+PARM $BECHO	(STRING,5)	COUNT=1:10 +
+	VALID=(YES, NO, FULL, BODY, TRACE)
+PARM $DEFCMD0	STRING		COUNT=0:50
+PARM $DYNTUT	(STRING,8)	COUNT=1		VALID=(NOSCREEN, SCREEN)
+PARM $ECHO	(STRING,5)	COUNT=1:10 +
+	VALID=(YES, NO, FULL, BODY, TRACE)
+PARM $FILEVER	(STRING,3)	COUNT=1    +
+	VALID=(YES, NO)
+PARM $LASTCMD	STRING		COUNT=0:20
+PARM $LOG	(STRING,80)
+PARM $MENUS	(STRING,80)	COUNT=0:50
+PARM $MENUOPT  STRING VALID=(NO_NAME, NO_TAG, NO_LIBRARY, NO_PRESS_FOR_MENU) +
+		COUNT=0:4
+PARM $MESSAGE	(STRING,6)	COUNT=1	   +
+	VALID=(BELL, SILENT, PAUSE, ATTN)
+PARM $PROMPT	(STRING,15)
+PARM $SYSCHAR	STRING		COUNT=0:6
+PARM $SYSLIB	(STRING,80)	COUNT=0:1
+PARM $TUTOPT  STRING VALID=+
+  (NO_NAME, NO_TAG, NO_LIBRARY, NO_SELFTUTOR, COMPRESS) +
+		COUNT=0:3
+PARM $TUTOR	(STRING,8)	COUNT=1		VALID=(NOSCREEN, SCREEN)
+PARM $TUTSELE	(STRING,3)	COUNT=1		VALID=(YES, NO)
+PARM $USERLIB	(STRING,80)	COUNT=0:1
+END-GLOBAL
+.title
+			Intrinsic Global Variables
+.help
+		This proc defines the TAE "intrinsic" globals, 
+		i.e., those variables defined implicitly by
+		TAE.
+
+		If you tutor on TAEGBL, you may conveniently
+		observe and change values of intrinsic globals.
+		WARNING: when you are finished setting the
+		values on the tutor display, you must "RUN"
+		from tutor.  (If you "EXIT" from tutor, the
+		new values are ignored.)
+
+.level1
+.var $aecho
+Echo PDFs for async jobs?
+.var $aplib
+Application libraries.
+.var $becho
+Echo PDFs for batch jobs?
+.var $defcmd0
+Defined commands.
+.var $dyntut
+Dynamic tutor form:
+ SCREEN or NOSCREEN.
+.var $echo
+Echo PDFs for interactive
+jobs?
+.var $filever
+Verify FILE type parms?
+.var $lastcmd
+Last 20 command mode commands.
+(1) is most recent, (2) is the
+next most recent, etc.
+.var $log
+Current session log.
+.var $menus
+Current menu stack.
+.var $menuopt
+Menu display options.
+.var $message
+Error message action:
+ SILENT, BELL, PAUSE, ATTN.
+.var $prompt
+Command mode prompt.
+.var $syschar 
+System characteristics.
+.var $syslib
+Name of system proc library.
+.var $tutopt
+Tutor display options.
+.var $tutor
+Tutor form: SCREEN or NOSCREEN.
+.var $tutsele
+Tutor select panel
+.var $userlib
+.var $tutsele
+Tutor select panel.
+Name of user proc library.
+!
+.level2
+.var $aecho
+
+
+
+		Determines which lines, if any, in a PDF are to be 
+		echoed as they are executed in an asynchronous job.
+		The ith element of $aecho applies to the ith level, 
+		starting with level 1.  The last element entered will 
+		apply to all subsequent levels.  Level 0 will always
+		be echoed.
+.page
+		The possible values are:
+
+			"NO" -- no echo
+
+			"FULL" -- declarations plus body echoed
+
+			"BODY" -- body only is echoed
+
+			"YES" -- equivalent to "BRIEF"
+
+			"TRACE" -- list filespec of proc
+
+.var $aplib
+		List of application libraries.  $APLIB may be
+		conveniently set with the TAE SETLIB command.
+		Type "HELP SETLIB" for assistance in executing
+		the SETLIB command.
+.var $becho
+
+
+
+		Determines which lines, if any, in a PDF are to be 
+		echoed as they are executed in a batch job.
+		The ith element of $becho applies to the ith level, 
+		starting with level 1.  The last element entered will 
+		apply to all subsequent levels.  Level 0 will always
+		be echoed.
+.page
+		The possible values are:
+
+			"NO" -- no echo
+
+			"FULL" -- declarations plus body echoed
+
+			"BODY" -- body only is echoed
+
+			"YES" -- equivalent to "BRIEF"
+
+			"TRACE" -- list filespec of proc
+
+.var $defcmd0
+		List of defined commands.  $DEFCMD0 is set by
+		the TAE DEFCMD command.  Type "HELP DEFCMD" for
+		assistance in executing the DEFCMD command.
+
+		Each element of $DEFCMD0 represents one defined
+		command.  The '=' character separates the 
+		command name from the replacement string.  The
+		'*' character indicates the point of minimum
+		abbreviation.
+
+		If more than 50 commands are defined, TAE creates
+		additional global variables (named $DEFCMD1, 
+		$DEFCMD2, ...) as needed.
+.var $dyntut
+		The contents of this variable determines the style
+		for the dynamic tutor mode.  If "SCREEN", then
+		dynamic tutor executes in the screen mode; if
+		"NOSCREEN", then dynamic tutor executes in the 
+		terse mode.
+
+		$DYNTUT may be set with the LET command.  Example:
+
+			LET $DYNTUT = "NOSCREEN"
+.var $echo
+
+
+
+		Determines which lines, if any, in a PDF are to be 
+		echoed onto the terminal as they are executed in
+		interactive mode.  The ith element of $echo applies 
+		to the ith level, starting with level 1.  The last
+		element entered will apply to all subsequent levels.
+		Level 0, the interactive level, will never be echoed.
+.page
+		The possible values are:
+
+			"NO" -- no echo
+
+			"FULL" -- declarations plus body echoed
+
+			"BODY" -- body only is echoed
+
+			"YES" -- equivalent to "BRIEF"
+
+			"TRACE" -- list filespec of proc
+.var $filever
+
+		$FILEVER determines whether file verification
+		is enabled.  If the value of $FILEVER is "YES",
+		then proc parameters of type FILE are verified
+		according to the ACCESS specification.  For 
+		example, a file declared ACCESS=IN must exist
+		at the point the parameter is assigned a value.
+
+		If $FILEVER is "NO", then no file verification
+		is performed and the ACCESS specification for
+		FILE parameters is ignored.		
+
+.var $lastcmd
+		This global is an archive of the most recent 
+		twenty commands executed in command mode.  The
+		most recent command is at index (1), the next
+		most recent command is a index (2), and so
+		on.
+
+		You may turn off archiving in $LASTCMD by setting
+		$LASTCMD to the null value with the LET command:
+
+			LET $LASTCMD = --
+.var $log
+		This global contains the name of the session log
+		for the current TAE session.
+.var $menus
+		This is the current menu stack.  It is used by the
+		TAE menu processor to find the next menu to display,
+		and to know the menu history for the menu BACK
+		command.
+
+		Procs that reference $MENUS can reset the "next"
+		menu for the menu user.
+.var $menuopt
+		This global sets menu display options. It is a 
+		vector of up to four strings and is validated for 
+		the following values:
+
+
+			"NO_TAG"     -- suppress the "MENU:" 
+					portion of the display. 
+
+			"NO_NAME"    -- suppress the menu name 
+					on the display.
+
+			"NO_LIBRARY" -- suppress the library name  
+					on the display. 
+
+		"NO_PRESS_FOR_MENU"  -- suppress the "Press return for menu"
+					prompt and charge right into the
+					menu screen.
+.var $message
+		Directs the action to be taken when TAE 
+		produces an error or informational message.
+
+		Specifies the mechanism to use for drawing 
+		attention to the message and the values are:
+
+			"SILENT" -- do nothing upon message
+
+			"BELL"   -- sound terminal bell
+
+			"PAUSE"  -- stop until user hits RETURN
+
+			"ATTN"   -- sound bell and PAUSE
+
+.var $prompt
+		A string variable containing the prompt
+		for command mode.  By default, the
+		prompt is "TAE".  The prompt may be changed
+		with the LET command.  Example:
+
+			LET $PROMPT = "MY-PROMPT"
+.var $runtype
+		Indicates the current job environment.  
+		The values are:
+
+			"INTERACTIVE" -- interactive job
+
+			"BATCH" -- batch job
+
+			"ASYNC" -- asynchronous job
+.var $session
+		A string that uniquely identifies the
+		current job among all other active
+		jobs.  In VAX/VMS and UNIX systems,
+		$SESSION contains the process identification
+		of TAE's terminal monitor.
+
+.var $sfi
+		Proc termination "success/fail indicator".
+		When a proc terminates normally, $SFI is
+		set to a positive number by TAE.  When
+		a proc terminates abnormally, $SFI is
+		set to a negative value by TAE.
+
+		Following completion of a proc, you may
+		display $SFI with the following command:
+
+			DISPLAY $SFI
+.var $skey
+		Proc termination status key.  This string 
+		is set to return status information to
+		the invoking proc.
+.var $switch
+		$SWITCH is an integer of bit flags for use
+		by application programmers.  TAE reserves
+		the right-hand eight bits for its own use.
+
+		Currently, the right-hand bit means "run
+		all application programs using the VMS 
+		/DEBUG qualifier".  Thus, a programmer
+		may always LINK with the debugger and 
+		enable the debugger only when needed.
+
+		The second rightmost bit signals that
+		for batch or async job, sys$output is to 
+		be assigned to a file of type SPL.
+		The debug output is to be placed in a 
+		file of type TML.
+.page
+		The third rightmost bit tells TM to initiate
+		the async TM through the file []ASYNC.COM 
+		and place the output in []TM.DAT.  This flag
+		is used for async debugging.
+
+		The fourth rightmost bit is no longer used.
+
+		The fifth rightmost bit is used to request for
+		display of library in dynamic tutor.
+.var $syschar
+		System characteristics.  The keyword
+		strings in this variable are referenced
+		by help files to generate "conditional"
+		help text.  Thus, one help file may be
+		used on several different implementations
+		of TAE and, where needed, generate 
+		system-specific information.
+.var $syslib
+		This is the name of the system proc library.
+
+		$SYSLIB may be altered during a session in
+		order to change the proc hierarchy search.
+		If $SYSLIB is set to the empty string, the
+		hierarchy search bypasses the system library.
+.var $tutopt
+		This global sets tutor display options. It is a 
+		vector of up to three strings and is validated for 
+		the following values:
+
+
+			"NO_TAG"     -- suppress the "TUTOR:" 
+					portion of the display. 
+
+			"NO_NAME"    -- suppress the PDF name 
+					on the display.
+
+			"NO_LIBRARY" -- suppress the library name  
+					on the display. 
+
+			"NO_SELFTUTOR" -- do not honor SELFTUTOR
+					requests in PDFs.
+
+			"COMPRESS" -- use the "compressed" form
+				      form of tutor.
+.var $tutor
+		The contents of this variable determines the
+		style for the tutor mode. If "SCREEN", then
+		tutor executes in the screen mode; if "NOSCREEN",
+		then tutor executes in a terse mode.
+
+		$TUTOR may be set with the LET command.  Example:
+
+			LET $TUTOR = "NOSCREEN"
+.var $tutsele
+                This global is only meaningful in TAE Facelift tutor 
+                mode.  It determines whether valids for a parm should 
+                be displayed in a separate valid panel.
+
+                $TUTSELE may be set with the LET command.  Example:
+
+                        LET $$TUTSELE = "NO"
+.var $userlib
+		This is the name of the user library.
+
+		$USERLIB may be altered during a session in
+		order to change the proc hierarchy search.
+		If $USERLIB is set to the empty string, the
+		hierarchy search bypasses the user library.
+.end

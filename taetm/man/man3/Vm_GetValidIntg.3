@@ -1,0 +1,69 @@
+.TH Vm_GetValidIntg 3 "21 Oct 1992" "TAE Plus v5.3"
+.SH NAME
+Vm_GetValidIntg - retrieve valids of integer data type
+
+.SH DESCRIPTION
+.IP
+.LP
+CODE Vm_GetValidIntg (vmid, name, count, ilow, ihigh)
+
+Function return:
+
+.nr L 0 1
+.IP o
+SUCCESS: valids information successfully retrieved from variable.
+.IP o
+P_BADNAME: the variable does not exist.
+.IP o
+P_BADTYPE: the variable has a type other than integer.
+.LP
+
+.IP
+.LP
+Arguments:
+
+.nr L 0 1
+.IP \n+L.
+vmid: input, Id   vmid;
+
+Id of a Vm object; may be target or view Vm object returned by Co_Find.
+Otherwise, this object must have been initialized with a call to Vm_New.
+
+.IP \n+L.
+name: input, TEXT   name[ ];
+
+Name of the integer variable.  The name may be qualified to any number of levels,
+for example, "x.q".
+
+.IP \n+L.
+count: output, FUNINT   *count;
+
+Multiplicity of the valids i.e., the number of integer ranges.
+
+.IP \n+L.
+ilow: output, TAEINT   **ilow;
+
+An array of dynamically allocated integer values (an integer value vector) for
+the low values of the ranges.  The array is dynamically allocated by
+Vm_GetValidIntg.
+
+.IP \n+L.
+ihigh: output, TAEINT   **ihigh;
+
+An array of dynamically allocated integer values (an integer value vector) for
+the high values of the ranges.  The array is dynamically allocated by
+Vm_GetValidIntg.
+.LP
+
+.IP
+.LP
+Vm_GetValidIntg sets count to the number of acceptable integer ranges and
+dynamically allocates arrays which hold the acceptable integer valids for a
+TAE integer variable.
+
+tae_free should be used to free the allocated arrays ilow and ihigh
+after the application is finished with them.
+
+
+.so man1/../COPYRIGHT
+.so man1/../AUTHOR
