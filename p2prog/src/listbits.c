@@ -76,7 +76,7 @@ for (line=sl; line<sl+nl; line++) {
            zmve (1,8,&pbuf[j][0],&zbuf[17*j+13],1,2);
        }
        zvmessage (zbuf,""); 
-       if (space) zvmessage ("0",1); 
+       if (space) zvmessage ("0","1"); 
        }
    }
 zvmessage ("LISTBITS task completed","");

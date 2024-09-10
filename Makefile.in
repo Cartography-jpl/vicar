@@ -120,8 +120,15 @@ bin_PROGRAMS =
 
 # By default, gfortran ignores characters past column 72. Much of the fortan
 # code in this system goes past that column, so tell gfortran to allow this.
+# Starting with gfortran 10.0 type mismatch changed from a warning to
+# an error. Lots of the old code has type mistmatchs in them, for now
+# just go back to having the old behavior
+# Another error uses a nonstandard postfix syntax, which changed from
+# a warning to an error.
 # Older versions of the compiler break on this flag. Use -std=legacy instead
-@HAVE_GCC_TRUE@am__append_1 = -ffixed-line-length-none -std=legacy
+@HAVE_GCC_TRUE@am__append_1 = -ffixed-line-length-none \
+@HAVE_GCC_TRUE@	-fallow-argument-mismatch -fallow-invalid-boz \
+@HAVE_GCC_TRUE@	-std=legacy
 TESTS =
 @BUILD_VICAR_TRUE@am__append_2 = $(vicar_DATA) @srcp2prog@/engrhdr.h \
 @BUILD_VICAR_TRUE@	@srcp2prog@/gcfdata.h @srcp2prog@/header.h \
@@ -2218,17 +2225,15 @@ AM_CPPFLAGS =
 
 #=================================================================
 # Some flags needed for GCC compilers.
-# Starting with gfortran 10.0 type mismatch changed from a warning to
-# an error. Lots of the old code has type mistmatchs in them, for now
-# just go back to having the old behavior
-#AM_FFLAGS += -fallow-argument-mismatch
-# Another error uses a nonstandard postfix syntax, which changed from
-# a warning to an error.
-#AM_FFLAGS += -fallow-invalid-boz
+# The newer versions of gcc (14 or so) treat what use to be just warnings as
+# errors. Turn this off, this code is really old and we just want to compile it,
+# not worry about fixing all the old problems
 # This behavior changed in gcc 10. Previously the gcc has used fcommon,
 # which resolves some issues with multiple definitions of global variables.
 # For now, use the old behavior.
-@HAVE_GCC_TRUE@AM_CFLAGS = -Wall -fcommon
+@HAVE_GCC_TRUE@AM_CFLAGS = -Wall -Wno-implicit-function-declaration \
+@HAVE_GCC_TRUE@	-Wno-implicit-int \
+@HAVE_GCC_TRUE@	-Wno-incompatible-pointer-types -fcommon
 
 # Motif library uses XtOffset in ways that gcc complains about, but which
 # are actually valid. Go ahead an suppress this warning.

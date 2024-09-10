@@ -56,7 +56,7 @@ void main44(void)
 
 	/* check for option requested */
   k = 1;
-  zvparm(  "OPTION", opt, &i, &j, &k, 0);
+  zvparm(  "OPTION", opt, &i, &j, k, 0);
   if (!strcmp( opt, "LABEL")) goto listl;
 
   stat = find_keyword( "^HISTORY", &bptr);

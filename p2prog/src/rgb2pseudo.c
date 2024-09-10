@@ -22,7 +22,8 @@ void main44(void)
   int	nInputs;	/* number of input files	*/
   int	status;		/* status return value		*/
   int	nbits;		/* number of bits for color hist*/
-  int   num_cols,col_length,num_rows,iformat,iorg,imode;
+  int   num_cols,col_length,num_rows;
+  char  *iformat, *iorg, *imode;
   int   srow,nrows,column;
   int	nl,ns,nb;
   char	org[4];
@@ -99,8 +100,8 @@ void main44(void)
   col_length = 256;
   num_rows   = 256;
   iformat    = NULL;
-  iorg       = (int)IORG_COLUMN;
-  imode      = (int)IMODE_WRITE;
+  iorg       = IORG_COLUMN;
+  imode      = IMODE_WRITE;
   status = IBISFileOpen (lutUnit, &ibis, imode, num_cols, 
                 num_rows, iformat , iorg);	/* open output	*/
   if (status != 1) {
