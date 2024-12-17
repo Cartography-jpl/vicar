@@ -1,4 +1,5 @@
-This directory contains the code to build VICAR p2 programs and tae program.
+This directory contains the code to build VICAR p2 programs and tae program
+(NPO 52175)
 
 This directory contains a configure and Makefile, which can be used to
 build just this code. However if you are building the full afids system, the
