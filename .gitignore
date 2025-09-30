@@ -1,0 +1,13 @@
+autom4te.cache
+*~
+\#*#
+.#*
+.DS_Store
+push_to_bare
+pull_from_home
+create_delta.bundle
+src/vdev/rubylib/test
+src/vdev/sc2rpc/sc2rpc
+*.pyc
+*.o
+*.lo

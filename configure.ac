@@ -1,8 +1,8 @@
-AC_INIT(vicar, 1.13.1)
+AC_INIT([vicar],[1.14])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_MACRO_DIR([config/m4])
 AFIDS_COMMON
-MP_WITH_CURSES
+AX_WITH_CURSES
 # This set up all the source directories. Source for this is found in
 # config/m4/afids_source_directory.m4 so we can include this in multiple
 # configuration files.
